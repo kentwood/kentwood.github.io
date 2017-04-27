@@ -1,0 +1,1076 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据库,nosql," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="新项目中用到了Redis，以前只是听说过NoSql，一直觉得很厉害，这次终于用上了，边学边用也算是对这个东西有所了解了。目前还是在学习中，但是觉得还是把学到的东西先总结一下有助于自己的提高。
+
+Redis数据库（一）
+参考SiteRedis官网：https://redis.io/
+RedisDesktopManager下载地址：https://redisdesktop.com/download">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis入门（一）">
+<meta property="og:url" content="http://yoursite.com/2017/04/22/Redis入门（一）/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="新项目中用到了Redis，以前只是听说过NoSql，一直觉得很厉害，这次终于用上了，边学边用也算是对这个东西有所了解了。目前还是在学习中，但是觉得还是把学到的东西先总结一下有助于自己的提高。
+
+Redis数据库（一）
+参考SiteRedis官网：https://redis.io/
+RedisDesktopManager下载地址：https://redisdesktop.com/download">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/redisBin.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/redis-start.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/redis_conf.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/redis_jincheng.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/redis-guoyin.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/redismima.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/redisDeskto.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/bender.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/iptables.png">
+<meta property="og:updated_time" content="2017-04-21T16:36:45.989Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Redis入门（一）">
+<meta name="twitter:description" content="新项目中用到了Redis，以前只是听说过NoSql，一直觉得很厉害，这次终于用上了，边学边用也算是对这个东西有所了解了。目前还是在学习中，但是觉得还是把学到的东西先总结一下有助于自己的提高。
+
+Redis数据库（一）
+参考SiteRedis官网：https://redis.io/
+RedisDesktopManager下载地址：https://redisdesktop.com/download">
+<meta name="twitter:image" content="http://onv8ytvk1.bkt.clouddn.com/redisBin.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/22/Redis入门（一）/"/>
+
+
+
+
+
+  <title> Redis入门（一） | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/22/Redis入门（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Redis入门（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-22T00:11:50+08:00">
+                2017-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/22/Redis入门（一）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>新项目中用到了Redis，以前只是听说过NoSql，一直觉得很厉害，这次终于用上了，边学边用也算是对这个东西有所了解了。目前还是在学习中，但是觉得还是把学到的东西先总结一下有助于自己的提高。</p>
+<hr>
+<h2 id="Redis数据库（一）"><a href="#Redis数据库（一）" class="headerlink" title="Redis数据库（一）"></a>Redis数据库（一）</h2><hr>
+<h3 id="参考Site"><a href="#参考Site" class="headerlink" title="参考Site"></a>参考Site</h3><p><a href="https://redis.io/" target="_blank" rel="external">Redis官网：https://redis.io/</a></p>
+<p><a href="https://redisdesktop.com/download" target="_blank" rel="external">RedisDesktopManager下载地址：https://redisdesktop.com/download</a></p>
+<hr>
+<h3 id="NoSql简介"><a href="#NoSql简介" class="headerlink" title="NoSql简介"></a>NoSql简介</h3><h4 id="NoSql概念"><a href="#NoSql概念" class="headerlink" title="NoSql概念"></a>NoSql概念</h4><p>NoSql是Not Only Sql的缩写，意思是不仅仅是Sql。我在网上看了很多关于NoSql的资料，关于革命性的运动之类的。感觉也记不住那么多。但是我知道了NoSql是Sql的一个阉割版，保留了部分功能从而极大提升性能以满足大型数据服务。NoSql在某些方面已经完全的超越了传统Sql数据库，但是NoSql也只能作为传统Sql的补充，不能完全取代Sql。一个大项目，类似于淘宝京东之类的，也不可能只用一种数据库，NoSql有自己的擅长。</p>
+<h4 id="NoSql分类"><a href="#NoSql分类" class="headerlink" title="NoSql分类"></a>NoSql分类</h4><p>1、键值(Key-Value)存储数据库</p>
+<ul>
+<li>相关产品： Tokyo Cabinet/Tyrant、Redis、Voldemort、Berkeley DB</li>
+<li>典型应用： 内容缓存，主要用于处理大量数据的高访问负载。 </li>
+<li>数据模型： 一系列键值对</li>
+<li>优势： 快速查询</li>
+<li>劣势： 存储的数据缺少结构化</li>
+</ul>
+<p>2、列存储数据库</p>
+<ul>
+<li>相关产品：Cassandra, HBase, Riak</li>
+<li>典型应用：分布式的文件系统</li>
+<li>数据模型：以列簇式存储，将同一列数据存在一起</li>
+<li>优势：查找速度快，可扩展性强，更容易进行分布式扩展</li>
+<li>劣势：功能相对局限</li>
+</ul>
+<p>3、文档型数据库</p>
+<ul>
+<li>相关产品：CouchDB、MongoDB</li>
+<li>典型应用：Web应用（与Key-Value类似，Value是结构化的）</li>
+<li>数据模型： 一系列键值对</li>
+<li>优势：数据结构要求不严格</li>
+<li>劣势： 查询性能不高，而且缺乏统一的查询语法</li>
+</ul>
+<p>4、图形(Graph)数据库</p>
+<ul>
+<li>相关数据库：Neo4J、InfoGrid、Infinite Graph</li>
+<li>典型应用：社交网络</li>
+<li>数据模型：图结构</li>
+<li>优势：利用图结构相关算法。</li>
+<li>劣势：需要对整个图做计算才能得出结果，不容易做分布式的集群方案。</li>
+</ul>
+<p>这几个分类是从网上抄的，看到这些东西也算是打开了新世界的门缝了，原来NoSql有那么多，今天要讲的Redis只是一种分类（KV存储数据库）里的一个小类型。</p>
+<h3 id="Redis简介"><a href="#Redis简介" class="headerlink" title="Redis简介"></a>Redis简介</h3><p>说到了Redis就来简单介绍下它，关于它的起源网上也有相关的<del>说明</del>故事，讲它怎样诞生的。多知道点还是有好处的。不过这里就不多说了，懒得<del>复制</del>打字。</p>
+<p>Redis是用C语言开发的一个高性能的KV类型的数据库，可以用个键值类型来存储一些数据，具体的来说，可以存储一下几种类型：</p>
+<ul>
+<li>String字符类型</li>
+<li>Map散列类型</li>
+<li>List列表类型</li>
+<li>Set集合类型</li>
+<li>SortedSet有序集合类型<br>第一个字母大写，不代表是java的类。只是写习惯了想把第一个字母写成大写。</li>
+</ul>
+<p>关于Redis的应用场景，网上说可以做一下的</p>
+<ul>
+<li>缓存（数据查询、短连接、新闻内容、商品内容等等）。（最多使用）</li>
+<li>分布式集群架构中的session分离。</li>
+<li>聊天室的在线好友列表。</li>
+<li>任务队列。（秒杀、抢购、12306等等）</li>
+<li>应用排行榜。</li>
+<li>网站访问统计。</li>
+<li>数据过期处理（可以精确到毫秒）<br>具体怎么做的我还不知道，我做的项目中的貌似一点都没有符合。</li>
+</ul>
+<h3 id="Redis下载与安装"><a href="#Redis下载与安装" class="headerlink" title="Redis下载与安装"></a>Redis下载与安装</h3><p><a href="https://redis.io/" target="_blank" rel="external">官网</a>有下载，下个稳定版3.2.8吧。稳一点好。官网下的是源码，需要自己编译才行，这里在Linux上搞事。我用的Centos6.5。具体的步骤如下：<br>首先解压：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu ~]# tar -zxf redis-3.2.8.tar.gz</div></pre></td></tr></table></figure></p>
+<p>解压了之后，如果得编译，编译需要c++编译工具，用yum装一个：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu ~]# yum install gcc-c++</div></pre></td></tr></table></figure></p>
+<p>安装完毕了编译源码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu ~]# cd redis-3.2.8</div><div class="line">[root@wangsusu redis-3.2.8]# make</div></pre></td></tr></table></figure></p>
+<p>最后是安装：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu redis-3.2.8]# make install PREFIX=/usr/local/redis328</div></pre></td></tr></table></figure></p>
+<p>这样就在/user/local/目录下装好了redis328。</p>
+<p>安装好之后cd进redis328目录，只有一个bin目录，bin目录底下有如下东西：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/redisBin.png" alt=""></p>
+<p>启动一下Redis服务，输入<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu redis328]# ./redis-server</div></pre></td></tr></table></figure></p>
+<p>得到如下信息：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/redis-start.png" alt=""></p>
+<p>即是Redis服务启动成功。但是这种方式的启动有一个问题，这是前端启动的方式，启动之后终端界面不能再输入东西，如果是在linux操作系统下还可以再开一个终端，但是如果用SecureCRT之类的软件登录系统，就得再开一个连接，这样很繁琐。我也不知道Redis为什么要弄一个前端启动的概念在里面，一般的sql服务部都应该是以后台服务的形式存在的么。那就说一说Redis如何能像Sql服务一样在后台启动吧。</p>
+<p>首先按Ctrl+c退出前端服务界面。后端启动有一点麻烦，需要修改配置文件。首先要回到安装之前的那个目录redis-3.2.8，这个里面才有配置文件。把redis.conf文件复制到bin目录下。之后修改redis.conf文件<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu bin]# cp /user/local/redis-3.2.8/redis.conf ./</div><div class="line">[root@wangsusu bin]# vim redis.conf</div></pre></td></tr></table></figure></p>
+<p>把daemonize的属性改为yes</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/redis_conf.png" alt=""></p>
+<p>之后就可以后端启动了，输入如下命令，后面要接这个redis.conf配置文件参数<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu bin]# ./redis-server redis.conf</div></pre></td></tr></table></figure></p>
+<p>启动之后可以检查一下是否启动成功：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu bin]# ps aux|grep redis</div></pre></td></tr></table></figure></p>
+<p>如果出现一下进程信息，则代表启动成功：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/redis_jincheng.png" alt=""></p>
+<p>如果要关闭服务，输入以下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu bin]# ./redis-cli shutdown</div></pre></td></tr></table></figure></p>
+<p>这里再说一下，如果将输入用redis缓存，会加载到内存中，这样存取数据非常的快捷。但是关闭redis服务，数据却并不会丢失，因为关闭redis会有一个数据持久化再关闭的过程。这是非常棒的。</p>
+<h3 id="Redis客户端"><a href="#Redis客户端" class="headerlink" title="Redis客户端"></a>Redis客户端</h3><h4 id="黑框客户端"><a href="#黑框客户端" class="headerlink" title="黑框客户端"></a>黑框客户端</h4><p>刚才说了redis的下载安装与服务端的前端启动与后端启动的方法，下面说一下Redis的客户端。首先还是要说终端登录的客户端，就像mysql的黑框框，这个是用图形界面之前必须先用熟的。进入客户端的方法也很简单，再启动了redis服务之后。还是在bin目录下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu bin]# ./redis-cli -h 127.0.0.1 -p 6379</div></pre></td></tr></table></figure></p>
+<p>-h是host的意思，登录的ip。-p就是port端口，redis的默认端口是6379，没啥好说的。这样就登录进去了。得到如下所示：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">6379</span>&gt;</div></pre></td></tr></table></figure></p>
+<p>之后先过下瘾，试下简单的操作：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/redis-guoyin.png" alt=""></p>
+<p>图上是简单的set与get操作，但是，发现了一个问题，居然不用密码就可以登录，默认redis是不需要密码登录的，但是为了安全还是得给redis设置一个客户端密码。设置方法如下，还是在配置文件redis.conf里，将requirepass前的注释去掉，后面跟的参数就是密码</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/redismima.png" alt=""></p>
+<p>redis没有账户的概念，只有一个密码就可以。感觉简单就是好。设置完密码之后重启redis服务。下面启动redis客户端的的命令如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu bin]# ./redis-cli -h 127.0.0.1 -p 6379 -a yourpassword</div></pre></td></tr></table></figure></p>
+<p>-a是auth，后面跟的就是你的密码。</p>
+<p>再补充一点，如果进入客户端不加后面的-a，其实也是可以进入的，只是没有密码授权不能对数据进行任何操作。我也不知道为什么要设置成这样。以上就是黑框客户端。</p>
+<h4 id="图形界面客户端"><a href="#图形界面客户端" class="headerlink" title="图形界面客户端"></a>图形界面客户端</h4><p>不要鄙视图形界面，图形界面只是技术的另一种表现形式，图形界面可以让技术变得更加简洁清晰。redis也一样，不需要写登录客户端脚本，也不需要get与set语句就可以直接对redis操作。而且，一般在windows下开发javaweb的话，redis数据库的服务端在远程的linux上，用一个图形界面客户端连上远程的redis数据库，测试程序也方便。</p>
+<p>关于这个图形界面客户端，目前我只知道有这个RedisDesktopManager。下载地址在这个里：<a href="https://redisdesktop.com/download" target="_blank" rel="external">RedisDesktopManager下载地址</a>。下下来装好之后是这样的。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/redisDeskto.png" alt=""></p>
+<p>然后过了一会儿居然弹出了Bender</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/bender.png" alt=""></p>
+<p>以前就拿这个贱机器人做过头像，redis的创始人肯定是个好人。之后点下面那个connect to redis server，name随便写，host写你的redis所在的服务器ip，port一般就是6379，auth填刚设置的密码，然后测试一下登录。这个时候一般情况下你会登录不成功。如果熟悉linux操作系统的话知道这是因为防火墙把连接请求挡住了。这个时候就需要修改linux操作系统里的防火墙服务配置。记得以前弄过centos7的防火墙配置，7和6.5的是不一样，这种情况下还是多去网上找下资料，这里我就说一下我这里的修改方法。输入命令：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu bin]# vim /etc/sysconfig/iptables</div></pre></td></tr></table></figure></p>
+<p>添加允许6379的端口</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/iptables.png" alt=""></p>
+<p>之后重启防火墙服务<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@wangsusu bin]# service iptables restart</div></pre></td></tr></table></figure></p>
+<p>再用RedisDesktopManager测试下连接，妥妥的。关于如何在里面添加数据自己摸摸就会了。</p>
+<h4 id="Jedis"><a href="#Jedis" class="headerlink" title="Jedis"></a>Jedis</h4><p>这也算是一个客户端吧，redis这个东西也不仅仅只能用java来操作，但可惜的是java也没有提供类似于JDBC的规范接口（应该说是庆幸）。所以如果java要使用Redis的话，也是需要一些API的。本质的说Jedis就是jar包，用它里面的类和方法就可以使用Redis了，这东西使用起来也是非常方便，大概是因为Redis本来就很方便。首先下载，Maven上有，还是用阿里云的Maven，快的很。就下最新版的jedis-2.9.0.jar，下好之后添加到工程里就可以使用了。</p>
+<p>新建一个工程，写一个测试类测试下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">JedisTest</span> </span>&#123;</div><div class="line">    public <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="built_in">String</span>[] args) &#123;</div><div class="line">        Jedis jedis = <span class="keyword">new</span> Jedis(<span class="string">"192.168.14.101"</span>, <span class="number">6379</span>);</div><div class="line">        jedis.auth(<span class="string">"skyworth@redis"</span>);</div><div class="line">        jedis.set(<span class="string">"haha"</span>, <span class="string">"chonghechonghe"</span>);</div><div class="line">        System.out.println(jedis.get(<span class="string">"haha"</span>));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>得到结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chonghechonghe</div></pre></td></tr></table></figure></p>
+<p>这是最简单的jedis使用，之后还有有各种数据的操作，连接池，集群等等，以及spring<br>整合jedis，之后再讲。</p>
+<p>今天就讲到这里了，代码不贴github了，因为只有那么几行，复制过去运行下就妥了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+            <a href="/tags/nosql/" rel="tag"># nosql</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/22/Spring框架（三）/" rel="next" title="Spring框架（三）">
+                <i class="fa fa-chevron-left"></i> Spring框架（三）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/22/MyBatis框架（六）/" rel="prev" title="MyBatis框架（六）">
+                MyBatis框架（六） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis数据库（一）"><span class="nav-number">1.</span> <span class="nav-text">Redis数据库（一）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考Site"><span class="nav-number">1.1.</span> <span class="nav-text">参考Site</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSql简介"><span class="nav-number">1.2.</span> <span class="nav-text">NoSql简介</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#NoSql概念"><span class="nav-number">1.2.1.</span> <span class="nav-text">NoSql概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NoSql分类"><span class="nav-number">1.2.2.</span> <span class="nav-text">NoSql分类</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis简介"><span class="nav-number">1.3.</span> <span class="nav-text">Redis简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis下载与安装"><span class="nav-number">1.4.</span> <span class="nav-text">Redis下载与安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis客户端"><span class="nav-number">1.5.</span> <span class="nav-text">Redis客户端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#黑框客户端"><span class="nav-number">1.5.1.</span> <span class="nav-text">黑框客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#图形界面客户端"><span class="nav-number">1.5.2.</span> <span class="nav-text">图形界面客户端</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Jedis"><span class="nav-number">1.5.3.</span> <span class="nav-text">Jedis</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

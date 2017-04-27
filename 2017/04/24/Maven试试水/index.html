@@ -1,0 +1,1126 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="入门,Maven," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="今天降温了，早上起来不知道是怎么了，一直流鼻涕，感觉鼻炎又犯了。吃过午饭去优衣库买了一件棉麻的裤子，裤子好长，穿上感觉自己腿好短，但是确实舒服。妹子也买了一件，感觉她穿起来比我好看。后来叫店员给改了裤脚，勉强到了合适自己的长度。感觉一天又要这么过去了的感觉。晚上要和远道的杰哥哥一起吃饭，他从大美利坚回来了，准备在深圳找工作，这样大学室友有三个都在深圳工作了。感觉要热闹起来了。先赶快写一篇博客，待会">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Maven试试水">
+<meta property="og:url" content="http://yoursite.com/2017/04/24/Maven试试水/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="今天降温了，早上起来不知道是怎么了，一直流鼻涕，感觉鼻炎又犯了。吃过午饭去优衣库买了一件棉麻的裤子，裤子好长，穿上感觉自己腿好短，但是确实舒服。妹子也买了一件，感觉她穿起来比我好看。后来叫店员给改了裤脚，勉强到了合适自己的长度。感觉一天又要这么过去了的感觉。晚上要和远道的杰哥哥一起吃饭，他从大美利坚回来了，准备在深圳找工作，这样大学室友有三个都在深圳工作了。感觉要热闹起来了。先赶快写一篇博客，待会">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-1.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-2.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-3.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-4.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-5.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-6.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-7.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-8.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-10.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-11.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-9.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-12.png">
+<meta property="og:updated_time" content="2017-04-23T16:45:33.017Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Maven试试水">
+<meta name="twitter:description" content="今天降温了，早上起来不知道是怎么了，一直流鼻涕，感觉鼻炎又犯了。吃过午饭去优衣库买了一件棉麻的裤子，裤子好长，穿上感觉自己腿好短，但是确实舒服。妹子也买了一件，感觉她穿起来比我好看。后来叫店员给改了裤脚，勉强到了合适自己的长度。感觉一天又要这么过去了的感觉。晚上要和远道的杰哥哥一起吃饭，他从大美利坚回来了，准备在深圳找工作，这样大学室友有三个都在深圳工作了。感觉要热闹起来了。先赶快写一篇博客，待会">
+<meta name="twitter:image" content="http://onv8ytvk1.bkt.clouddn.com/mavenday1-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/24/Maven试试水/"/>
+
+
+
+
+
+  <title> Maven试试水 | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/24/Maven试试水/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Maven试试水
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-24T00:44:40+08:00">
+                2017-04-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Maven/" itemprop="url" rel="index">
+                    <span itemprop="name">Maven</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/24/Maven试试水/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天降温了，早上起来不知道是怎么了，一直流鼻涕，感觉鼻炎又犯了。吃过午饭去优衣库买了一件棉麻的裤子，裤子好长，穿上感觉自己腿好短，但是确实舒服。妹子也买了一件，感觉她穿起来比我好看。后来叫店员给改了裤脚，勉强到了合适自己的长度。感觉一天又要这么过去了的感觉。晚上要和远道的杰哥哥一起吃饭，他从大美利坚回来了，准备在深圳找工作，这样大学室友有三个都在深圳工作了。感觉要热闹起来了。先赶快写一篇博客，待会晚了估计就没机会学习了。</p>
+<hr>
+<h2 id="Maven尝试"><a href="#Maven尝试" class="headerlink" title="Maven尝试"></a>Maven尝试</h2><hr>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://maven.apache.org/" target="_blank" rel="external">Maven官方网站：http://maven.apache.org/</a></li>
+</ul>
+<hr>
+<h3 id="Maven简介"><a href="#Maven简介" class="headerlink" title="Maven简介"></a>Maven简介</h3><p>Maven这个东西以前算是用过，但是也仅仅只是用了一下，感觉非常方便，只用几行代码就可以确定jar包，然后自动下载下来就可以使用。当时我创建的是基于maven的web工程，工程创建类的目录与资源目录都已经分配好，在intellij里指定好类的目录与资源目录分配在web项目的对应目录下时就可以自动构建出一个war。</p>
+<p>今天在网上也找了找相关的资料，知道Maven最主要的功能就是上述所说的两个，一是<strong>项目构建</strong>，二是<strong>依赖管理</strong>。首先说说什么是项目构建，我目前还没有参与过大型的项目，所以对项目的构建理解也不是很深刻，但是我也先说说我理解的项目构建吧，举个简单的栗子，用一个Intellij创建一个javaweb项目，IDE就帮你生成了一个目录结构，有src，web等目录，web下又有WEB-INF目录。如果学过手动搭一个javaweb项目在tomcat里运行的会知道一个war包里的目录结构应该是如下形式：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">WEB-ROOT   根目录，一般虚拟目录会直接在此目录中设置</div><div class="line">	| ---  WEB-INF  整个WEB中最安全的目录，无法直接访问</div><div class="line">		|-- classes  保存所有的*.class文件	所有的class都要放在 包中</div><div class="line">		|-- lib           存放第三方的jar文件</div><div class="line">		|-- web.xml  WEB的部署描述符    </div><div class="line">	|---   index.jsp       欢迎页面</div></pre></td></tr></table></figure></p>
+<p>用intellij创建的javaweb工程目录和这个标准的目录相比有相似的东西，但是还是有不同，首先是没有class目录，也没有lib目录。但是，你通过一些点击，修改一下artifact设置下的东西，就可以把这些java文件编译成class放在WEB-INF下的class目录下，同时把以来的jar文件添加到lib目录下最后生成war文件，这个过程就叫项目的构建。</p>
+<p>那么Maven，也是可以完成这样一个功能，按照专业的说法，项目的构建有以下步骤：</p>
+<p><strong>清理–编译–测试–报告–打包–部署</strong></p>
+<p>Maven在进行项目构建时，对项目的结构拥有约定，一个Maven项目的基本结构是如下的样子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">Project</div><div class="line">  |-src</div><div class="line">  |   |-main</div><div class="line">  |   |  |-java        —— 存放项目的.java文件</div><div class="line">  |   |  |-resources   —— 存放项目资源文件，如spring, hibernate配置文件</div><div class="line">  |   |-test</div><div class="line">  |      |-java        —— 存放所有测试.java文件，如JUnit测试类</div><div class="line">  |      |-resources   —— 测试资源文件</div><div class="line">  |-target             —— 目标文件输出位置例如.class、.jar、.war文件</div><div class="line">  |-pom.xml            —— maven项目核心配置文件</div></pre></td></tr></table></figure></p>
+<p>感觉说了这么多，也没啥用处，我也不太想纠Maven这个东西太细，因为大概也用不上。下面就说一说具体的操作吧</p>
+<h3 id="Intellij中使用Maven"><a href="#Intellij中使用Maven" class="headerlink" title="Intellij中使用Maven"></a>Intellij中使用Maven</h3><h4 id="下载与配置Maven"><a href="#下载与配置Maven" class="headerlink" title="下载与配置Maven"></a>下载与配置Maven</h4><p>Intellij中自带Maven的构建工具，但是为了加深理解，还是从头下载开始吧，Maven工具的下载地址是这个：<a href="http://maven.apache.org/" target="_blank" rel="external">http://maven.apache.org/</a>。下载那个bin.zip，不要下src，下载好之后解压。忘了说了，网上说maven至少需要jdk1.6，我下了jdk1.8。解压完毕之后是这样的：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-1.png" alt=""></p>
+<p>如果需要在命令行里使用Maven时，需要在环境变量里设置，设置的方法和java的差不多，先这是MAVEN_HOME，再把%MAVEN_HOME%/bin加入到环境变量就好了。</p>
+<p>之后可以在cmd里输入<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn -v</div></pre></td></tr></table></figure></p>
+<p>如果得到如下，就表示maven环境变量添加妥了。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-2.png" alt=""></p>
+<p>然后得配置下Maven，配置的话主要是本地的检索包路径，就是从网上下载的jar包放在哪个文件夹里，如果是本地检索jar包的话该从哪个文件里检索，以及把下载的maven源改成阿里云的源，下载jar包的速度会快很多的配置。</p>
+<p>Maven是有两个配置文件，一个全局配置，一个是用户配置。</p>
+<p>全局配置：%MAVEN_HOME%/conf/settings.xml是Maven的全局配置文件。该文件配置了本地的仓库路径，默认的路劲是~/.m2/repository。其中~表示当前用户路径C:\Users\[UserName]。</p>
+<p>用户配置：用户配置默认是没有的，需要把全局配置文件拷贝到~/.m2/settings.xml，之后进行修改。用户配置文件一但设置，全局配置文件将不再生效。配置用户配置文件的步骤如下：</p>
+<ul>
+<li>一. 创建一个本地仓库目录，比如：D:\software\maven\myLocalRepo</li>
+<li>二. 复制%MAVEN_HOME%/conf/settings.xml，到~/.m2/settings.xml</li>
+<li>三. 修改~/.m2/settings.xml为如下：</li>
+</ul>
+<p>本地仓库的配置信息如下：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-3.png" alt=""></p>
+<p>同时改一下maven的源镜像为阿里云，下载速度杠杠的</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-4.png" alt=""></p>
+<p>弄好的这些基本的就可以使用Intellij创建Maven工程了。</p>
+<h4 id="使用Maven"><a href="#使用Maven" class="headerlink" title="使用Maven"></a>使用Maven</h4><p>新建工程点创建Maven项目，选工程中最常用的webapp吧，如图，注意画圈圈的地方是要点的</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-5.png" alt=""></p>
+<p>之后点击next会弹出一个这样的，其中GroupId就是你的组织名称，和包名的名称是一个意思，ArtifactId是项目名称，version就是你项目的版本号。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-6.png" alt=""></p>
+<p>之后点下一步会有一个maven的配置选项，Intellij可供配置的可选方案很多，选择maven目录，配置文件，以及包管理repo目录。选择好之后如图</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-7.png" alt=""></p>
+<p>再点next，点finish就可以创建一个Maven管理的javaweb工程了。整体的目录是这个样子</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-8.png" alt=""></p>
+<p>通过这个工程，来看看如何使用Maven的两个基本功能，项目构建与依赖管理吧。使用Intellij的Maven项目构架我也不想说太多了，网上搜Intellij创建javaweb项目教程一大堆，讲的如何点击一步一步的记住步骤就好了。然后facets，module中src、resource对应，最后是artifact。</p>
+<p>如何构建项目的内部细节我没有深究过，只知道点击的步骤，反正我知道到最后生成的web工程项目应该是怎样的，如果哪里出错了网上再搜就妥了。</p>
+<p>下面是重点，也是我觉得是Maven的最方便的地方，就是依赖管理。再回到刚才项目目录结构中，里面有一个pom.xml，就在图里，里面有个dependences标签，里面的东西就是对依赖的管理，在web项目中，基本上就是对jar包的管理，那么这个东西是如何管理jar的呢，举个例子，如果我要使用mybatis管理我的mysql数据库，那该如何管理呢？图里有个junit的实例，代码是这样的<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;dependencies&gt;</div><div class="line">    &lt;dependency&gt;</div><div class="line">        &lt;groupId&gt;junit&lt;/groupId&gt;</div><div class="line">        &lt;artifactId&gt;junit&lt;/artifactId&gt;</div><div class="line">        &lt;version&gt;3.8.1&lt;/version&gt;</div><div class="line">        &lt;scope&gt;test&lt;/scope&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line">&lt;<span class="regexp">/dependencies&gt;</span></div></pre></td></tr></table></figure></p>
+<p>dependence标签里同样也有四个标签，groupId，artifactId，version，scope。其中前三个标签定位了jar包在资源repo里的位置，后一个scope定义了这个资源是能在哪个范围内使用。专业一点的说法的话，GAV坐标就能定位资源模块（主要是jar包），定位了之后会先从本地也就是我们在用户配置里定义的那个repo目录里找，如果没有的话就会从mirror里定义的那个网络资源也就是阿里云的maven源里去下载到repo目录中，可以供下次使用。而scope，中的test就定义了这个jar只能在测试中用到，关于这个test其实上面没讲清楚，与maven约定工作目录与项目构建相关的知识有关。就当作是只能在test目录下用到的jar包吧。</p>
+<p>先试试水吧，比如我要在工程里使用struts框架，我就在pom.xml添加如下代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;dependencies&gt;</div><div class="line">    &lt;dependency&gt;</div><div class="line">        &lt;groupId&gt;junit&lt;/groupId&gt;</div><div class="line">        &lt;artifactId&gt;junit&lt;/artifactId&gt;</div><div class="line">        &lt;version&gt;3.8.1&lt;/version&gt;</div><div class="line">        &lt;scope&gt;test&lt;/scope&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line">    &lt;dependency&gt;</div><div class="line">        &lt;groupId&gt;javax.servlet&lt;/groupId&gt;</div><div class="line">        &lt;artifactId&gt;servlet-api&lt;/artifactId&gt;</div><div class="line">        &lt;version&gt;2.5&lt;/version&gt;</div><div class="line">        &lt;scope&gt;provided&lt;/scope&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line">    &lt;dependency&gt;</div><div class="line">        &lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</div><div class="line">        &lt;artifactId&gt;struts2-core&lt;/artifactId&gt;</div><div class="line">        &lt;version&gt;2.5.1&lt;/version&gt;</div><div class="line">    &lt;/dependency&gt;</div><div class="line">  &lt;/dependencies&gt;</div></pre></td></tr></table></figure></p>
+<p>添加完之后右键pom.xml点reimport一下，或者可以设置自动导入，这样maven就会从本地或者从远程仓库找到mybatis的jar包然后导入你的工程，关于这个坐标的写法只能自己去maven的源里找了。其实写多了也就那么几个。保存下来或者记下来就行了。</p>
+<p>接下来可以看看工程external library里有关于struts所有的一切了：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-10.png" alt=""></p>
+<p>这些其实你都不用再管了，直接用起来就OK，配置web.xml的filter<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;web-app&gt;</div><div class="line">  &lt;display-name&gt;Archetype Created Web Application&lt;/display-name&gt;</div><div class="line">  &lt;filter&gt;</div><div class="line">    &lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">    &lt;filter-class&gt;org.apache.struts2.dispatcher.filter.StrutsPrepareAndExecuteFilter&lt;/filter-class&gt;</div><div class="line">  &lt;/filter&gt;</div><div class="line">  &lt;filter-mapping&gt;</div><div class="line">    &lt;filter-name&gt;struts2&lt;/filter-name&gt;</div><div class="line">    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</div><div class="line">  &lt;/filter-mapping&gt;</div><div class="line">&lt;/web-app&gt;</div></pre></td></tr></table></figure></p>
+<p>在resources目录下新建struts.xml，写成以下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;struts&gt;</div><div class="line">    &lt;package name="myPack" extends="struts-default"&gt;</div><div class="line">        &lt;action name="login" class="com.just4fun.action.MyTestAction" method="login"&gt;</div><div class="line">            &lt;result&gt;haha.jsp&lt;/result&gt;</div><div class="line">        &lt;/action&gt;</div><div class="line">    &lt;/package&gt;</div><div class="line">&lt;<span class="regexp">/struts&gt;</span></div></pre></td></tr></table></figure></p>
+<p>然后在java目录下写com.just4fun.action.MyTestAction类：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyTestAction</span> <span class="keyword">extends</span> <span class="title">ActionSupport</span> </span>&#123;</div><div class="line">    public <span class="built_in">String</span> login() &#123;</div><div class="line">        <span class="keyword">return</span> SUCCESS;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这样工程就写完了，然后是构建和部署，可以去网上找找intellij的点击步骤，在project structure里面先配置facets，再配置artifact，然后用tomcat一运行，在浏览器地址里输login.action，如图，妥妥的可以，这样就使用maven用了struts框架，简直是方便。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-11.png" alt=""></p>
+<p>另外关于这个依赖范围scope，还是有必要再展开讲一讲。</p>
+<p>首先依赖范围有四种</p>
+<table>
+<thead>
+<tr>
+<th>依赖范围</th>
+<th>对于主代码有效</th>
+<th>对于测试代码有效</th>
+<th>对于运行时代码有效</th>
+<th>例子</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>compile</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>log4j</td>
+</tr>
+<tr>
+<td>test</td>
+<td>N</td>
+<td>Y</td>
+<td>N</td>
+<td>junit</td>
+</tr>
+<tr>
+<td>provided</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+<td>servlet-api</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>N</td>
+<td>N</td>
+<td>Y</td>
+<td>JDBC Driver </td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>1.compile： 默认编译依赖范围。对于编译，测试，运行三种classpath都有效</li>
+<li>2.test：测试依赖范围。只对于测试classpath有效</li>
+<li>3.provided：已提供依赖范围。对于编译，测试的classpath都有效，但对于运行无效。因为由容器已经提供，例如servlet-api</li>
+<li>4.runtime:运行时提供。例如:jdbc驱动</li>
+</ul>
+<p>下面说一下依赖传递的概念，关于依赖的传递应该很好理解，假定ABC三个都是Maven项目但是三者之间存在着依赖的关系，比如C依赖于B，B又依赖于A。那么C对于A的依赖就是一个被传递的过程。专业一点的说法是B是C的直接依赖，A是B的直接依赖，A是C的间接依赖。给一个图形说明的话是这样</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-9.png" alt=""></p>
+<p>其中有B和C的关系是第一直接依赖，A和B是第二直接依赖。</p>
+<p>再对应于四种依赖范围，不同的依赖范围对于依赖传递的效果也是不同的，下面给出一个表格：</p>
+<table>
+<thead>
+<tr>
+<th>*</th>
+<th>compile</th>
+<th>test</th>
+<th>provided</th>
+<th>runtime</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>compile</td>
+<td>compile</td>
+<td>-</td>
+<td>-</td>
+<td>runtime</td>
+</tr>
+<tr>
+<td>test</td>
+<td>test</td>
+<td>-</td>
+<td>-</td>
+<td>test</td>
+</tr>
+<tr>
+<td>provided</td>
+<td>provided</td>
+<td>-</td>
+<td>provided</td>
+<td>provided</td>
+</tr>
+<tr>
+<td>runtime</td>
+<td>runtime</td>
+<td>-</td>
+<td>-</td>
+<td>runtime</td>
+</tr>
+</tbody>
+</table>
+<p>在上面这个表格中，左边第一列表示第一直接依赖范围，上面第一行表示第二直接依赖范围，中间的交叉单元格表示传递性依赖范围。</p>
+<p>总结一下的话得到如下结论：</p>
+<ul>
+<li>当第二依赖的范围是compile的时候，传递性依赖的范围与第一直接依赖的范围一致。</li>
+<li>当第二依赖的范围是test的时候，依赖不会得以传递。</li>
+<li>当第二依赖的范围是provided的时候，只传递第一直接依赖范围也为provided的依赖，且传递性依赖的范围同样为 provided。</li>
+<li>当第二直接依赖的范围是runtime的时候，传递性依赖的范围与第一直接依赖的范围一致，但compile例外，此时传递的依赖范围为runtime。</li>
+</ul>
+<p>那么这样来说的话又引出了一个新的问题，如果B引用了mybatis3.4版本作用范围为compile，A引用了myBatis3.0版本作用范围compile，那么C中的被传递的mybatis应该是哪个版本或者会报错？答案是Maven中不会存在依赖冲突的问题，在依赖传递中Maven遵循的是就近原则，所以C中引用的就是mybatis3.4版本。同理，如果同一个项目中写了写了两个dependence标签，里面的内容除了版本号其他的都一样，maven会议最下写的那个版本为准。</p>
+<p>另外Maven的依赖还有排除依赖与可选依赖。可选依赖的写法如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">    &lt;groupId&gt;org.apache.struts&lt;/groupId&gt;</div><div class="line">    &lt;artifactId&gt;struts2-core&lt;/artifactId&gt;</div><div class="line">    &lt;version&gt;2.5.1&lt;/version&gt;</div><div class="line">    &lt;!--决定是否向下传递，true为传递，false为不传递--&gt;</div><div class="line">    &lt;optional&gt;true&lt;/optional&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
+<p>排除依赖的作用是如果有多余的jar依赖进来了，想排除出去会用到这个，目前为止我是从来没用到过。弄了半天发现也不好怎么写出来，网上找了个图暂时先看写法吧。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mavenday1-12.png" alt=""></p>
+<p>以上就是简单的Maven介绍。</p>
+<h3 id="代码：https-github-com-kentwood-MavenDay1"><a href="#代码：https-github-com-kentwood-MavenDay1" class="headerlink" title="代码：https://github.com/kentwood/MavenDay1"></a><a href="https://github.com/kentwood/MavenDay1" target="_blank" rel="external">代码：https://github.com/kentwood/MavenDay1</a></h3>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/入门/" rel="tag"># 入门</a>
+          
+            <a href="/tags/Maven/" rel="tag"># Maven</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/22/MyBatis框架（六）/" rel="next" title="MyBatis框架（六）">
+                <i class="fa fa-chevron-left"></i> MyBatis框架（六）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/26/SpringMVC框架（一）/" rel="prev" title="SpringMVC框架（一）">
+                SpringMVC框架（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Maven尝试"><span class="nav-number">1.</span> <span class="nav-text">Maven尝试</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">1.1.</span> <span class="nav-text">参考资料</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Maven简介"><span class="nav-number">1.2.</span> <span class="nav-text">Maven简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Intellij中使用Maven"><span class="nav-number">1.3.</span> <span class="nav-text">Intellij中使用Maven</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下载与配置Maven"><span class="nav-number">1.3.1.</span> <span class="nav-text">下载与配置Maven</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#使用Maven"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用Maven</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码：https-github-com-kentwood-MavenDay1"><span class="nav-number">1.4.</span> <span class="nav-text">代码：https://github.com/kentwood/MavenDay1</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

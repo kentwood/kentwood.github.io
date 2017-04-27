@@ -1,0 +1,1032 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="入门,myBatis,数据库," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="MyBatis映射文件
+最近感觉更紧迫了些，这个星期每天晚上都是加班到8点半以后。其实还是蛮充实的。感觉前天摔车，受到的最影响我的伤就是右脚的膝盖被磕破了，第一天还化脓了，现在连续两天都没能骑车下班。感觉身体也松懈了。昨天和今天下班回家在公交车上的时候眼睛酸胀疼的一直流眼泪，不知道是盯电脑盯久了的原因还是其他。总之还是得多花点时间锻炼身体，路得一步一步的走。感觉今天的哔哔有点太正经了，不符合我的风">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis框架（四）">
+<meta property="og:url" content="http://yoursite.com/2017/04/12/MyBatis框架（四）/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="MyBatis映射文件
+最近感觉更紧迫了些，这个星期每天晚上都是加班到8点半以后。其实还是蛮充实的。感觉前天摔车，受到的最影响我的伤就是右脚的膝盖被磕破了，第一天还化脓了，现在连续两天都没能骑车下班。感觉身体也松懈了。昨天和今天下班回家在公交车上的时候眼睛酸胀疼的一直流眼泪，不知道是盯电脑盯久了的原因还是其他。总之还是得多花点时间锻炼身体，路得一步一步的走。感觉今天的哔哔有点太正经了，不符合我的风">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mapperName.png">
+<meta property="og:updated_time" content="2017-04-22T06:54:00.495Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis框架（四）">
+<meta name="twitter:description" content="MyBatis映射文件
+最近感觉更紧迫了些，这个星期每天晚上都是加班到8点半以后。其实还是蛮充实的。感觉前天摔车，受到的最影响我的伤就是右脚的膝盖被磕破了，第一天还化脓了，现在连续两天都没能骑车下班。感觉身体也松懈了。昨天和今天下班回家在公交车上的时候眼睛酸胀疼的一直流眼泪，不知道是盯电脑盯久了的原因还是其他。总之还是得多花点时间锻炼身体，路得一步一步的走。感觉今天的哔哔有点太正经了，不符合我的风">
+<meta name="twitter:image" content="http://onv8ytvk1.bkt.clouddn.com/mapperName.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/12/MyBatis框架（四）/"/>
+
+
+
+
+
+  <title> MyBatis框架（四） | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/12/MyBatis框架（四）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MyBatis框架（四）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-12T22:14:25+08:00">
+                2017-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MyBatis/" itemprop="url" rel="index">
+                    <span itemprop="name">MyBatis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/12/MyBatis框架（四）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="MyBatis映射文件"><a href="#MyBatis映射文件" class="headerlink" title="MyBatis映射文件"></a>MyBatis映射文件</h2><hr>
+<p>最近感觉更紧迫了些，这个星期每天晚上都是加班到8点半以后。其实还是蛮充实的。感觉前天摔车，受到的最影响我的伤就是右脚的膝盖被磕破了，第一天还化脓了，现在连续两天都没能骑车下班。感觉身体也松懈了。昨天和今天下班回家在公交车上的时候眼睛酸胀疼的一直流眼泪，不知道是盯电脑盯久了的原因还是其他。总之还是得多花点时间锻炼身体，路得一步一步的走。感觉今天的哔哔有点太正经了，不符合我的风格。</p>
+<hr>
+<p>还是接着<a href="">MyBatis框架（三）</a>来，这一篇主要说说主配置文件里mappers标签里所引入的mapper映射文件，映射文件里的东西才是操作数据库具体逻辑的体现，mapper映射文件不像主配置文件里的其他引入的东西，是MyBatis的核心所在。</p>
+<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>首先拿一段简单的代码分析下吧，这是<a href="">MyBatis框架（二）</a>里工程里UserMapper.xml里截的一段代码，我把它进一步简化了，只保留了一个statement做分析。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span> ?&gt;</div><div class="line">&lt;!DOCTYPE mapper</div><div class="line">		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"</div><div class="line">		"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;mapper namespace="com.just4fun.mapperType.mapper.UserMapper"&gt;</div><div class="line">	&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">		SELECT * FROM USER WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure></p>
+<p>这个xml文件的结构就是这样，dtd文件里有全部的描述信息，可惜我只是略懂，有空要去学学才行，从dtd里可以看出，mapper是根标签，里面可以是<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cache-ref | cache | resultMap* | parameterMap* | sql* | insert* | update* | <span class="keyword">delete</span>* | select*</div></pre></td></tr></table></figure></p>
+<p>这些标签，*表示可以出现一次或者多次。</p>
+<p>下面在来看上一段简单的代码，从里面的sql语句可以看出这个select标签是一个像jdbc里statement的东西，具体执行对数据库的操作就是靠它没跑了。下面就来简单分析一下它，首先是id属性，从<a href="">MyBatis框架（二）</a>里，UserMapper.java文件里接口的方法名要和这个id一致才能实现mapper代理开发方式，所以···没有所以，id就是id嘛，没什么好说的。然后是parameterType，把select和UserMapper.java里方法结合起来看，这个是传入参数类型也就是形参的意思，形参类型为int，resultType是返回值，这里返回值用到了主配置文件的typeAliases简化，忘了可以回到上一篇康康。至于里面这个#{id}，“#{}”是占位符的意思，其实里面的id可以随意指定，因为只能传一个参数，但是为了不引起阅读困难还是和方法里的形参名称一致的好。</p>
+<h3 id="输入映射（parameterType）"><a href="#输入映射（parameterType）" class="headerlink" title="输入映射（parameterType）"></a>输入映射（parameterType）</h3><h4 id="简单类型输入"><a href="#简单类型输入" class="headerlink" title="简单类型输入"></a>简单类型输入</h4><p>关于简单类型的输入在简介里已经基本介绍完了。需要补充的是，如果传入java内置的类型（非集合类），比如String类型，parameterType需要写全名或者参照<a href="">MyBatis框架（三）</a>里的内建别名表格，写简化的别名。</p>
+<h4 id="POJO类型"><a href="#POJO类型" class="headerlink" title="POJO类型"></a>POJO类型</h4><p>还是贴出UserMapper.xml的另一个statement标签：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;insert id="insertUser" parameterType="User"&gt;</div><div class="line">	&lt;selectKey keyProperty="id" resultType="int" order="AFTER"&gt;</div><div class="line">		SELECT LAST_INSERT_ID()</div><div class="line">	&lt;/selectKey&gt;</div><div class="line">	INSERT INTO USER</div><div class="line">	(name,birthday,address,sex)</div><div class="line">	VALUES(#&#123;name&#125;,#&#123;birthday&#125;,#&#123;address&#125;,#&#123;sex&#125;)</div><div class="line">&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
+<p>其中#{name}就是取传入user对象的属性值，其他的也是同理。</p>
+<h4 id="POJO包装类型"><a href="#POJO包装类型" class="headerlink" title="POJO包装类型"></a>POJO包装类型</h4><p>当parameterType需要传入复杂信息，比如多表关联查询时，需要将查询的信息封装在一个包装对象里。举个栗子，貌似这里不太好举栗子，因为POJO包装类型的话有关联映射查询在先才能更好的说明，关于关联映射查询在后面的博客会讲。这里就拿单表简单说一下什么是包装类型，比如我要查user表以及它所购买的商品信息，但是传入的参数只能是一个，所以我需要新建一个UserExt类，将User包装进来，同时加入订单与商品的信息。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserVO</span></span>&#123;</div><div class="line">    User user;</div><div class="line">    <span class="comment">//其他扩展信息</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后在statement的parameterType里传入UserVO对象，就可以根据POJO对象里的信息写sql综合查询了。</p>
+<h4 id="hashmap类型"><a href="#hashmap类型" class="headerlink" title="hashmap类型"></a>hashmap类型</h4><p>这个HashMap类型和传递POJO对象是一样的，在sql语句中使用的时候，map中的key相当于POJO的属性，value相当于值。</p>
+<p>拿原来的工程做个实验，写个hashmap来封装一个user信息来传递，首先是在UserMapper.java里增加一个接口：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public <span class="keyword">void</span> insertUserMap(<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; map);</div></pre></td></tr></table></figure></p>
+<p>然后写UserMapper.xml添加statement：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;insert id="insertUserMap" parameterType="hashmap"&gt;</div><div class="line">	&lt;selectKey keyProperty="id" resultType="int" order="AFTER"&gt;</div><div class="line">		SELECT LAST_INSERT_ID()</div><div class="line">	&lt;/selectKey&gt;</div><div class="line">	INSERT INTO USER</div><div class="line">	(name,birthday,address,sex)</div><div class="line">	VALUES (#&#123;name&#125;,#&#123;birthday&#125;,#&#123;address&#125;,#&#123;sex&#125;)</div><div class="line">&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
+<p>hashmap是简写，参考上一节<a href="http://www.wangsusu.com.cn/2017/04/11/MyBatis框架（三）" target="_blank" rel="external">MyBatis全局文件配置简介</a>，之后写测试方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testInsertUserHashMap() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; userMap = <span class="keyword">new</span> HashMap();</div><div class="line">    userMap.put(<span class="string">"name"</span>, <span class="string">"mapName"</span>);</div><div class="line">    userMap.put(<span class="string">"birthday"</span>, <span class="keyword">new</span> <span class="built_in">Date</span>());</div><div class="line">    userMap.put(<span class="string">"address"</span>, <span class="string">"深圳"</span>);</div><div class="line">    userMap.put(<span class="string">"sex"</span>, <span class="string">"男"</span>);</div><div class="line">    userMapper.insertUserMap(userMap);</div><div class="line">    sqlSession.commit();</div><div class="line">    sqlSession.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行之后得到测试结果：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mapperName.png" alt=""></p>
+<h3 id="输出映射"><a href="#输出映射" class="headerlink" title="输出映射"></a>输出映射</h3><h4 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h4><p>resultType这个东西是通过查询的字段名和对象的属性名匹配，将字段的值传给对象的属性。期间用到了类型转换器，这个在之后的博客会讲。但是现在要引申出几个问题，第一，如果将字段用别名表示会怎样？第二，如果查询的字段与对象的属性只有部分匹配会怎样，所谓部分匹配包括整体缺少，缺少部分多余部分。</p>
+<p>我测试了一下，</p>
+<ol>
+<li>首先我把根据id查询的statement改成了如下：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT name FROM USER WHERE id =#&#123;aa&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>运行test：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindUserById() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = userMapper.findUserById(<span class="number">6</span>);</div><div class="line">    sqlSession.close();</div><div class="line">    System.out.println(user.getName()+<span class="string">":"</span>+user.getSex());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>得到的结果如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">小都比:<span class="literal">null</span></div></pre></td></tr></table></figure></p>
+<p>可见查询出来的字段如果缺少的话还是会生成返回对象，只是对应的属性为空。</p>
+<ol>
+<li>然后我更改了代码，将statement改成如下：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT name as 'hahaha' FROM USER WHERE id =#&#123;aa&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>运行test直接报错了，报了空指针异常，可见没有字段映射到user属性时user不会被创建。</p>
+<ol>
+<li>接着我把statement代码更改成如下：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT name as 'hahaha',sex FROM USER WHERE id =#&#123;aa&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>得到结果如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="literal">null</span>:男</div></pre></td></tr></table></figure></p>
+<p>可见字段部分缺少部分多余的也是会把对应的字段映射到对象中。</p>
+<ol>
+<li>最后我突发奇想又做了这个测试，我把name的别名直接改成address，然后在测试文件里输出address康康：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT name as 'address' FROM USER WHERE id =#&#123;aa&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>测试代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindUserById() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = userMapper.findUserById(<span class="number">6</span>);</div><div class="line">    sqlSession.close();</div><div class="line">    System.out.println(<span class="string">"address : "</span> + user.getAddress());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>得到结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">address : 小都比</div></pre></td></tr></table></figure></p>
+<p>居然address变成了“小都比”，终于发现了封装对象传字段变属性的本质。就是把查到的最终表格的字段和对象的属性去比对。对上了就创建对象，没对上就不创建。都对上了就创建完整的，部分对上了就有多少上多少。</p>
+<p>大白话不好听，从网上找来了稍微说的官方一点的映射的规则：</p>
+<ol>
+<li>使用resultType进行结果映射时，需要查询出的列名和映射的对象的属性名一致，才能映射成功。</li>
+<li>如果查询的列名和对象的属性名全部不一致，那么映射的对象为空。</li>
+<li>如果查询的列名和对象的属性名有一个一致，那么映射的对象不为空，但是只有映射正确那一个属性才有值。</li>
+<li>如果查询的sql的列名有别名，那么这个别名就是和属性映射的列名。</li>
+</ol>
+<p>另外，当查询结果为单列时，例如使用select(*)之类的语句时，可以进行简单类型映射。比如这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id=<span class="string">"findCount"</span> resultType=<span class="string">"int"</span>&gt;</div><div class="line">	SELECT COUNT(*) <span class="keyword">from</span> USER ;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>测试代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindCount() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    int num = userMapper.findCount();</div><div class="line">    System.out.println(num);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>结果：8</p>
+<h4 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h4><p>下面来康康resultMap这个东西，这个东西一般会用在高级映射里，高级映射指的是多少相关联的表之间的映射，有一对一映射，一对多映射，多对一映射，多对多映射。高级映射会在之后的博客讲解，这里只是想要的说一下resultMap的基本用法，为之后的讲解做铺垫。</p>
+<p>关于上面的两个问题，就是最后表格的字段名称和匹配的属性名称不一致的问题。那么现在我有一个任性的想法，老子*它打野的就是要把这两个名称映射在一起，老子非要把address映射给name，老子就想这样玩。该怎么办？这个时候MyBatis为了满足我哔它他打野的欲望，给了resultMap这个东西。</p>
+<p>来看具体的代码：<br>首先得为UserMapper接口添加方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">User findUserById2(int id);</div></pre></td></tr></table></figure></p>
+<p>完了之后写UserMapper.xml映射文件：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap id="userResultMap" type="user"&gt;</div><div class="line">	&lt;id column="id_" property="id"&gt;&lt;/id&gt;</div><div class="line">	&lt;result column="name_" property="name"&gt;&lt;/result&gt;</div><div class="line">	&lt;result column="sex_" property="sex"&gt;&lt;/result&gt;</div><div class="line">	&lt;result column="address_" property="address"&gt;&lt;/result&gt;</div><div class="line">	&lt;result column="birthday_" property="birthday"&gt;&lt;/result&gt;</div><div class="line">&lt;/resultMap&gt;</div><div class="line"></div><div class="line">&lt;select id="findUserById2" resultMap="userResultMap" parameterType="int"&gt;</div><div class="line">	SELECT id as id_, name as name_, sex as sex_, address as address_, birthday as birthday_ from USER where id=#&#123;id&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>关于resultMap里的一点写法：</p>
+<ul>
+<li>[id]：定义resultMap的唯一标识</li>
+<li>[type]：定义该resultMap最终映射的pojo对象</li>
+<li>[id标签]：映射结果集的唯一标识列，如果是多个字段联合唯一，则定义多个id标签</li>
+<li>[result标签]：映射结果集的普通列</li>
+<li>[column]：SQL查询的列名，如果列有别名，则该处填写别名</li>
+<li>[property]：pojo对象的属性名<br>测试代码如下：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindUserById2() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = userMapper.findUserById2(<span class="number">2</span>);</div><div class="line">    System.out.println(user.getName() + <span class="string">" : "</span> + user.getAddress() + <span class="string">" : "</span> + user.getSex() + <span class="string">" :"</span> + user.getBirthday());</div><div class="line">    sqlSession.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>最后可以得到一个住在漯河的虎妞：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">虎妞 : 漯河 : 女 :Mon Mar <span class="number">09</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> CST <span class="number">1992</span></div></pre></td></tr></table></figure></p>
+<p>这是基本的测试结果，下面要来正题了，刚才不是说非要哔它打野的把name当成address用么，很简单，只要改改resultMap，把它改成这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap id=<span class="string">"userResultMap"</span> type=<span class="string">"user"</span>&gt;</div><div class="line">	&lt;id column="id_" property="id"&gt;&lt;/id&gt;</div><div class="line">	&lt;result column=<span class="string">"name_"</span> property=<span class="string">"address"</span>&gt;&lt;/result&gt;</div><div class="line">	&lt;result column=<span class="string">"sex_"</span> property=<span class="string">"sex"</span>&gt;&lt;/result&gt;</div><div class="line">	&lt;result column=<span class="string">"address_"</span> property=<span class="string">"name"</span>&gt;&lt;/result&gt;</div><div class="line">	&lt;result column=<span class="string">"birthday_"</span> property=<span class="string">"birthday"</span>&gt;&lt;/result&gt;</div><div class="line">&lt;<span class="regexp">/resultMap&gt;</span></div></pre></td></tr></table></figure></p>
+<p>在运行测试程序，可以得到一个住在虎妞的漯河，这种哔它打野的感觉真是舒畅~~~~<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">漯河 : 虎妞 : 女 :Mon Mar <span class="number">09</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> CST <span class="number">1992</span></div></pre></td></tr></table></figure></p>
+<p>今天的就到这里了，明天再搞！新的代码，贴在后面，其实相对于myBatis框架（二）也没变太多，但是还是贴上吧。</p>
+<h2 id="代码：https-github-com-kentwood-myBatisLesson4"><a href="#代码：https-github-com-kentwood-myBatisLesson4" class="headerlink" title="代码：https://github.com/kentwood/myBatisLesson4"></a><a href="https://github.com/kentwood/myBatisLesson4" target="_blank" rel="external">代码：https://github.com/kentwood/myBatisLesson4</a></h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/入门/" rel="tag"># 入门</a>
+          
+            <a href="/tags/myBatis/" rel="tag"># myBatis</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/11/MyBatis框架（三）/" rel="next" title="MyBatis框架（三）">
+                <i class="fa fa-chevron-left"></i> MyBatis框架（三）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/13/Spring框架（一）/" rel="prev" title="Spring框架（一）">
+                Spring框架（一） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis映射文件"><span class="nav-number">1.</span> <span class="nav-text">MyBatis映射文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输入映射（parameterType）"><span class="nav-number">1.2.</span> <span class="nav-text">输入映射（parameterType）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#简单类型输入"><span class="nav-number">1.2.1.</span> <span class="nav-text">简单类型输入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#POJO类型"><span class="nav-number">1.2.2.</span> <span class="nav-text">POJO类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#POJO包装类型"><span class="nav-number">1.2.3.</span> <span class="nav-text">POJO包装类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#hashmap类型"><span class="nav-number">1.2.4.</span> <span class="nav-text">hashmap类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出映射"><span class="nav-number">1.3.</span> <span class="nav-text">输出映射</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#resultType"><span class="nav-number">1.3.1.</span> <span class="nav-text">resultType</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#resultMap"><span class="nav-number">1.3.2.</span> <span class="nav-text">resultMap</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码：https-github-com-kentwood-myBatisLesson4"><span class="nav-number">2.</span> <span class="nav-text">代码：https://github.com/kentwood/myBatisLesson4</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

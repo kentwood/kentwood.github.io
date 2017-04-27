@@ -1,0 +1,1011 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="入门,myBatis,数据库," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="又回到了MyBatis框架，做事虽然可以多线程一起推进，但是有时候完成一件事还是要更有成就感一些。伤其十指不如断其一指 的感觉。这两个月一直教我技术的小哥要走了，以后就得靠自己了，感觉很忧伤，紧张，压力。但是还是得好好干活，上班写博客不知道算不算摸鱼。但是这些东西以后肯定也会用上的，多学习一点总是有好处。
+
+关联映射
+在实际的项目中，往往是多张表格有关联。举个例子，在商场项目中，用户肯定是要下订单">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis框架（六）">
+<meta property="og:url" content="http://yoursite.com/2017/04/22/MyBatis框架（六）/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="又回到了MyBatis框架，做事虽然可以多线程一起推进，但是有时候完成一件事还是要更有成就感一些。伤其十指不如断其一指 的感觉。这两个月一直教我技术的小哥要走了，以后就得靠自己了，感觉很忧伤，紧张，压力。但是还是得好好干活，上班写博客不知道算不算摸鱼。但是这些东西以后肯定也会用上的，多学习一点总是有好处。
+
+关联映射
+在实际的项目中，往往是多张表格有关联。举个例子，在商场项目中，用户肯定是要下订单">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mysql_structure.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mybatis6user.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mybatis6item.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mybatis6myorder.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mybatis6orderdetail.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mybatis6zuizhongjieguo.png">
+<meta property="og:updated_time" content="2017-04-22T06:53:36.291Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis框架（六）">
+<meta name="twitter:description" content="又回到了MyBatis框架，做事虽然可以多线程一起推进，但是有时候完成一件事还是要更有成就感一些。伤其十指不如断其一指 的感觉。这两个月一直教我技术的小哥要走了，以后就得靠自己了，感觉很忧伤，紧张，压力。但是还是得好好干活，上班写博客不知道算不算摸鱼。但是这些东西以后肯定也会用上的，多学习一点总是有好处。
+
+关联映射
+在实际的项目中，往往是多张表格有关联。举个例子，在商场项目中，用户肯定是要下订单">
+<meta name="twitter:image" content="http://onv8ytvk1.bkt.clouddn.com/mysql_structure.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/22/MyBatis框架（六）/"/>
+
+
+
+
+
+  <title> MyBatis框架（六） | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/22/MyBatis框架（六）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MyBatis框架（六）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-22T00:50:13+08:00">
+                2017-04-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MyBatis/" itemprop="url" rel="index">
+                    <span itemprop="name">MyBatis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/22/MyBatis框架（六）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>又回到了MyBatis框架，做事虽然可以多线程一起推进，但是有时候完成一件事还是要更有成就感一些。伤其十指不如断其一指 的感觉。这两个月一直教我技术的小哥要走了，以后就得靠自己了，感觉很忧伤，紧张，压力。但是还是得好好干活，上班写博客不知道算不算摸鱼。但是这些东西以后肯定也会用上的，多学习一点总是有好处。</p>
+<hr>
+<h2 id="关联映射"><a href="#关联映射" class="headerlink" title="关联映射"></a>关联映射</h2><hr>
+<p>在实际的项目中，往往是多张表格有关联。举个例子，在商场项目中，用户肯定是要下订单买东西的，所以一个订单表肯定是有一个用户相关联。而一个用户可以下多个订单。在此商场系统中，用户表与订单表是一对多关系，订单表对用户表是多对一关系。而一个订单里又有多个商品，订单与商品又是一对多的关系，但是商品却不只属于一个订单，所以商品与订单是多对多的关系。而有的时候，我们可能会做一些特殊的查询，查询名字里有“虎”的用户购买的商品名有“鸡”的订单信息（我也不知道为什么会这样查，可能用户的需求独特，也可能是<del>我</del>程序员无聊）。</p>
+<p>接着之前的文章，如果用parameterType就不能只是传入一个User就行了的，但是MyBatis只能传入一个parameterType，咋整？虽然不能增加传递参数的数量，但是可以改变传递参数的类型，好在我们可以自定义传入的对象。所以这里就引入了包装类的概念，包装类就是把要用到作为传递参数的类型作扩展，加入其他的信息，以满足特殊查询的需求（其实也算不上特殊，反而在工程中查单表才特殊吧）。</p>
+<p>还是先设计好数据库吧，这里安利以下navicat这个数据库可视化工具，可以直接利用可视化管理数据表，清晰又可靠，具体的navicat操作方法网上一大堆，我刚才都没在网上找资料，自己摸索了出来。我直接把我画的数据库表结构图形贴出来</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mysql_structure.png" alt=""></p>
+<p>貌似图里的外键的表述不太清晰，先看表字段的名字吧，名字很清晰，待会我会把代码下载的地址贴出来，代码里有生成的sql文件，新建个数据库然后执行下，妥妥的。然后添加一点数据。添加的数据我也一起在sql文件里生成了。最后生成四张表，用navicta的逆向成图标的工具试了试，效果如下</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis6user.png" alt=""><br><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis6item.png" alt=""><br><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis6myorder.png" alt=""><br><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis6orderdetail.png" alt=""></p>
+<p>可以看到这四张表之间的关联关系，user与my_order是一对多的关系，my_order与order_detail也是一对多的关系，item与order_detail是一对多关系，另外可以得到user与item是多对多的关系。</p>
+<p>好了，数据生成了下面要来查询，刚才说要查什么来着，对，查询名字里有“虎”的用户购买的商品名有“鸡”的订单信息。先写一下sql语句测试下吧。我花了1分钟写好了测试了下，可以用<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">SELECT </div><div class="line">    <span class="string">`user`</span>.<span class="string">`name`</span> <span class="keyword">as</span> <span class="string">'username'</span>,</div><div class="line">    my_order.id <span class="keyword">as</span> <span class="string">'orderId'</span>,</div><div class="line">    item.<span class="string">`name`</span> <span class="keyword">as</span> <span class="string">'itemName'</span>,</div><div class="line">    order_detail.item_num <span class="keyword">as</span> <span class="string">'itemNum'</span></div><div class="line">FROM </div><div class="line">    <span class="string">`user`</span>,my_order,order_detail,item</div><div class="line">WHERE</div><div class="line">    <span class="string">`user`</span>.id = my_order.user_id AND </div><div class="line">    my_order.id = order_detail.order_id AND </div><div class="line">    item.id = order_detail.item_id AND </div><div class="line">    <span class="string">`user`</span>.<span class="string">`name`</span> like <span class="string">"%虎%"</span> AND </div><div class="line">    item.<span class="string">`name`</span> like <span class="string">"%鸡%"</span>;</div></pre></td></tr></table></figure></p>
+<p>得带的结果如下：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis6zuizhongjieguo.png" alt=""></p>
+<p>好了，现在问题来了，四张表相互关联，对类的设计有怎样的要求？另外，那如要用MyBatis实现该怎么办，这里得参数包含了user，my_order，order_detail，item四种表格所对应的对象，传入的parameterType该为怎样的类型？</p>
+<p>首先看第一个问题吧，如何将多表之间的信息用类的结构表现出来，该如何设计这样的类？我就先贴出代码来</p>
+<ul>
+<li>Item类<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Item</span> </span>&#123;</div><div class="line">    private int id;</div><div class="line">    private <span class="built_in">String</span> name;</div><div class="line">    private <span class="built_in">Date</span> productDate;</div><div class="line">    private double price;</div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>item类最为简单，就把字段映射成属性就好了</p>
+<ul>
+<li>OrderDetail类<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">OrderDetail</span> </span>&#123;</div><div class="line">    private int id;</div><div class="line">    private int orderId;</div><div class="line">    private int itemId;</div><div class="line">    private int itemNum;</div><div class="line">    private Item item;</div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>OrderDetail中包含Item信息，其中得有一个Item属性</p>
+<ul>
+<li>MyOrder类<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyOrder</span> </span>&#123;</div><div class="line">    private int id;</div><div class="line">    private <span class="built_in">Date</span> orderDate;</div><div class="line">    private int userId;</div><div class="line">    private List&lt;OrderDetail&gt; orderDetails;</div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>Order里有多个OrderDetail，用List<orderdetail>的属性类表示。</orderdetail></p>
+<ul>
+<li>User类<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</div><div class="line">    private int id;</div><div class="line">    private <span class="built_in">String</span> name;</div><div class="line">    private <span class="built_in">Date</span> birthday;</div><div class="line">    private <span class="built_in">String</span> address;</div><div class="line">    private <span class="built_in">String</span> sex;</div><div class="line">    private List&lt;MyOrder&gt; myOrders;</div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>一个User包含多个Order，用List<myorder> myOrders来表示。</myorder></p>
+<p>这样通过类的设计就将数据库之间的关联关系给弄妥了。下面是写配置文件与mapper.xml。主配置文件没啥好说的，在之前的文章里有说明，重点是这个mapper.xml里的statement设计。先别急，来分析下刚才那一长串的sql语句，语句的目的是“查询名字里有“虎”的用户购买的商品名有“鸡”的订单信息”。可以看到需要传入的参数，只有“虎”与“鸡”两个，所以传入的parameterType可以为Item类User做一个包装类，包装类如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserVO</span> </span>&#123;</div><div class="line">    private User user;</div><div class="line">    private <span class="built_in">String</span> itemName;</div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>传入的参数定了，查询到了信息，也应该有一个类来收编。毕竟是自己乱写的业务，总得把屁股擦干净，实际的项目中设计的类肯定比这个更有意义一点吧··。写一个ItemExt类来接收：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">ItemExt</span> <span class="keyword">extends</span> <span class="title">Item</span> </span>&#123;</div><div class="line">    private int orderId;</div><div class="line">    private <span class="built_in">String</span> userName;</div><div class="line">    private int itemNum;</div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面开始写ItemMapper.java与ItemMapper.xml。先写ItemMapper.java，里面只有一个简单的方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface ItemMapper &#123;</div><div class="line">    ItemExt findSpecialItem(UserVO userVO);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后开始写ItemMapper.xml：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span> ?&gt;</div><div class="line">&lt;!DOCTYPE mapper</div><div class="line">        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"</div><div class="line">        "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;mapper namespace="com.just4fun.mapper.ItemMapper"&gt;</div><div class="line"></div><div class="line">    &lt;resultMap id="myItemMap" type="itemExt"&gt;</div><div class="line">        &lt;id column="username" property="userName"&gt;&lt;/id&gt;</div><div class="line">        &lt;id column="orderId" property="orderId"&gt;&lt;/id&gt;</div><div class="line">        &lt;id column="itemName" property="name"&gt;&lt;/id&gt;</div><div class="line">        &lt;id column="itemNum" property="itemNum"&gt;&lt;/id&gt;</div><div class="line">    &lt;/resultMap&gt;</div><div class="line">    </div><div class="line">    &lt;select id="findSpecialItem" parameterType="com.just4fun.po.vo.UserVO" resultMap="myItemMap"&gt;</div><div class="line">    SELECT</div><div class="line">        `user`.`name` as 'username',</div><div class="line">        my_order.id as 'orderId',</div><div class="line">        item.`name` as 'itemName',</div><div class="line">        order_detail.item_num as 'itemNum'</div><div class="line">    FROM</div><div class="line">        `user`,my_order,order_detail,item</div><div class="line">    WHERE</div><div class="line">        `user`.id = my_order.user_id AND</div><div class="line">        my_order.id = order_detail.order_id AND</div><div class="line">        item.id = order_detail.item_id AND</div><div class="line">        `user`.`name` like "%$&#123;user.name&#125;%" AND</div><div class="line">        item.`name` like "%$&#123;itemName&#125;%";</div><div class="line">    &lt;/select&gt;</div><div class="line">    </div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure></p>
+<p>写测试类：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyTTTest</span> </span>&#123;</div><div class="line">    public <span class="keyword">static</span> <span class="keyword">void</span> main(<span class="built_in">String</span>[] args) throws IOException &#123;</div><div class="line">        <span class="built_in">String</span> resource = <span class="string">"SqlMapConfig.xml"</span>;</div><div class="line">        InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">        SqlSessionFactory sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        ItemMapper itemMapper = sqlSession.getMapper(ItemMapper.class);</div><div class="line">        UserVO userVO = <span class="keyword">new</span> UserVO();</div><div class="line">        userVO.setItemName(<span class="string">"鸡"</span>);</div><div class="line">        User user = <span class="keyword">new</span> User();</div><div class="line">        user.setName(<span class="string">"虎"</span>);</div><div class="line">        userVO.setUser(user);</div><div class="line">        List&lt;ItemExt&gt; specialItem = itemMapper.findSpecialItem(userVO);</div><div class="line">        <span class="keyword">for</span> (ItemExt itemExt : specialItem) &#123;</div><div class="line">            System.out.println(itemExt.getUserName() + <span class="string">":"</span> + itemExt.getOrderId() + <span class="string">":"</span> + itemExt.getName() + <span class="string">":"</span> + itemExt.getItemNum());;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>得到结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">大虎娃子:<span class="number">2</span>:肯德基鸡米花:<span class="number">1</span></div><div class="line">大虎娃子:<span class="number">1</span>:创维鸡丁盒:<span class="number">1</span></div><div class="line">虎蛋:<span class="number">4</span>:肯德基鸡米花:<span class="number">2</span></div></pre></td></tr></table></figure></p>
+<p>直接用sql查询的结果一直。妥！今天先简单的捋一下MyBatis的多表映射，因为我几天没看MyBatis了也忘了很多东西，在MyBatis框架7里重点讲讲一对一，一对多，多对多映射的具体。</p>
+<h3 id="代码：https-github-com-kentwood-myBatisDay6"><a href="#代码：https-github-com-kentwood-myBatisDay6" class="headerlink" title="代码：https://github.com/kentwood/myBatisDay6"></a><a href="https://github.com/kentwood/myBatisDay6" target="_blank" rel="external">代码：https://github.com/kentwood/myBatisDay6</a></h3>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/入门/" rel="tag"># 入门</a>
+          
+            <a href="/tags/myBatis/" rel="tag"># myBatis</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/22/Redis入门（一）/" rel="next" title="Redis入门（一）">
+                <i class="fa fa-chevron-left"></i> Redis入门（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/24/Maven试试水/" rel="prev" title="Maven试试水">
+                Maven试试水 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关联映射"><span class="nav-number">1.</span> <span class="nav-text">关联映射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#代码：https-github-com-kentwood-myBatisDay6"><span class="nav-number">1.1.</span> <span class="nav-text">代码：https://github.com/kentwood/myBatisDay6</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1220 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="入门,myBatis,数据库," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="MyBatis全局配置文件简介
+昨天晚上骑车回宿舍的时候摔了一跤，把脸给摔肿了，肿了好大一个包。第一次把脸摔肿，右侧的眼睛都能感觉到下面凸起的包，好新鲜。去药店买了药，就一瓶消毒的，一瓶消肿的药，硬是被坑了75块。*它大爷的。说好的骑车挣餐票，第一天就受打击。好了，还是说正事，看来挣钱还是只能靠代码。
+
+MyBatis全局配置文件接着myBatis框架（二）的内容来。
+MyBatis的全局配置文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis框架（三）">
+<meta property="og:url" content="http://yoursite.com/2017/04/11/MyBatis框架（三）/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="MyBatis全局配置文件简介
+昨天晚上骑车回宿舍的时候摔了一跤，把脸给摔肿了，肿了好大一个包。第一次把脸摔肿，右侧的眼睛都能感觉到下面凸起的包，好新鲜。去药店买了药，就一瓶消毒的，一瓶消肿的药，硬是被坑了75块。*它大爷的。说好的骑车挣餐票，第一天就受打击。好了，还是说正事，看来挣钱还是只能靠代码。
+
+MyBatis全局配置文件接着myBatis框架（二）的内容来。
+MyBatis的全局配置文件">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng3.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng2.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng.png">
+<meta property="og:updated_time" content="2017-04-22T06:53:59.760Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis框架（三）">
+<meta name="twitter:description" content="MyBatis全局配置文件简介
+昨天晚上骑车回宿舍的时候摔了一跤，把脸给摔肿了，肿了好大一个包。第一次把脸摔肿，右侧的眼睛都能感觉到下面凸起的包，好新鲜。去药店买了药，就一瓶消毒的，一瓶消肿的药，硬是被坑了75块。*它大爷的。说好的骑车挣餐票，第一天就受打击。好了，还是说正事，看来挣钱还是只能靠代码。
+
+MyBatis全局配置文件接着myBatis框架（二）的内容来。
+MyBatis的全局配置文件">
+<meta name="twitter:image" content="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng3.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/11/MyBatis框架（三）/"/>
+
+
+
+
+
+  <title> MyBatis框架（三） | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/11/MyBatis框架（三）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MyBatis框架（三）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-11T22:59:06+08:00">
+                2017-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MyBatis/" itemprop="url" rel="index">
+                    <span itemprop="name">MyBatis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/11/MyBatis框架（三）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="MyBatis全局配置文件简介"><a href="#MyBatis全局配置文件简介" class="headerlink" title="MyBatis全局配置文件简介"></a>MyBatis全局配置文件简介</h2><hr>
+<p>昨天晚上骑车回宿舍的时候摔了一跤，把脸给摔肿了，肿了好大一个包。第一次把脸摔肿，右侧的眼睛都能感觉到下面凸起的包，好新鲜。去药店买了药，就一瓶消毒的，一瓶消肿的药，硬是被坑了75块。*它大爷的。说好的骑车挣餐票，第一天就受打击。好了，还是说正事，看来挣钱还是只能靠代码。</p>
+<hr>
+<h2 id="MyBatis全局配置文件"><a href="#MyBatis全局配置文件" class="headerlink" title="MyBatis全局配置文件"></a>MyBatis全局配置文件</h2><p>接着<a href="http://www.wangsusu.com.cn/2017/04/10/MyBatis%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">myBatis框架（二）</a>的内容来。</p>
+<p>MyBatis的全局配置文件其实就是工程里src目录下的sqlMapConfig.xml。想必通过代码的逻辑大家也可以推测出来了，我说sqlMapConfig.xml的命名是固定的其实是骗人的。这个全局配置文件可以随便起。只要SqlSessionFactoryBuilder在创建SqlSessionFactory时加载到某个书写格式正确的xml文件就行了。既然说到了书写格式，那下面就来捋一捋全局配置文件的一些东西。</p>
+<p>首先是xml头，dtd文件的引入，如果能读懂dtd的话直接在dtd文件里就能获取全局配置文件写法的全部信息。但是难读的话就随便听我哔哔下里面项目中估计会用到的一些信息。首先是configuration标签，该标签是根标签，是必须的。随后的常用的子标签结构如下：</p>
+<ul>
+<li>Properties（属性）</li>
+<li>Settings（全局参数设置）</li>
+<li>typeAliases（类型别名）</li>
+<li>typeHandlers（类型处理器）</li>
+<li>objectFactory（对象工厂）</li>
+<li>plugins（插件）</li>
+<li>environments（环境信息集合）<ul>
+<li>environment（单个环境信息）</li>
+<li>transactionManager（事物）</li>
+<li>dataSource（数据源）</li>
+</ul>
+</li>
+<li>mappers（映射器）</li>
+</ul>
+<p>注意顺序是不能乱的，子标签可以不写，但是顺序一定要按照这个来。</p>
+<h3 id="properties"><a href="#properties" class="headerlink" title="properties"></a>properties</h3><p>下面就来说说每一个子标签的具体用法，说现实properties，顾名思义这个就是属性的意思。一般来说，properties的用法是用来引入加载java的配置文件或者声明属性信息，数据库的连接配置信息用的比较多。在<a href="网址">myBatis框架（二）</a>工程项目中，db.properties文件里的内容如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">db.driver=com.mysql.jdbc.Driver</div><div class="line">db.url=jdbc:mysql:<span class="comment">//localhost:3306/mybatistest?useUnicode=true&amp;characterEncoding=utf8</span></div><div class="line">db.username=root</div><div class="line">db.password=a4570155</div></pre></td></tr></table></figure></p>
+<p>而在主配置文件sqlMapConfig.xml文件里：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;properties resource=<span class="string">"db.properties"</span>&gt;&lt;/properties&gt;</div></pre></td></tr></table></figure></p>
+<p>通过加载的方式获取db.properties的配置信息，在后面的environment会用到，代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;environments <span class="keyword">default</span>=<span class="string">"development"</span>&gt;</div><div class="line">	&lt;environment id="development"&gt;</div><div class="line">		&lt;!-- 配置JDBC事务控制，由mybatis进行管理 --&gt;</div><div class="line">		&lt;transactionManager type="JDBC"&gt;&lt;/transactionManager&gt;</div><div class="line">		&lt;!-- 配置数据源，采用mybatis连接池 --&gt;</div><div class="line">		&lt;dataSource type="POOLED"&gt;</div><div class="line">			&lt;property name="driver" value="$&#123;db.driver&#125;" /&gt;</div><div class="line">			&lt;property name="url" value="$&#123;db.url&#125;" /&gt;</div><div class="line">			&lt;property name="username" value="$&#123;db.username&#125;" /&gt;</div><div class="line">			&lt;property name="password" value="$&#123;db.password&#125;" /&gt;</div><div class="line">		&lt;/dataSource&gt;</div><div class="line">	&lt;/environment&gt;</div><div class="line">&lt;/environments&gt;</div></pre></td></tr></table></figure></p>
+<p>可以看到使用${属性名}的方式可以获取db.properties的属性值。</p>
+<hr>
+<p>打断一下，刚才想通过修改properties的内部属性与引用属性的操作数据库的时候发现一个问题，原来我特码的数据库特码的无论用什么账号密码都能登进去，不输用户名与密码也能登。原来我本机的数据库一直就这么暴露，这就很尴尬了。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng3.png" alt=""></p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng2.png" alt=""></p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng.png" alt=""></p>
+<p>后来我在网上搜了下，参考了<a href="http://linzm.blog.51cto.com/1854885/1275701" target="_blank" rel="external">这篇文章</a>,大概意思是说，mysql的“mysql”数据库的“user”表里，也就是存储用户信息的表里，有一个user字段为空字符串的用户，这个会匹配所有的用户名与密码，导致所有用户名密码包括空，都能登进mysql数据库，把它删了然后刷新就能好。</p>
+<hr>
+<p>好了，解决了这个问题再回到原来要说的properties属性，还是先来说说我为什么会发现上述那个问题，是因为我要测试properties的标签体定义属性，与引用属性，还有parameterType里接受的属性之间如果重名的话，是报错还是会出现覆盖的情况，如果出现覆盖，谁又覆盖谁。</p>
+<p>经我的测试，有空你也可以自己测试，得出以下结论：</p>
+<ul>
+<li><p>Properties标签体内定义的属性首先被读取</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;properties&gt; </div><div class="line">	&lt;property name="db.username" value="root"/&gt;&lt;!--这个是标签体内--&gt;</div><div class="line">&lt;/properties&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>Properties引用的属性会被读取，如果发现上面已经有同名的属性了，那后面会覆盖前面的值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;properties resource=<span class="string">"db.properties"</span>&gt;&lt;!--这个是引用属性--&gt;</div><div class="line">&lt;/properties&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>parameterType接收的值会最后被读取，如果发现上面已经有同名的属性了，那后面会覆盖前面的值</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id=<span class="string">"findUsersByName"</span> parameterType=<span class="string">"java.lang.String"</span></div><div class="line">		resultType=<span class="string">"com.just4fun.mapperType.po.User"</span>&gt;</div><div class="line">	SELECT * FROM USER WHERE name LIKE <span class="string">'%$&#123;value&#125;%'</span>  &lt;!--$&#123;value&#125;是parameterType接收的值--&gt;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="settings"><a href="#settings" class="headerlink" title="settings"></a>settings</h3><p>setting是全局参数设置的意思，MyBatis的全局参数会影响MyBatis的运行行为。这个文档里有详细的说明，我也就不一个参数一个参数的介绍了，下面贴几张网上找的图来，中文版看着舒心，这只是部分，全部的还是参看文档吧。</p>
+<table>
+<thead>
+<tr>
+<th>设置项</th>
+<th>描述</th>
+<th>允许值</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>cacheEnabled</td>
+<td>对在此配置文件下的所有cache 进行全局性开/关设置。</td>
+<td>true&#124;false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>lazyLoadingEnabled</td>
+<td>全局性设置懒加载。如果设为‘false’，则所有相关联的都会被初始化加载。</td>
+<td>true&#124;false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>aggressiveLazyLoading</td>
+<td>当设置为‘true’的时候，懒加载的对象可能被任何懒属性全部加载。否则，每个属性都按需加载。</td>
+<td>true&#124;false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>multipleResultSetsEnabled</td>
+<td>允许和不允许单条语句返回多个数据集（取决于驱动需求）</td>
+<td>true&#124;false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>useColumnLabel</td>
+<td>使用列标签代替列名称。不同的驱动器有不同的作法。参考一下驱动器文档，或者用这两个不同的选项进行测试一下。</td>
+<td>true&#124;false</td>
+<td>true</td>
+</tr>
+<tr>
+<td>useGeneratedKeys</td>
+<td>允许JDBC 生成主键。需要驱动器支持。如果设为了true，这个设置将强制使用被生成的主键，有一些驱动器不兼容不过仍然可以执行。</td>
+<td>true&#124;false</td>
+<td>false</td>
+</tr>
+<tr>
+<td>autoMappingBehavior</td>
+<td>指定MyBatis 是否并且如何来自动映射数据表字段与对象的属性。PARTIAL将只自动映射简单的，没有嵌套的结果。FULL 将自动映射所有复杂的结果。</td>
+<td>NONE,PARTIAL,FULL</td>
+<td>PARTIAL</td>
+</tr>
+<tr>
+<td>defaultExecutorType</td>
+<td>配置和设定执行器，SIMPLE 执行器执行其它语句。REUSE 执行器可能重复使用prepared statements 语句，BATCH执行器可以重复执行语句和批量更新。</td>
+<td>SIMPLE,REUSE,BATCH</td>
+<td>SIMPLE</td>
+</tr>
+<tr>
+<td>defaultStatementTimeout</td>
+<td>设置一个时限，以决定让驱动器等待数据库回应的多长时间为超时</td>
+<td>正整数</td>
+<td>Not Set(null)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="typeAliases"><a href="#typeAliases" class="headerlink" title="typeAliases"></a>typeAliases</h3><p>别名算是配置文件里最好理解的了，别名的使用是为了在映射文件中，更方便的去指定入参和结果集的类型，不再用写很长的一段全限定名。</p>
+<p>首先是MyBatis的内建别名：</p>
+<table>
+<thead>
+<tr>
+<th>别名</th>
+<th>映射的类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>_byte</td>
+<td>byte</td>
+</tr>
+<tr>
+<td>_long</td>
+<td>long</td>
+</tr>
+<tr>
+<td>_short</td>
+<td>short</td>
+</tr>
+<tr>
+<td>_int</td>
+<td>int</td>
+</tr>
+<tr>
+<td>_integer</td>
+<td>int</td>
+</tr>
+<tr>
+<td>_double</td>
+<td>double</td>
+</tr>
+<tr>
+<td>_float</td>
+<td>float</td>
+</tr>
+<tr>
+<td>_boolean</td>
+<td>boolean</td>
+</tr>
+<tr>
+<td>string</td>
+<td>String</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>Byte</td>
+</tr>
+<tr>
+<td>long</td>
+<td>Long</td>
+</tr>
+<tr>
+<td>short</td>
+<td>Short</td>
+</tr>
+<tr>
+<td>int</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td>integer</td>
+<td>Integer</td>
+</tr>
+<tr>
+<td>double</td>
+<td>Double</td>
+</tr>
+<tr>
+<td>float</td>
+<td>Float</td>
+</tr>
+<tr>
+<td>boolean</td>
+<td>Boolean</td>
+</tr>
+<tr>
+<td>date</td>
+<td>Date</td>
+</tr>
+<tr>
+<td>decimal</td>
+<td>BigDecimal</td>
+</tr>
+<tr>
+<td>bigdecimal</td>
+<td>BigDecimal</td>
+</tr>
+<tr>
+<td>object</td>
+<td>Object</td>
+</tr>
+<tr>
+<td>map</td>
+<td>Map</td>
+</tr>
+<tr>
+<td>hashmap</td>
+<td>HashMap</td>
+</tr>
+<tr>
+<td>list</td>
+<td>List</td>
+</tr>
+<tr>
+<td>arraylist</td>
+<td>ArrayList</td>
+</tr>
+<tr>
+<td>collection</td>
+<td>Collection</td>
+</tr>
+<tr>
+<td>iterator</td>
+<td>Iterator</td>
+</tr>
+</tbody>
+</table>
+<p>再来看看自定义别名，基本语法如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 自定义别名 --&gt;</div><div class="line">&lt;typeAliases&gt;</div><div class="line">	&lt;!-- 单个别名定义 --&gt;</div><div class="line">	&lt;!-- &lt;typeAlias type="com.just4fun.mapperType.User" alias="user"/&gt; --&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 批量别名定义（推荐） --&gt;</div><div class="line">	&lt;!-- package：指定包名称来为该包下的po类声明别名，默认的别名就是类名（首字母大小写都可） --&gt;</div><div class="line">	&lt;package name="com.just4fun.mapperType.po" /&gt;</div><div class="line">&lt;/typeAliases&gt;</div></pre></td></tr></table></figure></p>
+<p>定义别名有两种方式，单个别名与批量别名，具体的语法看上面的代码。定义好别名之后，在UserMapper.xml里的parameterType与返回类型就可以直接写别名而不用写全名了。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT * FROM USER WHERE id =#&#123;id&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>typeAliases是纯粹为了偷懒而存在的标签。</p>
+<h3 id="typeHandlers"><a href="#typeHandlers" class="headerlink" title="typeHandlers"></a>typeHandlers</h3><p>类型转换器是解决java类型与数据库类型的转换问题。mybatis已经内置了很多的类型转换器，我们在写mybatis项目的时候不经意已经用到了很多次，就拿下面那一段代码说事<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;insert id="insertUser" parameterType="User"&gt;</div><div class="line">	INSERT INTO USER</div><div class="line">	(name,birthday,address,sex)</div><div class="line">	VALUES(#&#123;name&#125;,#&#123;birthday&#125;,#&#123;address&#125;,#&#123;sex&#125;)</div><div class="line">&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
+<p>问题来了，user属性是String，Date等javaType；但是java与数据库交互的类型是JDBCType。所以mybatis的类型转换器就充当了类型转换的功能。只是myBatis已经内置的很多类型转化器，我们不用再配置文件里一一列出来，mybatis在执行代码的时候碰到了就会帮我们转换。<br>类型转换器 | JAVA类型 | JDBC类型<br>—|—|—<br>BooleanTypeHandler    |java.lang.Boolean, boolean    |任何兼容的布尔值<br>ByteTypeHandler    |java.lang.Byte, byte    |任何兼容的数字或字节类型<br>ShortTypeHandler    |java.lang.Short, short    |任何兼容的数字或短整型<br>IntegerTypeHandler    |java.lang.Integer, int    |任何兼容的数字和整型<br>LongTypeHandler    |java.lang.Long, long    |任何兼容的数字或长整型<br>FloatTypeHandler    |java.lang.Float, float    |任何兼容的数字或单精度浮点型<br>DoubleTypeHandler    |java.lang.Double, double    |任何兼容的数字或双精度浮点型<br>BigDecimalTypeHandler    |java.math.BigDecimal    |任何兼容的数字或十进制小数类型<br>StringTypeHandler    |java.lang.String    |CHAR 和 VARCHAR 类型<br>ClobTypeHandler    |java.lang.String    |CLOB 和 LONGVARCHAR 类型<br>NStringTypeHandler    |java.lang.String    |NVARCHAR 和 NCHAR 类型<br>NClobTypeHandler    |java.lang.String    |NCLOB 类型<br>ByteArrayTypeHandler    |byte[]    |任何兼容的字节流类型<br>BlobTypeHandler    |byte[]    |BLOB 和 LONGVARBINARY 类型<br>DateTypeHandler    |java.util.Date    |TIMESTAMP 类型<br>DateOnlyTypeHandler    |java.util.Date    |DATE 类型<br>TimeOnlyTypeHandler    |java.util.Date    |TIME 类型<br>SqlTimestampTypeHandler    |java.sql.Timestamp    |TIMESTAMP 类型<br>SqlDateTypeHandler    |java.sql.Date    |DATE 类型<br>SqlTimeTypeHandler    |java.sql.Time    |TIME 类型<br>ObjectTypeHandler    |Any    |其他或未指定类型<br>EnumTypeHandler    |Enumeration Type    |VARCHAR-任何兼容的字符串类型, 作为代码存储(而不是索引)<br>EnumOrdinalTypeHandler    |Enumeration Type    |Any compatible NUMERIC or DOUBLE, as the position is stored (not the code itself).<br>按照以前的学习经验，内置的东西往往是不够的，因为程序员总喜欢搞事情，比如要弄一个AddressType直接存到数据库里，这个时候就需要自定义类型转化器了。关于自定义类型转换器现在不说了，因为这篇文章主要还是讲MyBatis的主配置文件。估计会在下一篇博客里讲自定义类型转换器。</p>
+<h3 id="objectFactory"><a href="#objectFactory" class="headerlink" title="objectFactory"></a>objectFactory</h3><p>关于这个标签我是完全没用过，从网上抄了一段话不知道是不是适用，不过我看了半天也没看出什么东西来。</p>
+<p><strong>MyBatis每次创建结果对象的新实例时，它都会使用一个对象工厂（ObjectFactory）实例来完成。 默认的对象工厂需要做的仅仅是实例化目标类，要么通过默认构造方法，要么在参数映射存在的时候通过参数构造方法来实例化。如果想覆盖对象工厂的默认行为，则可以通过创建自己的对象工厂来实现。</strong></p>
+<p>这个东西我看了别人的博客之后，感觉也能讲一节，所以这里也不在多哔哔，下下节再讲吧。</p>
+<h3 id="plugins"><a href="#plugins" class="headerlink" title="plugins"></a>plugins</h3><p>这东西妥妥的能讲一篇博客，留着之后讲吧</p>
+<h3 id="environments"><a href="#environments" class="headerlink" title="environments"></a>environments</h3><p>这个应该是用到最有用的标签了，之前的代码也用到很多次。它就是用来配置与数据库的数据源连接信息的。先贴一段代码吧，之前的代码并不能说明问题，这里贴一段其他的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;environments <span class="keyword">default</span>=<span class="string">"oracle_jdbc"</span>&gt;  </div><div class="line">    &lt;environment id="oracle_jdbc"&gt;  </div><div class="line">        &lt;transactionManager type="JDBC" /&gt;  </div><div class="line">        &lt;dataSource type="POOLED"&gt;  </div><div class="line">            &lt;property name="driver" value="$&#123;jdbc.oracle.driverClassName&#125;" /&gt;  </div><div class="line">            &lt;property name="url" value="$&#123;jdbc.oracle.url&#125;" /&gt;  </div><div class="line">            &lt;property name="username" value="$&#123;jdbc.oracle.username&#125;" /&gt;  </div><div class="line">            &lt;property name="password" value="$&#123;jdbc.oracle.password&#125;" /&gt;   </div><div class="line">        &lt;/dataSource&gt;  </div><div class="line">    &lt;/environment&gt;  </div><div class="line">    </div><div class="line">    &lt;environment id="mysql_jdbc"&gt;  </div><div class="line">        &lt;transactionManager type="JDBC" /&gt;  </div><div class="line">        &lt;dataSource type="POOLED"&gt;  </div><div class="line">            &lt;property name="driver" value="$&#123;jdbc.mysql.driverClassName&#125;" /&gt;  </div><div class="line">            &lt;property name="url" value="$&#123;jdbc.mysql.url&#125;" /&gt;  </div><div class="line">            &lt;property name="username" value="$&#123;jdbc.mysql.username&#125;" /&gt;  </div><div class="line">            &lt;property name="password" value="$&#123;jdbc.mysql.password&#125;" /&gt;   </div><div class="line">        &lt;/dataSource&gt;  </div><div class="line">    &lt;/environment&gt; </div><div class="line">&lt;/environments&gt;</div></pre></td></tr></table></figure></p>
+<p>可以看到environments标签下有两个environment，分别配置了两个数据库连接，一个是mysql一个是oracle。可以看到environments标签还有一个default属性，表示默认使用oracle的数据库。在environment标签里，有transactionManager用来配置使用JDBC来管理事物，它还有一个type=“MANAGED”的配置方法，这个配置几乎什么都没做，它从来不提交或回滚一个链接，而它让容器来管理事务的整个生命周期，在以后和spring或者其他框架和起来的时候可能会用到。再往下走，是dataSource标签，标签内的property没什么好说的，就是配置连接的信息，这个type属性得说说，type有三种写法，第一个是type=“UNPOOLED”，这个数据源的实现是每次被请求时打开和关闭连接。速度会有一些慢，适用于简单的应用程序。第二个type=“UNPOOLED”，这是JDBC链接对象的数据源连接池的实现，用来避免创建新的链接实例时必要的连接和认证时间。适用于当前Web应用程序用来快速响应请求。第三个type=“JNDI”，这个数据源是为了使用如Spring或应用服务器这类的容器，容器可以集中或在外部配置数据源，然后设置JNDI上下文的引用。再补充一下，这个dataSource里的property还是有很多可以说的，对应每一种type都有不同的属性可以配置，一看文档内容确实有点多，展开的话我觉得我都能出书了。所以还是就此收住，就到这里。</p>
+<h3 id="mappers"><a href="#mappers" class="headerlink" title="mappers"></a>mappers</h3><p>mappers标签是为了引入资源映射文件的。引入映射文件有四种方式。</p>
+<h4 id=""><a href="#" class="headerlink" title=""></a><mapper resource="’’/"></mapper></h4><p>这种方式是引入相对路径的映射文件，在前几个工程中都是用的这种方式,基本语法如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;mappers&gt;</div><div class="line">	&lt;mapper resource="com/just4fun/mapperType/mapper/UserMapper.xml"/&gt;</div><div class="line">&lt;/mappers&gt;</div></pre></td></tr></table></figure></p>
+<h4 id="-1"><a href="#-1" class="headerlink" title=""></a><mapper url="’’/"></mapper></h4><p>url的方式是引入绝对路径下的映射文件：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;mappers&gt;</div><div class="line">	&lt;mapper url="file:///D:\IntelljProj\myBatisLesson2\src\com\just4fun\mapperType\mapper"/&gt;</div><div class="line">&lt;/mappers&gt;</div></pre></td></tr></table></figure></p>
+<h4 id="-2"><a href="#-2" class="headerlink" title=""></a><mapper class="’’/"></mapper></h4><p>此种方式是通过Mapper接口的限定全名引入，要求Mapper接口与它的它的映射文件同名，且在同一文件夹下。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;mappers&gt;</div><div class="line">	&lt;mapper class="com.just4fun.mapperType.UserMapper"/&gt;</div><div class="line">&lt;/mappers&gt;</div></pre></td></tr></table></figure></p>
+<h4 id="-3"><a href="#-3" class="headerlink" title=""></a><package name="’’/"></package></h4><p>该方式是一种批量引入的方式，将包下的所有映射文件都引入，同样也要求Mapper接口与它的它的映射文件同名，且在同一文件夹下。</p>
+<hr>
+<p>主配置文件算是mybatis的中心点，能扩展的内容也很多，这一篇博客只是简单介绍一下主配置文件里的内容，凑合着看吧</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/入门/" rel="tag"># 入门</a>
+          
+            <a href="/tags/myBatis/" rel="tag"># myBatis</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/10/MyBatis框架（二）/" rel="next" title="MyBatis框架（二）">
+                <i class="fa fa-chevron-left"></i> MyBatis框架（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/12/MyBatis框架（四）/" rel="prev" title="MyBatis框架（四）">
+                MyBatis框架（四） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis全局配置文件简介"><span class="nav-number">1.</span> <span class="nav-text">MyBatis全局配置文件简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis全局配置文件"><span class="nav-number">2.</span> <span class="nav-text">MyBatis全局配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#properties"><span class="nav-number">2.1.</span> <span class="nav-text">properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#settings"><span class="nav-number">2.2.</span> <span class="nav-text">settings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#typeAliases"><span class="nav-number">2.3.</span> <span class="nav-text">typeAliases</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#typeHandlers"><span class="nav-number">2.4.</span> <span class="nav-text">typeHandlers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#objectFactory"><span class="nav-number">2.5.</span> <span class="nav-text">objectFactory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#plugins"><span class="nav-number">2.6.</span> <span class="nav-text">plugins</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#environments"><span class="nav-number">2.7.</span> <span class="nav-text">environments</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mappers"><span class="nav-number">2.8.</span> <span class="nav-text">mappers</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#"><span class="nav-number">2.8.1.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-1"><span class="nav-number">2.8.2.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-2"><span class="nav-number">2.8.3.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#-3"><span class="nav-number">2.8.4.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

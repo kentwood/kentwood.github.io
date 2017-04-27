@@ -1,0 +1,1051 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="入门,Spring," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="今天做关于MBC项目的时候遇到了一个问题，需要在服务器空闲的时候将存储在自身数据库的数据传输给MBC主服务器，但是该如何判断服务器是否空闲？网上找了很多关于监测服务器状态比如JavaMelody啥的东西，但是所谓的服务器空闲状态又通过怎样的方式来界定，如果一直没有所谓的“空闲状态”是不是就一直发送不了数据了。后来还是在师兄的指点下，知道了在实际工程中，如果是考虑到负载过大的情况，第一选择是扩容而不">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring框架（二）">
+<meta property="og:url" content="http://yoursite.com/2017/04/21/Spring框架（二）/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="今天做关于MBC项目的时候遇到了一个问题，需要在服务器空闲的时候将存储在自身数据库的数据传输给MBC主服务器，但是该如何判断服务器是否空闲？网上找了很多关于监测服务器状态比如JavaMelody啥的东西，但是所谓的服务器空闲状态又通过怎样的方式来界定，如果一直没有所谓的“空闲状态”是不是就一直发送不了数据了。后来还是在师兄的指点下，知道了在实际工程中，如果是考虑到负载过大的情况，第一选择是扩容而不">
+<meta property="og:updated_time" content="2017-04-27T14:29:31.309Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring框架（二）">
+<meta name="twitter:description" content="今天做关于MBC项目的时候遇到了一个问题，需要在服务器空闲的时候将存储在自身数据库的数据传输给MBC主服务器，但是该如何判断服务器是否空闲？网上找了很多关于监测服务器状态比如JavaMelody啥的东西，但是所谓的服务器空闲状态又通过怎样的方式来界定，如果一直没有所谓的“空闲状态”是不是就一直发送不了数据了。后来还是在师兄的指点下，知道了在实际工程中，如果是考虑到负载过大的情况，第一选择是扩容而不">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/21/Spring框架（二）/"/>
+
+
+
+
+
+  <title> Spring框架（二） | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/21/Spring框架（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Spring框架（二）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-21T23:56:01+08:00">
+                2017-04-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/21/Spring框架（二）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>今天做关于MBC项目的时候遇到了一个问题，需要在服务器空闲的时候将存储在自身数据库的数据传输给MBC主服务器，但是该如何判断服务器是否空闲？网上找了很多关于监测服务器状态比如JavaMelody啥的东西，但是所谓的服务器空闲状态又通过怎样的方式来界定，如果一直没有所谓的“空闲状态”是不是就一直发送不了数据了。后来还是在师兄的指点下，知道了在实际工程中，如果是考虑到负载过大的情况，第一选择是扩容而不是判断服务器是否处于空闲再做某些工作。如果非要在空闲的时候才做某些操作的话，一般的选择是选择在人们休息的时候，也就是凌晨这个时段进行比如服务器更新，数据上传，数据转移等等操作。知道这个之后感觉很棒，第一是知道了新的知识点，第二是把编程和生活联系在了一起感觉很有意思。</p>
+<hr>
+<h2 id="Spring入门之装配Bean"><a href="#Spring入门之装配Bean" class="headerlink" title="Spring入门之装配Bean"></a>Spring入门之装配Bean</h2><hr>
+<p>上回说到了通过spring容器来管理对象。可以实现IoC功能。但是这又引出一个问题，如果需要用工厂的方式创建对象，再者创建对象的类型如果是单例类，或者是要多个实例。其实Spring已经提供了各种关于创建对象的方式与创建对象类型的考虑。首先来看看实例化的方式。</p>
+<h3 id="实例化方式"><a href="#实例化方式" class="headerlink" title="实例化方式"></a>实例化方式</h3><p>首先关于Bean的实例化方式，不考虑反射之类的话主要就有三种（虽然说spring也就是用反射来创建对象的）。默认构造，静态工厂，实例工厂。</p>
+<p>对于这三种创建对象的方式，spring也给出了解决方案。</p>
+<h4 id="默认构造方式"><a href="#默认构造方式" class="headerlink" title="默认构造方式"></a>默认构造方式</h4><p>spring通过默认构造方法创建对象的方式特别简单<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=<span class="string">"userService"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.just4fun.service.impl.UserServiceImpl"</span>&gt;</div></pre></td></tr></table></figure></p>
+<p>但是此种形式必须提供默认的构造方法，不提供构造方法也算提供了默认构造方法。</p>
+<h4 id="静态工厂构造方式"><a href="#静态工厂构造方式" class="headerlink" title="静态工厂构造方式"></a>静态工厂构造方式</h4><p>首先，利用静态工厂构造方式必须要先写一个工厂类，写静态工厂方法，如下代码所示：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyBeanFactory</span> </span>&#123;</div><div class="line">	public <span class="keyword">static</span> UserService createService()&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> UserServiceImpl();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>spring的配置如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=<span class="string">"userService"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.just4fun.factrory.MyBeanFactory"</span> factory-method=<span class="string">"createService"</span>&gt;&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>将静态工厂创建的实例的过程交给spring，class属性写静态工厂的全限定名称。factory-method写静态工厂创建实例的方法。</p>
+<h4 id="实例工厂构造方式"><a href="#实例工厂构造方式" class="headerlink" title="实例工厂构造方式"></a>实例工厂构造方式</h4><p>实例工厂的构造方式同样必须先写实例工厂类：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">MyBeanFactory2</span> </span>&#123;</div><div class="line">	public UserService createService()&#123;</div><div class="line">		<span class="keyword">return</span> <span class="keyword">new</span> UserServiceImpl();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>spring的配置如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=&quot;myBeanFactory2&quot; class=&quot;com.just4fun.factory.MyBeanFactory2&quot;&gt;&lt;/bean&gt;</div><div class="line"></div><div class="line">&lt;bean id=&quot;userService&quot; factory-bean=&quot;myBeanFactory2&quot; factory-method=&quot;createService&quot;&gt;&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>这里的配置中，先要创建MyBeanFactory2实例，然后创建userService，在创建userService的配置中，factory-bean属性写之前创建工厂实例myBeanFactory2的id引用，factory-method写工厂实例的创建方法。</p>
+<p>以上就是三种spring创建对象的方式。</p>
+<h3 id="spring中对象的作用域"><a href="#spring中对象的作用域" class="headerlink" title="spring中对象的作用域"></a>spring中对象的作用域</h3><p>下面简要介绍一些spring中对象的作用域，首先看看作用域是什么意思。在引言中提过，如果要spring创建单例对象该怎么做。作用域就是为了解决这个问题而存在的。简单的说，作用域的作用就是用于管理创建对象的实例以及确定创建对象适用于何种上下文环境。</p>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>singleton</td>
+<td>在SpringIoC容器中仅存在一个实例，Bean以单例方式存在，默认值</td>
+</tr>
+<tr>
+<td>prototype</td>
+<td>每次从容器中调用Bean时，都返回一个新的实例，即每次调用Bean时，相当于执行 new Bean()</td>
+</tr>
+<tr>
+<td>request</td>
+<td>每次HTTP请求都会创建一个新的Bean，该作用域仅适用于WebApplicationContext上下文环境</td>
+</tr>
+<tr>
+<td>session</td>
+<td>同一个HttpSession共享一个Bean，不同的Session使用不同的Bean，仅适用于WebApplicationContext上下文环境</td>
+</tr>
+<tr>
+<td>globalSession</td>
+<td>一般用于Portlet应用环境，该作用域仅适用于WebApplicationContext上下文环境(我不懂这个)</td>
+</tr>
+</tbody>
+</table>
+<p>以上表格是对作用域的取值以及说明，下面来看下具体的应用：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=<span class="string">"userService"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.just4fun.service.impl.UserServiceImpl"</span> scope=<span class="string">"singleton"</span>/&gt;</div></pre></td></tr></table></figure></p>
+<p>最后那个scope属性就是用来配置作用域的，里面的取值根据上表给出的类别来取就可以了。以上的spring配置就是创建了一个单实例的userService，如果其他的地方也通过IoC容器注入了userService，则还是使用同一个实例而不是创建新的userService对象。</p>
+<h3 id="spring中对象的生命周期"><a href="#spring中对象的生命周期" class="headerlink" title="spring中对象的生命周期"></a>spring中对象的生命周期</h3><p>这里不是介绍对象生命周期以及JVM虚拟机这种复杂的东西，那些东西我以前看过但是又忘了，以后有空得再看一遍。这里要说的生命周期只是对象与spring相关的东西，在spring中可以配置当对象创建或者销毁时，触发一些方法。先看看具体的配置。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=<span class="string">"userService"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"com.just4fun.service.UserServiceImpl"</span> </div><div class="line">		init-method=<span class="string">"myInit"</span> destroy-method=<span class="string">"myDestroy"</span> &gt;&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>这里多了两个属性，init-method属性填写对象创建时调用的方法，destroy-method属性填写当对象销毁时执行的方法。贴出UserServiceImpl类的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserServiceImpl</span> <span class="title">implements</span> <span class="title">UserService</span> </span>&#123;</div><div class="line"></div><div class="line">	@Override</div><div class="line">	public <span class="keyword">void</span> addUser() &#123;</div><div class="line">		System.out.println(<span class="string">"lifecycle add user"</span>);</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public <span class="keyword">void</span> myInit()&#123;</div><div class="line">		System.out.println(<span class="string">"初始化"</span>);</div><div class="line">	&#125;</div><div class="line">	public <span class="keyword">void</span> myDestroy()&#123;</div><div class="line">		System.out.println(<span class="string">"销毁"</span>);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在UserServiceImpl类中，myInit与myDestory只是两个普通的方法。下面来测试下，新写个测试方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> test() throws Exception&#123;</div><div class="line">	<span class="comment">//spring 工厂</span></div><div class="line">	<span class="built_in">String</span> xmlPath = <span class="string">"beans.xml"</span>;</div><div class="line">	ClassPathXmlApplicationContext applicationContext = <span class="keyword">new</span> ClassPathXmlApplicationContext(xmlPath);</div><div class="line">	UserService userService = (UserService) applicationContext.getBean(<span class="string">"userService"</span>);</div><div class="line">	userService.addUser();</div><div class="line">	<span class="comment">//要求：</span></div><div class="line">	<span class="comment">//1.容器必须close，销毁方法执行; </span></div><div class="line">	<span class="comment">//2.必须是单例的</span></div><div class="line">    <span class="comment">//applicationContext.getClass().getMethod("close").invoke(applicationContext);</span></div><div class="line">	applicationContext.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行测试方法，得到结果：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">初始化</div><div class="line">lifecycle add user</div><div class="line">销毁</div></pre></td></tr></table></figure></p>
+<p>以上新增的两个属性只是将普通的方法配置成了对象创建于销毁时的触发方法，另外需要注意的是，1.容器必须使用close方法，销毁方法才会执行，2.对象在spring中的配置必须是单例。</p>
+<h3 id="spring中对属性的依赖注入"><a href="#spring中对属性的依赖注入" class="headerlink" title="spring中对属性的依赖注入"></a>spring中对属性的依赖注入</h3><p>对属性的注入方式只有两种，构造器注入的方式与setter方法注入方式。从我见到的程序里看的话，使用setter方法注入属性的方式基本上是占绝大多数。</p>
+<h4 id="构造器注入属性方式"><a href="#构造器注入属性方式" class="headerlink" title="构造器注入属性方式"></a>构造器注入属性方式</h4><p>关于构造器注入属性的方式，我觉得是有点麻烦，比setter方法注入的方式麻烦多了··，为什么麻烦呢，先看看一个User类以及它的构造方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</div><div class="line">	</div><div class="line">	private Integer uid;</div><div class="line">	private <span class="built_in">String</span> username;</div><div class="line">	private Integer age;</div><div class="line">	</div><div class="line">	public User(Integer uid, <span class="built_in">String</span> username) &#123;</div><div class="line">		<span class="keyword">super</span>();</div><div class="line">		<span class="keyword">this</span>.uid = uid;</div><div class="line">		<span class="keyword">this</span>.username = username;</div><div class="line">	&#125;</div><div class="line">	</div><div class="line">	public User(<span class="built_in">String</span> username, Integer age) &#123;</div><div class="line">		<span class="keyword">super</span>();</div><div class="line">		<span class="keyword">this</span>.username = username;</div><div class="line">		<span class="keyword">this</span>.age = age;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>多个构造方法的方式注定造就了通过构造器注入属性的方式比较麻烦。但是存在即是合理，spring也提供了相应的配置来对以上的莫名其妙的构造器注入方式提供了支持。下面就来简单看看：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 构造方法注入 </div><div class="line">	&lt;<span class="keyword">constructor</span>-arg&gt; 用于配置构造方法一个参数argument</div><div class="line">		name ：参数的名称</div><div class="line">		value：设置普通数据</div><div class="line">		ref：引用数据，一般是另一个bean id值</div><div class="line">		</div><div class="line">		index ：参数的索引号，从0开始 。如果只有索引，匹配到了多个构造方法时，默认使用第一个。</div><div class="line">		type ：确定参数类型</div><div class="line">	例1：使用名称name</div><div class="line">		&lt;<span class="keyword">constructor</span>-arg name="username" value="jack"&gt;&lt;/<span class="keyword">constructor</span>-arg&gt;</div><div class="line">		&lt;<span class="keyword">constructor</span>-arg name="age" value="18"&gt;&lt;/<span class="keyword">constructor</span>-arg&gt;</div><div class="line">	例2：【类型type 和  索引 index】</div><div class="line">		&lt;<span class="keyword">constructor</span>-arg index="0" type="java.lang.String" value="1"&gt;&lt;/<span class="keyword">constructor</span>-arg&gt;</div><div class="line">		&lt;<span class="keyword">constructor</span>-arg index="1" type="java.lang.Integer" value="2"&gt;&lt;/<span class="keyword">constructor</span>-arg&gt;</div><div class="line">--&gt;</div><div class="line">&lt;bean id="userId" class="com.just4fun.entity.User" &gt;</div><div class="line">	&lt;<span class="keyword">constructor</span>-arg index="0" type="java.lang.String" value="1"&gt;&lt;/<span class="keyword">constructor</span>-arg&gt;</div><div class="line">	&lt;<span class="keyword">constructor</span>-arg index="1" type="java.lang.Integer" value="2"&gt;&lt;/<span class="keyword">constructor</span>-arg&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>先看最下面的非注释部分，这里写了关于构造器注入方式的基本用法，constructor-arg就是构造器传入的参数。在注释里写了关于constructor-arg的基本用法，有两种，一种是通过参数的名称去匹配，注释里的例1给出了用法，这种方式可以精确匹配构造方法。第二种是通过类型与索引去匹配，例2给出了具体实例，这种方法可能匹配出多个构造方法，这种情况下默认使用第一个。</p>
+<h4 id="setter方法注入属性方式"><a href="#setter方法注入属性方式" class="headerlink" title="setter方法注入属性方式"></a>setter方法注入属性方式</h4><p>关于setter方法注入属性非常的简单，首先在需要创建的类里提供对属性的setter方法。然后在spring配置的bean结点之下配置property结点就可以了。下面来看具体的写法，假设User类里已经提供了name与age的setter方法：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;bean id="user" class="com.just4fun.entity.User"&gt;</div><div class="line">	&lt;property name="name" value="王苏苏"&gt;&lt;/property&gt;</div><div class="line">	&lt;property name="age"&gt;</div><div class="line">		&lt;value&gt;1234&lt;/value&gt;</div><div class="line">	&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>以上就是通过setter方法注入属性的方式，简单易用。如果是通过引用的方式把value属性改成ref引用就好。但是由此再引出一个问题，如果是需要注入集合类型该怎么办。关于集合的创建与注入spring同样给给出了解决方案：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">&lt;!-- </div><div class="line">	集合的注入都是给&lt;property&gt;添加子标签</div><div class="line">		数组：&lt;array&gt;</div><div class="line">		List：&lt;list&gt;</div><div class="line">		<span class="built_in">Set</span>：&lt;set&gt;</div><div class="line">		<span class="built_in">Map</span>：&lt;map&gt; ，map存放k/v 键值对，使用&lt;entry&gt;描述</div><div class="line">		Properties：&lt;props&gt;  &lt;prop key=""&gt;&lt;/prop&gt;  【】</div><div class="line">		</div><div class="line">	普通数据：&lt;value&gt;</div><div class="line">	引用数据：&lt;ref&gt;</div><div class="line">--&gt;</div><div class="line">&lt;bean id="collDataId" class="com.itheima.f_xml.e_coll.CollData" &gt;</div><div class="line">	&lt;property name="arrayData"&gt;</div><div class="line">		&lt;array&gt;</div><div class="line">			&lt;value&gt;王&lt;/value&gt;</div><div class="line">			&lt;value&gt;大&lt;/value&gt;</div><div class="line">			&lt;value&gt;锅&lt;/value&gt;</div><div class="line">			&lt;value&gt;子&lt;/value&gt;</div><div class="line">		&lt;/array&gt;</div><div class="line">	&lt;/property&gt;</div><div class="line">	</div><div class="line">	&lt;property name="listData"&gt;</div><div class="line">		&lt;list&gt;</div><div class="line">			&lt;value&gt;大&lt;/value&gt;</div><div class="line">			&lt;value&gt;都&lt;/value&gt;</div><div class="line">			&lt;value&gt;不&lt;/value&gt;</div><div class="line">			&lt;value&gt;比&lt;/value&gt;</div><div class="line">		&lt;/list&gt;</div><div class="line">	&lt;/property&gt;</div><div class="line">	</div><div class="line">	&lt;property name="setData"&gt;</div><div class="line">		&lt;set&gt;</div><div class="line">			&lt;value&gt;搞&lt;/value&gt;</div><div class="line">			&lt;value&gt;不&lt;/value&gt;</div><div class="line">			&lt;value&gt;懂&lt;/value&gt;</div><div class="line">		&lt;/set&gt;</div><div class="line">	&lt;/property&gt;</div><div class="line">	</div><div class="line">	&lt;property name="mapData"&gt;</div><div class="line">		&lt;map&gt;</div><div class="line">			&lt;entry key="jack" value="杰克"&gt;&lt;/entry&gt;</div><div class="line">			&lt;entry&gt;</div><div class="line">				&lt;key&gt;&lt;value&gt;rose&lt;/value&gt;&lt;/key&gt;</div><div class="line">				&lt;value&gt;肉丝&lt;/value&gt;</div><div class="line">			&lt;/entry&gt;</div><div class="line">		&lt;/map&gt;</div><div class="line">	&lt;/property&gt;</div><div class="line">	</div><div class="line">	&lt;property name="propsData"&gt;</div><div class="line">		&lt;props&gt;</div><div class="line">			&lt;prop key="dao"&gt;mybatis&lt;/prop&gt;</div><div class="line">			&lt;prop key="service"&gt;spring&lt;/prop&gt;</div><div class="line">			&lt;prop key="controller"&gt;springmvc&lt;/prop&gt;</div><div class="line">		&lt;/props&gt;</div><div class="line">	&lt;/property&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>以上就是一些关于使用xml配置springIoC容器的相关内容，另外还有命名空间与springEl表达式等内容，我暂时也没学，工程中貌似也没遇到过，如果遇到了我会再学，然后写出博客。</p>
+<p>刚才看了一下关于使用注解来装配Bean的方式，基本的原理与注意事项其实和XML一样，只是操作的方式有些不用，这里就直接罗列出来了，不做过多的讲解。注解就是一个类，使用@注解名称，在开发中会使用注解取代xml配置文件。</p>
+<ul>
+<li><p>@Component取代<bean class=""></bean></p>
+<p> @Component(“id”) 取代 <bean id="" class=""></bean></p>
+</li>
+<li>web开发，提供3个@Component注解衍生注解（功能一样）取代<bean class=""><ul>
+<li>@Repository ：dao层</li>
+<li>@Service：service层</li>
+<li>@Controller：web层</li>
+</ul>
+</bean></li>
+<li><p>依赖注入，给私有字段设置，也可以给setter方法设置</p>
+<ul>
+<li>普通值：@Value(“”)</li>
+<li><p>引用值：</p>
+<ul>
+<li><p>方式1：按照【类型】注入</p>
+<p>  @Autowired</p>
+</li>
+<li><p>方式2：按照【名称】注入1</p>
+<p>  @Autowired</p>
+<p>  @Qualifier(“名称”)</p>
+</li>
+<li><p>方式3：按照【名称】注入2</p>
+<p>  @Resource(“名称”)</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>生命周期<ul>
+<li>初始化：@PostConstruct</li>
+<li>销毁：@PreDestroy</li>
+</ul>
+</li>
+<li>作用域<ul>
+<li>@Scope(“prototype”) 多例</li>
+</ul>
+</li>
+</ul>
+<h2 id="今天的东西没有现成代码。"><a href="#今天的东西没有现成代码。" class="headerlink" title="今天的东西没有现成代码。"></a>今天的东西没有现成代码。</h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/入门/" rel="tag"># 入门</a>
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/14/MyBatis框架（五）/" rel="next" title="MyBatis框架（五）">
+                <i class="fa fa-chevron-left"></i> MyBatis框架（五）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/22/Spring框架（三）/" rel="prev" title="Spring框架（三）">
+                Spring框架（三） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring入门之装配Bean"><span class="nav-number">1.</span> <span class="nav-text">Spring入门之装配Bean</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#实例化方式"><span class="nav-number">1.1.</span> <span class="nav-text">实例化方式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#默认构造方式"><span class="nav-number">1.1.1.</span> <span class="nav-text">默认构造方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#静态工厂构造方式"><span class="nav-number">1.1.2.</span> <span class="nav-text">静态工厂构造方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实例工厂构造方式"><span class="nav-number">1.1.3.</span> <span class="nav-text">实例工厂构造方式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring中对象的作用域"><span class="nav-number">1.2.</span> <span class="nav-text">spring中对象的作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring中对象的生命周期"><span class="nav-number">1.3.</span> <span class="nav-text">spring中对象的生命周期</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring中对属性的依赖注入"><span class="nav-number">1.4.</span> <span class="nav-text">spring中对属性的依赖注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#构造器注入属性方式"><span class="nav-number">1.4.1.</span> <span class="nav-text">构造器注入属性方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#setter方法注入属性方式"><span class="nav-number">1.4.2.</span> <span class="nav-text">setter方法注入属性方式</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#今天的东西没有现成代码。"><span class="nav-number">2.</span> <span class="nav-text">今天的东西没有现成代码。</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

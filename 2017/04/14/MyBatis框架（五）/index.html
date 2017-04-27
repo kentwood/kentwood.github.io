@@ -1,0 +1,990 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="入门,myBatis,数据库," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="动态SQL语句
+今天是一个大日子，感觉一下子被激活了感觉。因为今天参加了一个会议，导师轻描淡写的说就把项目交给他吧，然后就这样被交付了一个项目，是做一个数据收集与传递的服务器后台，功能不复杂，不懂的问题也能问。关于这个项目，我思考了一整天，考虑了各种技术细节，到最后都被同事说需求都没弄清就开始扣技术细节，这样不好。。感觉大概是自己太激动了吧，得开始努力加班了。
+
+这是MyBatis里一个非常碉堡与">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis框架（五）">
+<meta property="og:url" content="http://yoursite.com/2017/04/14/MyBatis框架（五）/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="动态SQL语句
+今天是一个大日子，感觉一下子被激活了感觉。因为今天参加了一个会议，导师轻描淡写的说就把项目交给他吧，然后就这样被交付了一个项目，是做一个数据收集与传递的服务器后台，功能不复杂，不懂的问题也能问。关于这个项目，我思考了一整天，考虑了各种技术细节，到最后都被同事说需求都没弄清就开始扣技术细节，这样不好。。感觉大概是自己太激动了吧，得开始努力加班了。
+
+这是MyBatis里一个非常碉堡与">
+<meta property="og:updated_time" content="2017-04-22T06:54:01.167Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MyBatis框架（五）">
+<meta name="twitter:description" content="动态SQL语句
+今天是一个大日子，感觉一下子被激活了感觉。因为今天参加了一个会议，导师轻描淡写的说就把项目交给他吧，然后就这样被交付了一个项目，是做一个数据收集与传递的服务器后台，功能不复杂，不懂的问题也能问。关于这个项目，我思考了一整天，考虑了各种技术细节，到最后都被同事说需求都没弄清就开始扣技术细节，这样不好。。感觉大概是自己太激动了吧，得开始努力加班了。
+
+这是MyBatis里一个非常碉堡与">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/14/MyBatis框架（五）/"/>
+
+
+
+
+
+  <title> MyBatis框架（五） | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/14/MyBatis框架（五）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                MyBatis框架（五）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-14T22:05:43+08:00">
+                2017-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MyBatis/" itemprop="url" rel="index">
+                    <span itemprop="name">MyBatis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/04/14/MyBatis框架（五）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="动态SQL语句"><a href="#动态SQL语句" class="headerlink" title="动态SQL语句"></a>动态SQL语句</h2><hr>
+<p>今天是一个大日子，感觉一下子被激活了感觉。因为今天参加了一个会议，导师轻描淡写的说就把项目交给他吧，然后就这样被交付了一个项目，是做一个数据收集与传递的服务器后台，功能不复杂，不懂的问题也能问。关于这个项目，我思考了一整天，考虑了各种技术细节，到最后都被同事说需求都没弄清就开始扣技术细节，这样不好。。感觉大概是自己太激动了吧，得开始努力加班了。</p>
+<hr>
+<p>这是MyBatis里一个非常碉堡与实用的东西，他通过实用MyBatis的标签实现动态的拼接sql语句，使得mapper映射文件在编写sql的时候更加灵活。常用的MyBatis的SQL标签有：</p>
+<ul>
+<li>if</li>
+<li>where</li>
+<li>foreach</li>
+</ul>
+<h3 id="if和where标签"><a href="#if和where标签" class="headerlink" title="if和where标签"></a>if和where标签</h3><p>一般来说，这个两个标签是用来查询用的，根据某些判断的插入查询的条件。下面来看具体的用法吧，工程还是原来那个工程。数据库也是原来那个数据库。改的只有UserMapper.xml文件，现在要让一个statement的能够在paramenterType变化的条件下，得到不同的查询语句进而查询到不同的结果。来看看具体用法吧，在com.just4fun.mapper包里，首先在UserMapper接口里添加一个findDynamicUser方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">List&lt;User&gt;  findDynamicUser(User user);</div></pre></td></tr></table></figure></p>
+<p>然后在UserMapper.xml里添加一个statement<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findDynamicUser" parameterType="user" resultType="user"&gt;</div><div class="line">	SELECT * FROM USER </div><div class="line">	&lt;where&gt;</div><div class="line">		&lt;if test="name != null"&gt;</div><div class="line">			AND NAME LIKE '%$&#123;name&#125;%'</div><div class="line">		&lt;/if&gt;</div><div class="line">		&lt;if test="sex != null"&gt;</div><div class="line">			AND sex = #&#123;sex&#125;</div><div class="line">		&lt;/if&gt;</div><div class="line">	&lt;/where&gt;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>where标签就是sql语句里的where的意思，这个很好理解。if标签里的test是判断条件，里面的查询条件的写法感觉上是和java里的写法差不多，我还没有细看，反正这个不等于null的写法是抄过来的，暂且先记住，如果以后有特殊需求再学学。需要注意的一点是，如果if标签条件全部满足，生成的语句按理说应该是多了一个‘AND’。但事实上是没有，这个是where标签的功能之一，删掉查询条件里的第一个‘AND’。</p>
+<p>下面来测试下，在UserTest里添加一个方法，第一次测试代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindDynamicUser()&#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = <span class="keyword">new</span> User();</div><div class="line">    user.setName(<span class="string">"大"</span>);</div><div class="line">    user.setSex(<span class="string">"男"</span>);</div><div class="line">    List&lt;User&gt; list = userMapper.findDynamicUser(user);</div><div class="line">    <span class="keyword">for</span> (User singleUser : list) &#123;</div><div class="line">        System.out.println(singleUser.getId());</div><div class="line">        System.out.println(singleUser.getName());</div><div class="line">        System.out.println(singleUser.getAddress());</div><div class="line">        System.out.println(singleUser.getBirthday());</div><div class="line">        System.out.println(singleUser.getSex());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>运行得到结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">DEBUG [main] - Created connection <span class="number">1586845078.</span></div><div class="line">DEBUG [main] - Setting autocommit to <span class="literal">false</span> on JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">5e955596</span>]</div><div class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM USER WHERE NAME LIKE <span class="string">'%大%'</span> AND sex = ? </div><div class="line">DEBUG [main] - ==&gt; Parameters: 男(<span class="built_in">String</span>)</div><div class="line">DEBUG [main] - &lt;==      Total: 2</div><div class="line">4</div><div class="line">大都比</div><div class="line">深圳</div><div class="line">Fri Apr 14 00:00:00 CST 2017</div><div class="line">男</div><div class="line">5</div><div class="line">大都不比</div><div class="line">深圳</div><div class="line">Fri Apr 14 00:00:00 CST 2017</div><div class="line">男</div><div class="line"></div><div class="line">Process finished with exit code 0</div></pre></td></tr></table></figure></p>
+<p>可以看到查询到了两条数据，查询语句可以看到，通过name与sex两者一起匹配查询。</p>
+<p>下面不修改statement，只是将user.setSex那条语句注释掉：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindDynamicUser()&#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = <span class="keyword">new</span> User();</div><div class="line">    user.setName(<span class="string">"大"</span>);</div><div class="line">    <span class="comment">//user.setSex("男");</span></div><div class="line">    List&lt;User&gt; list = userMapper.findDynamicUser(user);</div><div class="line">    <span class="keyword">for</span> (User singleUser : list) &#123;</div><div class="line">        System.out.println(singleUser.getId());</div><div class="line">        System.out.println(singleUser.getName());</div><div class="line">        System.out.println(singleUser.getAddress());</div><div class="line">        System.out.println(singleUser.getBirthday());</div><div class="line">        System.out.println(singleUser.getSex());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>再运行测试方法，可以得到：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">DEBUG [main] - Created connection <span class="number">1586845078.</span></div><div class="line">DEBUG [main] - Setting autocommit to <span class="literal">false</span> on JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">5e955596</span>]</div><div class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM USER WHERE NAME LIKE <span class="string">'%大%'</span> </div><div class="line">DEBUG [main] - ==&gt; Parameters: </div><div class="line">DEBUG [main] - &lt;==      Total: 3</div><div class="line">1</div><div class="line">大虎娃子</div><div class="line">漯河</div><div class="line">Mon Mar 09 00:00:00 CST 1992</div><div class="line">女</div><div class="line">4</div><div class="line">大都比</div><div class="line">深圳</div><div class="line">Fri Apr 14 00:00:00 CST 2017</div><div class="line">男</div><div class="line">5</div><div class="line">大都不比</div><div class="line">深圳</div><div class="line">Fri Apr 14 00:00:00 CST 2017</div><div class="line">男</div><div class="line"></div><div class="line">Process finished with exit code 0</div></pre></td></tr></table></figure></p>
+<p>可以看到查询用的sql语句已经变了，只用到了name一个属性，而且查询的结果也变成了三条。只是通过将sex设置成null就达到了这个效果。MyBatis的动态sql还是很强大的。</p>
+<h3 id="SQL片段"><a href="#SQL片段" class="headerlink" title="SQL片段"></a>SQL片段</h3><p>where标签里签到if标签写查询条件很强大，但是也有一点毛病，就是如果条件太复杂，会造成写的一个statement很长，看起来不太美观。而且如果查询条件被也有其他的statement用到，达不到复用的效果。于是聪明的MyBatis就引入的SQL片段的概念，通过一个标签，将SQL片段封装进去给其他的statement调用。说起来有点虚，还是直接来看代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;sql id="select_user_where"&gt;</div><div class="line">	&lt;if test="name != null"&gt;</div><div class="line">		AND NAME LIKE '%$&#123;name&#125;%'</div><div class="line">	&lt;/if&gt;</div><div class="line">	&lt;if test="sex != null"&gt;</div><div class="line">		AND sex = #&#123;sex&#125;</div><div class="line">	&lt;/if&gt;</div><div class="line">&lt;/sql&gt;</div><div class="line"></div><div class="line">&lt;select id="findDynamicUser" parameterType="user" resultType="user"&gt;</div><div class="line">	SELECT * FROM USER </div><div class="line">	&lt;where&gt;</div><div class="line">		&lt;include refid="select_user_where"&gt;&lt;/include&gt;</div><div class="line">	&lt;/where&gt;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>实际然后还是用同样的测试代码测试，结果是一样。</p>
+<h3 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h3><p>关于这个foreach标签的适用场合，感觉多半也是用在查询上，比如说，查询某个ID集合里的所有用户之类的。下面来试试水，这里正好强行运用一<a href="http://www.wangsusu.com.cn/2017/04/12/MyBatis%E6%A1%86%E6%9E%B6%EF%BC%88%E5%9B%9B%EF%BC%89/" target="_blank" rel="external">myBatis框架（四）</a>，里的POJO包装类型知识点。</p>
+<p>还是原来的工程，在PO包下创建一个UserVO类：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserVO</span> </span>&#123;</div><div class="line">    private User user;</div><div class="line">    private List&lt;Integer&gt; idList;</div><div class="line">    <span class="comment">//getter和setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个类里封装了User对象，然后在User的信息之外增加用户id集合的信息，整个UserVO就是一个传递需要查询的条件。下面在UserMapper接口中增加一个findUsersByNameInIDs方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">List&lt;User&gt; findUsersByNameInIDs(UserVO userVO);</div></pre></td></tr></table></figure></p>
+<p>然后在UserMapper.xml里写实现的statement：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUsersByNameInIDs" parameterType="com.just4fun.mapperType.po.UserVO" resultType="user"&gt;</div><div class="line">	SELECT * FROM USER</div><div class="line">	&lt;where&gt;</div><div class="line">		&lt;if test="user.name != null"&gt;</div><div class="line">			AND NAME LIKE '%$&#123;user.name&#125;%'</div><div class="line">		&lt;/if&gt;</div><div class="line">		&lt;if test="idList != null and idList.size &gt; 0"&gt;</div><div class="line">			&lt;foreach collection="idList" item="id" open="AND id IN(" close=")" separator=","&gt;</div><div class="line">				#&#123;id&#125;</div><div class="line">			&lt;/foreach&gt;</div><div class="line">		&lt;/if&gt;</div><div class="line">	&lt;/where&gt;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
+<p>这段代码有点小复杂，只要是关于foreach标签里的，collection属性里取得是一个list，就是UserVO里的list，item是每次迭代得到的东西，open和close这个就是包裹整个的sql语句，不写在这里而直接强写在foreach标签的开头和末尾也行，只是这样更美观，显得更专业。<br>下面是测试带代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindUsersByNameInIds()&#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    UserVO userVO = <span class="keyword">new</span> UserVO();</div><div class="line">    User user = <span class="keyword">new</span> User();</div><div class="line">    user.setName(<span class="string">"大"</span>);</div><div class="line">    List&lt;Integer&gt; idList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    idList.add(<span class="number">1</span>);</div><div class="line">    idList.add(<span class="number">2</span>);</div><div class="line">    idList.add(<span class="number">3</span>);</div><div class="line">    userVO.setIdList(idList);</div><div class="line">    userVO.setUser(user);</div><div class="line">    List&lt;User&gt; users = userMapper.findUsersByNameInIDs(userVO);</div><div class="line">    <span class="keyword">for</span> (User singleUser : users) &#123;</div><div class="line">        System.out.println(singleUser.getId()+<span class="string">" "</span>+singleUser.getName()+<span class="string">" "</span>+singleUser.getAddress()+<span class="string">" "</span>+singleUser.getBirthday()+<span class="string">" "</span>+singleUser.getSex());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>在id为1，2，3的用户里查找名字里包含大的用户。得到结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">DEBUG [main] - Created connection <span class="number">1004095028.</span></div><div class="line">DEBUG [main] - Setting autocommit to <span class="literal">false</span> on JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">3</span>bd94634]</div><div class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM USER WHERE NAME LIKE <span class="string">'%大%'</span> AND id IN( ? , ? , ? ) </div><div class="line">DEBUG [main] - ==&gt; Parameters: <span class="number">1</span>(Integer), <span class="number">2</span>(Integer), <span class="number">3</span>(Integer)</div><div class="line">DEBUG [main] - &lt;==      Total: 1</div><div class="line">1 大虎娃子 漯河 Mon Mar 09 00:00:00 CST 1992 女</div><div class="line"></div><div class="line">Process finished with exit code 0</div></pre></td></tr></table></figure></p>
+<p>可以看到sql语句是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM USER WHERE NAME LIKE &apos;%大%&apos; AND id IN( ? , ? , ? )</div></pre></td></tr></table></figure></p>
+<p>正好就是想要的效果。关于sql片段暂时就先说这么多，感觉应该会是一个很实用的东西。今天就到这里。</p>
+<h2 id="代码：https-github-com-kentwood-myBatisLesson5"><a href="#代码：https-github-com-kentwood-myBatisLesson5" class="headerlink" title="代码：https://github.com/kentwood/myBatisLesson5"></a><a href="https://github.com/kentwood/myBatisLesson5" target="_blank" rel="external">代码：https://github.com/kentwood/myBatisLesson5</a></h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/入门/" rel="tag"># 入门</a>
+          
+            <a href="/tags/myBatis/" rel="tag"># myBatis</a>
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/13/Spring框架（一）/" rel="next" title="Spring框架（一）">
+                <i class="fa fa-chevron-left"></i> Spring框架（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/21/Spring框架（二）/" rel="prev" title="Spring框架（二）">
+                Spring框架（二） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#动态SQL语句"><span class="nav-number">1.</span> <span class="nav-text">动态SQL语句</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#if和where标签"><span class="nav-number">1.1.</span> <span class="nav-text">if和where标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SQL片段"><span class="nav-number">1.2.</span> <span class="nav-text">SQL片段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#foreach"><span class="nav-number">1.3.</span> <span class="nav-text">foreach</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码：https-github-com-kentwood-myBatisLesson5"><span class="nav-number">2.</span> <span class="nav-text">代码：https://github.com/kentwood/myBatisLesson5</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
