@@ -89,11 +89,11 @@
   </entry>
   
   <entry>
-    <title>API设计指南</title>
+    <title>Restful_API设计指南</title>
     <link href="http://yoursite.com/2017/05/07/Restful_API%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97/"/>
     <id>http://yoursite.com/2017/05/07/Restful_API设计指南/</id>
     <published>2017-05-07T14:20:17.000Z</published>
-    <updated>2017-05-07T14:22:20.127Z</updated>
+    <updated>2017-05-07T14:45:39.117Z</updated>
     
     <content type="html"><![CDATA[<p>第一次收到的一个项目的文档里就有这个Restful API一开始还以为是某个牛逼的公司自己弄了一套api链接给我们去调用，想着去找找文档的。后来在网上一查，发现这东西越发的牛逼了，然后看了半天实在看不懂。我看的是百度百科，不得不说百度百科可能确实是太专业，我看程序方面的术语真是一条都没看懂过，每次发现一个新玩意，点开百度百科，看半天没看懂，再去找别人写的博客，然后看一个例子，懂了点，再自己按照例子去实现一遍，懂了，最后可能再回过头去看百度百科，又特码不懂了，然后关闭百度百科，就这样吧。</p>
 <hr>
