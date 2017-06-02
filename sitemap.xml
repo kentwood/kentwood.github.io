@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2017/04/21/Spring%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
+    
+    <lastmod>2017-06-02T23:36:26.605Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2017/05/07/Restful_API%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97/</loc>
     
     <lastmod>2017-05-07T14:45:39.117Z</lastmod>
@@ -26,13 +33,6 @@
     <loc>http://yoursite.com/2017/04/27/SpringMVC%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
     
     <lastmod>2017-04-27T14:29:32.037Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2017/04/21/Spring%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89/</loc>
-    
-    <lastmod>2017-04-27T14:29:31.309Z</lastmod>
     
   </url>
   
