@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-05-07T14:40:14.291Z</updated>
+  <updated>2017-06-11T01:47:03.277Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,173 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Spring框架（四）</title>
+    <link href="http://yoursite.com/2017/06/11/Spring%E6%A1%86%E6%9E%B6%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
+    <id>http://yoursite.com/2017/06/11/Spring框架（四）/</id>
+    <published>2017-06-11T01:46:26.000Z</published>
+    <updated>2017-06-11T01:47:03.277Z</updated>
+    
+    <content type="html"><![CDATA[<p>已经有几个星期没写博客了，一方面是把全身心投入的工作（其实也没做出什么成绩），另一方面是自己太懒了。如果自己不坚持写下去的话，我怕以后都不会坚持了，我还是决定好好写写博客。</p>
+<hr>
+<h2 id="Spring事务管理"><a href="#Spring事务管理" class="headerlink" title="Spring事务管理"></a>Spring事务管理</h2><hr>
+<h3 id="事务的概念"><a href="#事务的概念" class="headerlink" title="事务的概念"></a>事务的概念</h3><p>这一篇博客还是得接着之前的Spring框架来，说一说Spring里的事务管理。先来看看什么是事务。举一个被用滥了的例子。从ATM里取钱，你取1000块出来，一方面银行的ATM机吐出1000块，另一方面你得到1000块。这是两件事，虽然在日常生活中这往往被认定为一件事，但是在程序中具体来说是对数据库的操作中将数据从一边转移到另一边是分为delete与insert两个步骤的。这样其实就引出来一个问题，如果你的银行卡里的金额数据在delete了1000之后，忽然ATM机器断电或者出现其他的异常，那么你将会损失1000块钱，这是将是非常不愉快的事情。为了应对这类问题，<strong>事务</strong>的概念被引出。</p>
+<p>所谓的事务，其实就是一系列动作的集合，这些集合动作共同完成一个工作单元。只有所有动作执行成功了，才算事务完毕。如果有一个动作执行失败，则会回滚到所有系列动作都未执行的状态，就和什么事都没发生过一下。</p>
+<p>应用到取钱的例子，如果ATM在扣款未吐钞票后断电，事务在中途中断，会回滚到未扣款的状态。这样虽然也不是很愉快，因为没取到钱，但是至少没有损失什么。</p>
+<p>以上是事物的基本概念。</p>
+<hr>
+<h3 id="事务四大特性"><a href="#事务四大特性" class="headerlink" title="事务四大特性"></a>事务四大特性</h3><p>关于事务，根据它的概念提取出它的四个特性。</p>
+<ul>
+<li>原子性（Atomicity）：事务时一个原子操作，由一系列动作组成。事务的原子性确保动作要么全部完成，要么完全不起作用</li>
+<li>一致性（Consistency）：一旦事务完成（不管成功还是失败），系统必须确保它所建模的业务处于一致的状态，而不是部分完成部分失败。在现实中数据不应该被破坏</li>
+<li>隔离性（Isolation）：可能有许多事务会同时处理相同的数据，因此每个事务都应该与其他事务隔离开来，防止数据损坏</li>
+<li>持久性（Durability）：一旦事务完成，无论发生什么系统错误，它的结果都不应该受到影响，这样就能从任何系统崩溃中恢复过来。通常情况下，事务的结果被写道持久化存储器中</li>
+</ul>
+<h3 id="Spring事务管理-1"><a href="#Spring事务管理-1" class="headerlink" title="Spring事务管理"></a>Spring事务管理</h3><p>具体到程序中，我所理解的对事务的管理，实质上就是对持久层的事务管理。一般来说，优秀的持久层框架都有自己的一套管理事务的机制。Spring也不会傻到花功夫对所有的持久层框架做事务管理的具体实现。Spring并不直接管理事务，而是提供了多种事务管理器，将事务管理的职责委托给持久层去实现。实质上就是提供事务管理的接口来给持久层框架去实现。</p>
+<h4 id="Spring事务管理核心接口"><a href="#Spring事务管理核心接口" class="headerlink" title="Spring事务管理核心接口"></a>Spring事务管理核心接口</h4><p>Spring事务管理的实现由许多的细节，这里没读源码也不知道是个怎样的过程。但是如果对整体的接口框架有大体了解的话会非常有助于理解试图，Spring事务管理涉及的接口以及接口联系如下图：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springday4_1.jpg" alt=""></p>
+<p>Spring事务管理的接口是org.springframework.transaction.PlatformTransactionManager，通过这个接口，Spring为各个平台如JDBK、Hibernate等都提供了对应的事务管理器，但是具体的实现由各个平台自己完成。接口的内容如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Public interface PlatformTransactionManager()...&#123;  </div><div class="line">    <span class="comment">// 由TransactionDefinition得到TransactionStatus对象</span></div><div class="line">    TransactionStatus getTransaction(TransactionDefinition definition) throws TransactionException; </div><div class="line">    <span class="comment">// 提交</span></div><div class="line">    Void commit(TransactionStatus status) throws TransactionException;  </div><div class="line">    <span class="comment">// 回滚</span></div><div class="line">    Void rollback(TransactionStatus status) throws TransactionException;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这不是完整的源码，只是从网上抄的部分。</p>
+<p>从这里可以看到，具体的事务管理机制对Spring来说是透明的，它不关心具体实现，具体的实现是由各个平台来做的。Spring事务管理的一个优点就是为不同事务的API提供一致的编程模型。</p>
+<h4 id="JDBC事务"><a href="#JDBC事务" class="headerlink" title="JDBC事务"></a>JDBC事务</h4><p>如果应用程序中直接使用JDBC，或者是MyBatis来进行持久化，DataSource TransactionManager会为你处理好事务边界。为了使用DataSourceTransactionManager，需要使用如下的XML将其装配到应用程序上下文中：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=<span class="string">"transactionManager"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"org.springframework.jdbc.datasource.DataSourceTransactionManager"</span>&gt;</div><div class="line">    &lt;property name="dataSource" ref="dataSource" /&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>实际上，DataSourceTransactionManager是通过调用java.sql.Connection来管理事务，Connection通过DataSource获取得到。通过调用连接的commit()方法来提交事务，同样，事务失败则通过rollback()方法进行回滚。</p>
+<h4 id="Hibernate事务"><a href="#Hibernate事务" class="headerlink" title="Hibernate事务"></a>Hibernate事务</h4><p>如果应用程序中的持久化是通过Hibernate实现的，那么则需要使用HibernateTransactionManager。对于Hibernate4，需要定义如下bean声明：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;bean id=<span class="string">"transactionManager"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"org.springframework.orm.hibernate3.HibernateTransactionManager"</span>&gt;</div><div class="line">    &lt;property name="sessionFactory" ref="sessionFactory" /&gt;</div><div class="line">&lt;/bean&gt;</div></pre></td></tr></table></figure></p>
+<p>sessionFactory属性需要装配一个Hibernate的session工厂，HibernateTransactionManager的实现细节是它将事务管理的职责委托给org.hibernate.Transaction对象，而后者是从Hibernate Session中获得到的。当事务成功完成时，HibernateTransactionManager将会调用Transaction对象的commit()方法，反之，将会调用rollback()方法。</p>
+<p>另外，Spring还有JPA，JTA的事务管理配置。</p>
+<p>将到了这里只是说明了Spring大体的几种事务配置方式，以及应对框架的配置写法。但是知道这些还是不能很好的理解事务的具体以及如何写出具有事务的代码。下面先把代码放一放，再说说在Spring中基本的事务属性定义。</p>
+<h3 id="基本事务属性的定义"><a href="#基本事务属性的定义" class="headerlink" title="基本事务属性的定义"></a>基本事务属性的定义</h3><p>事务管理的接口PlatformTransactionManager通过getTransaction(TransactionDefinition definition)方法来得到事务，这个方法里的参数TransactionDefinition类，这个类就定义了一些事务的基本属性。</p>
+<p>说了半天，到底什么事是事务属性？事务属性可以理解为事务的一些基本配置，描述了事务策略如何应用到方法上。事务属性包含了5个方面，如下图:</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springday4_2.jpg" alt=""></p>
+<p>而TransactionDefinition接口的内容如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public interface TransactionDefinition &#123;</div><div class="line">    <span class="comment">// 返回事务的传播行为</span></div><div class="line">    int getPropagationBehavior(); </div><div class="line">    <span class="comment">//返回事务的隔离级别，事务管理器根据它来控制另外一个事务可以看到本事务内的哪些数据</span></div><div class="line">    int getIsolationLevel();</div><div class="line">    <span class="comment">// 返回事务必须在多少秒内完成</span></div><div class="line">    int getTimeout();</div><div class="line">    <span class="comment">//事务是否只读，事务管理器能够根据这个返回值进行优化，确保事务是只读的</span></div><div class="line">    boolean isReadOnly(); </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>下面来介绍下具体的事务属性。</p>
+<h4 id="传播行为"><a href="#传播行为" class="headerlink" title="传播行为"></a>传播行为</h4><p>事务的第一个方面是传播行为（propagation behavior）。当事务方法被另一个事务方法调用时，必须指定事务应该如何传播。例如：方法可能继续在现有的事务中运行，也可能开启一个新事务，并在自己的事务中运行。</p>
+<p>Spring定义了七种传播行为：</p>
+<table>
+<thead>
+<tr>
+<th>传播行为</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PROPAGATION_REQUIRED</td>
+<td>表示当前方法必须运行在事务中。如果当前事务存在，方法将会在该事务中运行。否则会启动一个新的事务</td>
+</tr>
+<tr>
+<td>PROPAGATION_SUPPORTS</td>
+<td>表示当前方法不需要事务上下文，但是如果存在当前事务的话，那么该方法会在这个事务中运行</td>
+</tr>
+<tr>
+<td>PROPAGATION_MANDATORY</td>
+<td>表示该方法必须运行在事务中，如果事务不存在，则会抛出一个异常</td>
+</tr>
+<tr>
+<td>PROPAGATION_REQUIRED_NEW</td>
+<td>表示当前方法必须运行在它自己的事务中。一个新的事务将被启动。如果存在当前事务，在该方法执行期间，当前事务会被挂起。</td>
+</tr>
+<tr>
+<td>PROPAGATION_NOT_SUPPORTED</td>
+<td>表示该方法不应该运行在事务中。如果存在当前事务，在该方法运行期间，当前事务将被挂起。</td>
+</tr>
+<tr>
+<td>PROPAGATION_NEVER</td>
+<td>表示当前方法不应该运行在事务上下文中。如果当前正有一个事务在运行，则会抛出异常</td>
+</tr>
+<tr>
+<td>PROPAGATION_NESTED</td>
+<td>表示如果当前已经存在一个事务，那么该方法将会在嵌套的事务中运行。嵌套的事务可以独立于当前事务进行单独地提交或回滚。如果当前事务不存在，那么其行为与PROPAGATION_REQUIRED一样。另外需要注意各厂商对这种传播行为有差异。需要参考文档来确定它们是否支持嵌套事务</td>
+</tr>
+</tbody>
+</table>
+<p>下面通过代码实例来稍微详细介绍下各个传播行为的。</p>
+<h5 id="PROPAGATION-REQUIRED"><a href="#PROPAGATION-REQUIRED" class="headerlink" title="PROPAGATION_REQUIRED"></a>PROPAGATION_REQUIRED</h5><p>如果存在一个事务，则支持当前事务。如果没有事务则开启一个新事务。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//PROPAGATION_REQUIRED</span></div><div class="line">methodA&#123;</div><div class="line">  ···</div><div class="line">  methodB();</div><div class="line">  ···</div><div class="line">&#125;</div><div class="line"></div><div class="line">methodB&#123;</div><div class="line">    ···</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Spring使用AOP来支持声明式的事务，假定已经配置好了PROPAGATION_REQUIRED来支持事务，Spring会根据这个事务属性，自动在调用方法之前决定是否开启一个事务，并在执行之后决定事务的提交或回滚。<br>单独调用methodB时：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">main&#123;</div><div class="line">    methodB();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>相当于<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">Main&#123;</div><div class="line">    Connection con=<span class="literal">null</span>;</div><div class="line">    <span class="keyword">try</span>&#123;</div><div class="line">        con = getConnection();</div><div class="line">        con.setAutoCommit(<span class="literal">false</span>);</div><div class="line">        </div><div class="line">        methodB();</div><div class="line">        </div><div class="line">        con.commit();</div><div class="line">    &#125;<span class="keyword">catch</span>(RuntimeException ex)&#123;</div><div class="line">        con.rollback();</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">        closeCon();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这是针对但个方法的简单事务管理，在调用methodB时，没有存在一个事务，所以spring让methodB获得一个新的连接，开启了一个新的事务。</p>
+<p>而另一种情况，就是单独调用methodA方法，在methodA内会调用methodB。执行的效果相当于：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">main&#123;</div><div class="line">    Connection con = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">try</span>&#123;</div><div class="line">        con = getConnection();</div><div class="line">        methodA();</div><div class="line">        con.commit();</div><div class="line">    </div><div class="line">    &#125;<span class="keyword">catch</span>(RuntimeException ex)&#123;</div><div class="line">        con.rollback();</div><div class="line">    &#125;<span class="keyword">finally</span>&#123;</div><div class="line">        closeCon();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>调用methodA时，环境中没有事务，所以开启一个新的事务。当在methodA中调用methodB时，环境中已经有了一个事务，所以methodB就加入当前事务。</p>
+<h5 id="PROPAGATION-SUPPORTS"><a href="#PROPAGATION-SUPPORTS" class="headerlink" title="PROPAGATION_SUPPORTS"></a>PROPAGATION_SUPPORTS</h5><p>表示如果存在一个事务，则支持当前的事务。如果没有事务，则以非事务执行。但是对于事务同步的事务管理器，PROPAGATION_SUPPORTS与不使用事务有少许不同。</p>
+<p>还是以1中所述methodA与methodB的关系为示例说明。如果单独调用methodB时，methodB方法是以非事务执行的。当调用methodA时，methodB则加入了methodA的事务中。</p>
+<h5 id="PROPAGATION-MANDATORY"><a href="#PROPAGATION-MANDATORY" class="headerlink" title="PROPAGATION_MANDATORY"></a>PROPAGATION_MANDATORY</h5><p>表示如果已经存在一个事务，则支持当前事务，如果没有一个活动的事务，则抛出异常。</p>
+<p>以1中所述methodA与methodB的关系为示例说明。单独调用methodB时，因为没有当前一个活动的事务，则会抛出<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> IllegalTransactionStateException(“Transaction propagation ‘mandatory’ but no existing transaction found”);</div></pre></td></tr></table></figure></p>
+<p>的异常。当调用methodA时，methodB会加入到methodA的事务中。</p>
+<h5 id="PROPAGATION-REQUIRES-NEW"><a href="#PROPAGATION-REQUIRES-NEW" class="headerlink" title="PROPAGATION_REQUIRES_NEW"></a>PROPAGATION_REQUIRES_NEW</h5><p>表示总是开启一个新的事务。如果一个事务已经存在，则将这个存在的事务挂起。</p>
+<p>以1中methodA与methodB为示例。单独执行methodB方法会开启新事务。但调用methodA方法时。执行的事务逻辑为为如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">main()&#123;</div><div class="line">    TransactionManager tm = <span class="literal">null</span>;</div><div class="line">    <span class="keyword">try</span>&#123;</div><div class="line">        <span class="comment">//获得一个JTA事务管理器</span></div><div class="line">        tm = getTransactionManager();</div><div class="line">        tm.begin();<span class="comment">//开启一个新的事务</span></div><div class="line">        Transaction ts1 = tm.getTransaction();</div><div class="line">        tm.suspend();<span class="comment">//挂起当前事务</span></div><div class="line">        <span class="keyword">try</span>&#123;</div><div class="line">            tm.begin();<span class="comment">//重新开启第二个事务</span></div><div class="line">            Transaction ts2 = tm.getTransaction();</div><div class="line">            methodB();</div><div class="line">            ts2.commit();<span class="comment">//提交第二个事务</span></div><div class="line">        &#125; Catch(RunTimeException ex) &#123;</div><div class="line">            ts2.rollback();<span class="comment">//回滚第二个事务</span></div><div class="line">        &#125; <span class="keyword">finally</span> &#123;</div><div class="line">            <span class="comment">//释放资源</span></div><div class="line">        &#125;</div><div class="line">        <span class="comment">//methodB执行完后，恢复第一个事务</span></div><div class="line">        tm.resume(ts1);</div><div class="line">        ts1.commit();<span class="comment">//提交第一个事务</span></div><div class="line">    &#125; <span class="keyword">catch</span>(RunTimeException ex) &#123;</div><div class="line">        ts1.rollback();<span class="comment">//回滚第一个事务</span></div><div class="line">    &#125; <span class="keyword">finally</span> &#123;</div><div class="line">        <span class="comment">//释放资源</span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这里称ts1为外层事务，ts2位内层事务。从上面的代码可以看出ts2与ts1是两个独立的事务，互不相干。ts2是否成功不依赖于ts1，如果methodB中抛出了异常导致回滚，不会影响methodA的执行。</p>
+<h5 id="PROPAGATION-NOT-SUPPORTED"><a href="#PROPAGATION-NOT-SUPPORTED" class="headerlink" title="PROPAGATION_NOT_SUPPORTED"></a>PROPAGATION_NOT_SUPPORTED</h5><p>总是以非事务执行，并挂起任何存在的事务。代码示例就不写了，反正都是非事务</p>
+<h5 id="PROPAGATION-NEVER"><a href="#PROPAGATION-NEVER" class="headerlink" title="PROPAGATION_NEVER"></a>PROPAGATION_NEVER</h5><p>总是非事务地执行，如果存在一个事务则抛出异常</p>
+<h5 id="PROPAGATION-NESTED"><a href="#PROPAGATION-NESTED" class="headerlink" title="PROPAGATION_NESTED"></a>PROPAGATION_NESTED</h5><p>如果一个活动的事务存在，则运行在一个嵌套的事务中，如果没有活动的事务，则按PROPAGATION_REQUIRED属性执行。</p>
+<h4 id="隔离级别"><a href="#隔离级别" class="headerlink" title="隔离级别"></a>隔离级别</h4><p>事务的第二个维度就是隔离级别（isolation level）。隔离级别定义了一个事务可能受其他并发事务影响的程度。</p>
+<h5 id="并发事务引起的问题"><a href="#并发事务引起的问题" class="headerlink" title="并发事务引起的问题"></a>并发事务引起的问题</h5><p>在典型的应用程序中，多个事务并发运行，经常会操作相同的数据来完成各自的任务。并发虽然是必须的，但可能导致以下问题：</p>
+<ul>
+<li>脏读（Dirty Reads）： 脏读发生在一个事务读取了另一个事务改写但尚未提交的数据时。如果改写在稍后被回滚了，那么第一个事务获取的数据就是无效的。</li>
+<li>不可重复读（Nonrepeatable Read）：不可重复读发生在一个事务执行相同的查询两次或两次以上，但是每次都得到不同的数据。这通常是因为另一个并发事务在两次查询期间进行了更新。</li>
+<li>幻读（Phantom Read）：幻读与不可重复读类似。它发生在一个事务（T1）读取了几行数据，接着另一个并发事务（T2）插入了一些数据时。在随后的查询中，第一个事务（T1）就会发现多了一些原本不存在的记录。</li>
+</ul>
+<p><strong>不可重复读 与 幻读 的区别</strong>：</p>
+<p>不可重复读的重点是修改，同样的条件，读取过的数据，再次读取发现值不一样了。例如：在事务1中，Wnagsusu读取了自己的工资为1000，操作并没有完成<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">con1 = getConnection();</div><div class="line"></div><div class="line">select salary <span class="keyword">from</span> employee empId = <span class="string">"wangsusu"</span></div></pre></td></tr></table></figure></p>
+<p>而在事务2中，财务人员修改了Wangsusu的工资为2000，并提交了事务。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">con2 = getConnection();</div><div class="line"></div><div class="line">updata employee set salary = <span class="number">2000</span> where empId = <span class="string">"wangsusu"</span>;</div><div class="line"></div><div class="line">con2.commit();</div></pre></td></tr></table></figure></p>
+<p>在事务1中，Wangsusu再次读取自己的工资时，工资变为了2000。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//con1</span></div><div class="line">select salary <span class="keyword">from</span> employee where empId = <span class="string">"wangsusu"</span></div></pre></td></tr></table></figure></p>
+<p>在一个事务中前后两次读取的结果并不一致，导致了不可重复读。</p>
+<p>而幻读的重点在于增加或者删除：同样的条件，第一次与第二次读出来的记录数不一样。例如：目前工资为1000的员工有10人。事务1，读取所有工资为1000的员工。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">con1 = getConnection();</div><div class="line"></div><div class="line">select * <span class="keyword">from</span> employee where salary = <span class="number">1000</span>;</div></pre></td></tr></table></figure></p>
+<p>共读取10条记录。</p>
+<p>这时，另一个事务想employee表插入了一条员工记录，工资也为1000<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">con2 = getConnection();</div><div class="line"></div><div class="line">insert into employee(empId,salary) values(<span class="string">"huniu"</span>,<span class="number">1000</span>);</div><div class="line"></div><div class="line">con2.commit();</div></pre></td></tr></table></figure></p>
+<p>事务1再次读取所有工资为1000的员工，就会读到11条数据，这就产生了幻读。</p>
+<p>从总得结果来看，似乎不可重复读和幻读都表现为两次读取的结果不一致。但如果从控制的角度来看，两者的区别就比较大。<br>对于前者，只需要锁住满足条件的记录。<br>对于后者，要锁住满足条件及其相近的记录。</p>
+<h5 id="隔离级别-1"><a href="#隔离级别-1" class="headerlink" title="隔离级别"></a>隔离级别</h5><table>
+<thead>
+<tr>
+<th>隔离级别</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ISOLATION_DEFAULT</td>
+<td>使用后端数据库默认隔离级别</td>
+</tr>
+<tr>
+<td>ISOLATION_READ_UNCOMMITTED</td>
+<td>最低的隔离级别，允许读取尚未提交的数据变更，可能会导致脏读、幻读或不可重复读</td>
+</tr>
+<tr>
+<td>ISOLATION_READ_COMMITTED</td>
+<td>允许读取并发事务已经提交的数据，可以阻止脏读，但是幻读或不可重复读仍有可能发生</td>
+</tr>
+<tr>
+<td>ISOLATION_REPEATABLE_READ</td>
+<td>对同一字段的多次读取结果都是一致的，除非数据是被本身事务自己修改的，可以阻止脏读和不可重复读，但幻读仍有可能发生</td>
+</tr>
+<tr>
+<td>ISOLATION_SERIALIZABLE</td>
+<td>最高的隔离级别，完全服从ACID的隔离级别，确保阻止脏读、不可重复读以及幻读，也是最慢的事务隔离级别，因为它通常是通过完全锁定事务相关的数据库表来实现的</td>
+</tr>
+</tbody>
+</table>
+<h4 id="只读"><a href="#只读" class="headerlink" title="只读"></a>只读</h4><p>事务的第三个特性是它是否为只读事务。如果事务只对后端的数据库进行操作，数据库可以利用事务的只读特性来进行一些特定的优化。通过将事务设置为只读，你就可以给数据库一个机会，让它应用它认为合适的优化措施</p>
+<h4 id="事务超时"><a href="#事务超时" class="headerlink" title="事务超时"></a>事务超时</h4><p>为了使应用程序很好地运行，事务不能运行太长时间。因为事务可能涉及对后端数据库的锁定，所以长时间的事务会不必要的占用数据库的资源。事务超时就是事务的一个定时器，在特定的时间内事务如果没有执行完毕，那么就会自动回滚，而不是一直等待其结束</p>
+<h4 id="回滚规则"><a href="#回滚规则" class="headerlink" title="回滚规则"></a>回滚规则</h4><p>事务五边形的最后一个方面是一组规则，这些规则定义了哪些异常会导致事务回滚而哪些不会。默认情况下，事务只有遇到运行时期异常时才会回滚，而在遇到检查型异常时不会回滚。但是你可以声明事务在遇到特定的检查型异常时像遇到运行时异常那样回滚。同样，你还可以声明事务遇到特定的异常不回滚，即使这些异常时运行时异常。</p>
+<h3 id="事务状态"><a href="#事务状态" class="headerlink" title="事务状态"></a>事务状态</h3><p>上面讲到调用PlatformTransactionManager接口的getTransaction()的方法得到的是TransactionStatus接口的一个实现，这个接口的内容如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public interface TransactionStatus&#123;</div><div class="line">    boolean isNewTransaction();<span class="comment">//是否是新的事务</span></div><div class="line">    boolean hasSavepoint();<span class="comment">//是否有恢复点</span></div><div class="line">    <span class="keyword">void</span> setRollbackOnly();<span class="comment">//设置为只回滚</span></div><div class="line">    boolean isRollbackOnly();<span class="comment">//是否为只回滚</span></div><div class="line">    boolean isCompleted();<span class="comment">//是否已完成</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以发现这个接口描述的是一些处理事务提供简单的控制事务执行和查询事务状态的方法，在回滚或提交的时候需要应用对应的事务状态。</p>
+<p>感觉内容有点多，今天先到这里，Spring（五）在通过实例来演示下事务。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;已经有几个星期没写博客了，一方面是把全身心投入的工作（其实也没做出什么成绩），另一方面是自己太懒了。如果自己不坚持写下去的话，我怕以后都不会坚持了，我还是决定好好写写博客。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;Spring事务管理&quot;&gt;&lt;a href=&quot;#Spring事务管理&quot;
+    
+    </summary>
+    
+    
+      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+  </entry>
   
   <entry>
     <title>SpringMVC框架（三）</title>
@@ -1926,62 +2093,6 @@
       <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
     
       <category term="EasyUI" scheme="http://yoursite.com/tags/EasyUI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>HelloBlog2</title>
-    <link href="http://yoursite.com/2017/04/04/HelloBlog2/"/>
-    <id>http://yoursite.com/2017/04/04/HelloBlog2/</id>
-    <published>2017-04-03T16:35:39.000Z</published>
-    <updated>2017-04-14T14:09:24.629Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="关于在Github上的个人博客搭建"><a href="#关于在Github上的个人博客搭建" class="headerlink" title="关于在Github上的个人博客搭建"></a>关于在Github上的个人博客搭建</h2><hr>
-<p>接着上一篇的内容来。一开始就写干货总觉得不太，因为写博客也是需要酝酿的，那就先说说今天发生的事吧，今天在深圳的大学室友陪我去看了房子，我准备租一个。跑了两个地铁站周边，碰到贴出来的小纸片就一个一个打电话问，然后看房，问价格，真的很累。虽然没有租到房，但是也算是摸清了租房的价格吧。晚餐去吃了椰子鸡，感觉味道一般，但是第一次吃感觉很新鲜。晚上回到宿舍已经快11点了，整理了下东西，给宿舍拖了个地，给自己洗了个澡，终于可以坐下来继续弄我的博客了。</p>
-<hr>
-<p><strong>参考资料</strong></p>
-<ul>
-<li><a href="http://mahua.jser.me/" target="_blank" rel="external">markdown网页编辑器：http://mahua.jser.me/</a></li>
-<li><a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo主页文档：https://hexo.io/zh-cn/docs/</a></li>
-<li><a href="http://theme-next.iissnan.com/" target="_blank" rel="external">next主题首页：http://theme-next.iissnan.com/</a></li>
-<li><a href="http://jingyan.baidu.com/article/9158e0003500a1a254122836.html" target="_blank" rel="external">教你用swiftype为Hexo添加站内搜索：http://jingyan.baidu.com/</a></li>
-</ul>
-<hr>
-<p>上篇说到了部署成功了个人博客，下面主要说说如何书写博客与增加categories和tags页面以及添加站内搜索功能。首先要为hexo添加各种辅助功能插件，具体这些东西是干嘛用的顾名思义就好，我也没纠太细，有空自己去研究。在你的个人博客目录下执行以下代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">npm install hexo-generator-index --save</div><div class="line">npm install hexo-generator-archive --save</div><div class="line">npm install hexo-generator-category --save</div><div class="line">npm install hexo-generator-tag --save</div><div class="line">npm install hexo-server --save</div><div class="line">npm install hexo-deployer-git --save</div><div class="line">npm install hexo-deployer-heroku --save</div><div class="line">npm install hexo-deployer-rsync --save</div><div class="line">npm install hexo-deployer-openshift --save</div><div class="line">npm install hexo-renderer-marked@0.2 --save</div><div class="line">npm install hexo-renderer-stylus@0.2 --save</div><div class="line">npm install hexo-generator-feed@1 --save</div><div class="line">npm install hexo-generator-sitemap@1 --save</div><div class="line">npm install hexo-generator-searchdb --save    #搜索服务</div><div class="line">npm install --save hexo-generator-index</div><div class="line">npm install --save hexo-generator-archive </div><div class="line">npm install --save hexo-generator-tag</div></pre></td></tr></table></figure></p>
-<h2 id="书写博客"><a href="#书写博客" class="headerlink" title="书写博客"></a>书写博客</h2><p>首先是书写博客，在<a href="https://hexo.io/zh-cn/docs/writing.html" target="_blank" rel="external">hexo主页文档</a>里其实已经写的很清晰,在gitbash环境下，cd进你的博客主目录，执行以下命令：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo <span class="keyword">new</span> your_article_name</div></pre></td></tr></table></figure></p>
-<p>这样，source/_post的目录下就创建了一个your_article_name.md的文件，这就是你的博客文章。用编辑器打开它，可以看到如下内容：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: your_article_name</div><div class="line">date: <span class="number">2017</span><span class="number">-04</span><span class="number">-04</span> <span class="number">00</span>:<span class="number">35</span>:<span class="number">39</span></div><div class="line">tags:</div><div class="line">---</div></pre></td></tr></table></figure></p>
-<p>接下来你需要做的就是在这个文档里写你的博客，关于markdown的书写方式网上有一大堆教程，但是这种东西还是多练，我是昨天才开始用markdown写文章的，感觉很爽。这里给大家推荐一个网页版的编辑器，网址是<a href="http://mahua.jser.me/" target="_blank" rel="external">http://mahua.jser.me/</a>。</p>
-<hr>
-<h2 id="添加页面"><a href="#添加页面" class="headerlink" title="添加页面"></a>添加页面</h2><p>关于添加categories和tags页面。现在希望在博客主页里，点击categories能找出所有分类与分类下的博客，这个基本功能其实hexo都会有实现，你只需要修改一些配置就。首先你需要为自己的博客添加分类，在上一步添加的文章为基础，打开新添加的your_article_name.md，可以看到如下内容<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: your_article_name</div><div class="line">date: <span class="number">2017</span><span class="number">-04</span><span class="number">-04</span> <span class="number">00</span>:<span class="number">35</span>:<span class="number">39</span></div><div class="line">tags:</div><div class="line">---</div></pre></td></tr></table></figure></p>
-<p>将其修改为：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: your_article_name</div><div class="line">date: <span class="number">2017</span><span class="number">-04</span><span class="number">-04</span> <span class="number">00</span>:<span class="number">35</span>:<span class="number">39</span></div><div class="line">categories： your_categories</div><div class="line">tags:</div><div class="line">---</div></pre></td></tr></table></figure></p>
-<p>这样，就为博客添加分类为your_categories，下一步需要为博客添加具体的categories页面。在博客工程目录下执行：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hexo <span class="keyword">new</span> page <span class="string">"categories"</span></div></pre></td></tr></table></figure></p>
-<p>可以看到在source/_post文件夹下多了一个categories文件夹，打开文件夹，编辑里面的index.md，将其修改为如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">---</div><div class="line">title: categories</div><div class="line">type: categories</div><div class="line">date: <span class="number">2017</span><span class="number">-04</span><span class="number">-02</span> <span class="number">15</span>:<span class="number">40</span>:<span class="number">38</span></div><div class="line">---</div></pre></td></tr></table></figure></p>
-<p>记住一定要增加这个type属性为categories，否则会在categories页面中找不到具体的博客。之后重新部署就，点击categories就可以找到该目录下的博客了。添加tags页面的操作同categories一样。</p>
-<hr>
-<h2 id="添加站内搜索功能"><a href="#添加站内搜索功能" class="headerlink" title="添加站内搜索功能"></a>添加站内搜索功能</h2><p>站内搜索功能是我在玩博客时遇到的最大的一个坑，网上有很多教程，但都是添加第三方搜索功能的，我按照网上的教程弄了很久，昨天终于将第三方搜索功能swiftype集成进了个人博客，高兴了很久，但是今天忽然一看，这特码又不能搜索了，实在是坑，于是硬着头皮最后靠更换主题集成插件把本地搜索弄进去了。</p>
-<p>关于这个第三方搜索其实还是很有意思的，它的原理是利用爬虫将你的网站爬了之后，将爬到的数据存在第三方，然后你搜索的时候是其实就是搜索第三方爬到的数据，这里就会存在一个问题，你在某一天更新博客想让文章能被第三方搜索引擎搜索到，但是因为你用的是第三方的免费服务，第三方的爬虫不可能会一直在爬你的网站，所以有时候用它的搜索搜新文章都是不存在的，我就被坑过。大家可以试试，具体第三方搜索插件添加的教程可以参考如下:</p>
-<p><a href="http://jingyan.baidu.com/article/9158e0003500a1a254122836.html" target="_blank" rel="external">教你用swiftype为Hexo添加站内搜索</a></p>
-<p><a href="http://www.jianshu.com/p/fa2354d61e37" target="_blank" rel="external">hexo+next添加agolia搜索</a></p>
-<p>个人建议大家还是用集成插件本地插件的形式来实现本地搜索功能。</p>
-<p>关于我自己的搜索功能实现其实是基于特定主题的，所以严格来说接下来说的不能作为通用的教程，只是将我的经历分享给读者。</p>
-<p>首先我更换了next主题，next还是一个很强大的主题，有它的官网而且文档很丰富，不像很多主题虽然美观但是支撑的文档太少，而且代码的结构设计十分不符合开闭原则，导致主题框架太固定死。关于更换主题的方法还是建议查看<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">hexo的官方文档</a>。</p>
-<p>要添加站内搜索只要在主题配置文件里将local_search设置为true就好可以使用站内搜索。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">local_search:</div><div class="line">  enable: <span class="literal">true</span></div></pre></td></tr></table></figure></p>
-<p>最后贴图一张，关于个人博客搭建就到这里。</p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/innerSearch.png" alt="innsetSearch"></p>
-<p>以上的信息其实会随着主题的更新而变化，这两篇介绍只是作为一个简单介绍，今后也许会变得完全没有什么参考价值。还是要多看官方文档介绍才好。</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;关于在Github上的个人博客搭建&quot;&gt;&lt;a href=&quot;#关于在Github上的个人博客搭建&quot; class=&quot;headerlink&quot; title=&quot;关于在Github上的个人博客搭建&quot;&gt;&lt;/a&gt;关于在Github上的个人博客搭建&lt;/h2&gt;&lt;hr&gt;
-&lt;p&gt;接着上一篇
-    
-    </summary>
-    
-      <category term="博客搭建教程" scheme="http://yoursite.com/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E6%95%99%E7%A8%8B/"/>
-    
-    
-      <category term="新手向" scheme="http://yoursite.com/tags/%E6%96%B0%E6%89%8B%E5%90%91/"/>
     
   </entry>
   
