@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-11T01:47:03.277Z</updated>
+  <updated>2017-06-11T02:03:41.301Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -20,11 +20,14 @@
     <link href="http://yoursite.com/2017/06/11/Spring%E6%A1%86%E6%9E%B6%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
     <id>http://yoursite.com/2017/06/11/Spring框架（四）/</id>
     <published>2017-06-11T01:46:26.000Z</published>
-    <updated>2017-06-11T01:47:03.277Z</updated>
+    <updated>2017-06-11T02:03:41.301Z</updated>
     
     <content type="html"><![CDATA[<p>已经有几个星期没写博客了，一方面是把全身心投入的工作（其实也没做出什么成绩），另一方面是自己太懒了。如果自己不坚持写下去的话，我怕以后都不会坚持了，我还是决定好好写写博客。</p>
 <hr>
-<h2 id="Spring事务管理"><a href="#Spring事务管理" class="headerlink" title="Spring事务管理"></a>Spring事务管理</h2><hr>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.mamicode.com/info-detail-1248286.html" target="_blank" rel="external">Spring事务管理详解与实例：http://www.mamicode.com/info-detail-1248286.html</a></li>
+</ul>
+<hr>
 <h3 id="事务的概念"><a href="#事务的概念" class="headerlink" title="事务的概念"></a>事务的概念</h3><p>这一篇博客还是得接着之前的Spring框架来，说一说Spring里的事务管理。先来看看什么是事务。举一个被用滥了的例子。从ATM里取钱，你取1000块出来，一方面银行的ATM机吐出1000块，另一方面你得到1000块。这是两件事，虽然在日常生活中这往往被认定为一件事，但是在程序中具体来说是对数据库的操作中将数据从一边转移到另一边是分为delete与insert两个步骤的。这样其实就引出来一个问题，如果你的银行卡里的金额数据在delete了1000之后，忽然ATM机器断电或者出现其他的异常，那么你将会损失1000块钱，这是将是非常不愉快的事情。为了应对这类问题，<strong>事务</strong>的概念被引出。</p>
 <p>所谓的事务，其实就是一系列动作的集合，这些集合动作共同完成一个工作单元。只有所有动作执行成功了，才算事务完毕。如果有一个动作执行失败，则会回滚到所有系列动作都未执行的状态，就和什么事都没发生过一下。</p>
 <p>应用到取钱的例子，如果ATM在扣款未吐钞票后断电，事务在中途中断，会回滚到未扣款的状态。这样虽然也不是很愉快，因为没取到钱，但是至少没有损失什么。</p>
@@ -37,7 +40,7 @@
 <li>隔离性（Isolation）：可能有许多事务会同时处理相同的数据，因此每个事务都应该与其他事务隔离开来，防止数据损坏</li>
 <li>持久性（Durability）：一旦事务完成，无论发生什么系统错误，它的结果都不应该受到影响，这样就能从任何系统崩溃中恢复过来。通常情况下，事务的结果被写道持久化存储器中</li>
 </ul>
-<h3 id="Spring事务管理-1"><a href="#Spring事务管理-1" class="headerlink" title="Spring事务管理"></a>Spring事务管理</h3><p>具体到程序中，我所理解的对事务的管理，实质上就是对持久层的事务管理。一般来说，优秀的持久层框架都有自己的一套管理事务的机制。Spring也不会傻到花功夫对所有的持久层框架做事务管理的具体实现。Spring并不直接管理事务，而是提供了多种事务管理器，将事务管理的职责委托给持久层去实现。实质上就是提供事务管理的接口来给持久层框架去实现。</p>
+<h3 id="Spring事务管理"><a href="#Spring事务管理" class="headerlink" title="Spring事务管理"></a>Spring事务管理</h3><p>具体到程序中，我所理解的对事务的管理，实质上就是对持久层的事务管理。一般来说，优秀的持久层框架都有自己的一套管理事务的机制。Spring也不会傻到花功夫对所有的持久层框架做事务管理的具体实现。Spring并不直接管理事务，而是提供了多种事务管理器，将事务管理的职责委托给持久层去实现。实质上就是提供事务管理的接口来给持久层框架去实现。</p>
 <h4 id="Spring事务管理核心接口"><a href="#Spring事务管理核心接口" class="headerlink" title="Spring事务管理核心接口"></a>Spring事务管理核心接口</h4><p>Spring事务管理的实现由许多的细节，这里没读源码也不知道是个怎样的过程。但是如果对整体的接口框架有大体了解的话会非常有助于理解试图，Spring事务管理涉及的接口以及接口联系如下图：</p>
 <p><img src="http://onv8ytvk1.bkt.clouddn.com/springday4_1.jpg" alt=""></p>
 <p>Spring事务管理的接口是org.springframework.transaction.PlatformTransactionManager，通过这个接口，Spring为各个平台如JDBK、Hibernate等都提供了对应的事务管理器，但是具体的实现由各个平台自己完成。接口的内容如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Public interface PlatformTransactionManager()...&#123;  </div><div class="line">    <span class="comment">// 由TransactionDefinition得到TransactionStatus对象</span></div><div class="line">    TransactionStatus getTransaction(TransactionDefinition definition) throws TransactionException; </div><div class="line">    <span class="comment">// 提交</span></div><div class="line">    Void commit(TransactionStatus status) throws TransactionException;  </div><div class="line">    <span class="comment">// 回滚</span></div><div class="line">    Void rollback(TransactionStatus status) throws TransactionException;  </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
@@ -171,7 +174,7 @@
     
       &lt;p&gt;已经有几个星期没写博客了，一方面是把全身心投入的工作（其实也没做出什么成绩），另一方面是自己太懒了。如果自己不坚持写下去的话，我怕以后都不会坚持了，我还是决定好好写写博客。&lt;/p&gt;
 &lt;hr&gt;
-&lt;h2 id=&quot;Spring事务管理&quot;&gt;&lt;a href=&quot;#Spring事务管理&quot;
+&lt;h3 id=&quot;参考资料&quot;&gt;&lt;a href=&quot;#参考资料&quot; class=&quot;head
     
     </summary>
     
