@@ -1,0 +1,987 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux,数据同步," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="干搞了一天运维的活，做一个工作总结，自己也学点东西。
+基本介绍全名是remote synchronize，远程同步。rsync是linux下一款非常强大的同步工具，采用差异同步的方法，只上传文件/文件夹的不同部分，同时可以对上传部分先进行压缩，所以rsync的传输效率是很高的但rsync也有缺点，最大的问题就是每次执行rsync命令都会遍历目标目录，当文件不多时，这没什么问题，一旦文件数到了一定规">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rsync+inotify实现数据实时同步备份">
+<meta property="og:url" content="http://yoursite.com/2017/06/24/rsync-inotify实现数据实时同步备份/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="干搞了一天运维的活，做一个工作总结，自己也学点东西。
+基本介绍全名是remote synchronize，远程同步。rsync是linux下一款非常强大的同步工具，采用差异同步的方法，只上传文件/文件夹的不同部分，同时可以对上传部分先进行压缩，所以rsync的传输效率是很高的但rsync也有缺点，最大的问题就是每次执行rsync命令都会遍历目标目录，当文件不多时，这没什么问题，一旦文件数到了一定规">
+<meta property="og:updated_time" content="2017-06-24T00:57:50.811Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="rsync+inotify实现数据实时同步备份">
+<meta name="twitter:description" content="干搞了一天运维的活，做一个工作总结，自己也学点东西。
+基本介绍全名是remote synchronize，远程同步。rsync是linux下一款非常强大的同步工具，采用差异同步的方法，只上传文件/文件夹的不同部分，同时可以对上传部分先进行压缩，所以rsync的传输效率是很高的但rsync也有缺点，最大的问题就是每次执行rsync命令都会遍历目标目录，当文件不多时，这没什么问题，一旦文件数到了一定规">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/24/rsync-inotify实现数据实时同步备份/"/>
+
+
+
+
+
+  <title> rsync+inotify实现数据实时同步备份 | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/24/rsync-inotify实现数据实时同步备份/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                rsync+inotify实现数据实时同步备份
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-24T08:56:56+08:00">
+                2017-06-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/系统运维/" itemprop="url" rel="index">
+                    <span itemprop="name">系统运维</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/06/24/rsync-inotify实现数据实时同步备份/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>干搞了一天运维的活，做一个工作总结，自己也学点东西。</p>
+<h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><p>全名是remote synchronize，远程同步。rsync是linux下一款非常强大的同步工具，采用差异同步的方法，只上传文件/文件夹的不同部分，同时可以对上传部分先进行压缩，所以rsync的传输效率是很高的但rsync也有缺点，最大的问题就是每次执行rsync命令都会遍历目标目录，当文件不多时，这没什么问题，一旦文件数到了一定规模，那么每次遍历都会消耗很多资源，如果只对经常改动的目录进行同步，也可以忽略这个问题，如果每次改动的目录多较大，那么就要用到inotify了，Inotify是一种强大的、细粒度的、异步的文件系统事件监控机制，Linux内核从2.6.13起，加入了对Inotify的支持，通过Inotify可以监控文件系统中的添加、删除、修改、移动等各种事件。</p>
+<p>关于rsync的四种模式等等基本理论知识不做过多介绍，具体可参考其他文档，下面只谈如何操作。</p>
+<h2 id="具体操作"><a href="#具体操作" class="headerlink" title="具体操作"></a>具体操作</h2><h3 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h3><ul>
+<li>操作系统：CentOS_6.9-x86_64</li>
+<li>更新源服务器：192.168.1.2</li>
+<li>目的服务器：192.168.1.3  192.168.1.4  … …</li>
+</ul>
+<h3 id="目的服务操作"><a href="#目的服务操作" class="headerlink" title="目的服务操作"></a>目的服务操作</h3><p>首先安装rsync<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install rsync xinetd</div></pre></td></tr></table></figure></p>
+<p>安装好之后在/etc/xinetd.d/这个目录下有一个rsync的文件。</p>
+<p>之后需要为rsync服务提供配置文件，新建一个rsyncd.conf。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/rsync.conf</div></pre></td></tr></table></figure></p>
+<p>为文件添加如下代码<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">uid = nobody</div><div class="line">gid = nobody</div><div class="line">use chroot = no</div><div class="line">max connections = 10</div><div class="line">strict modes = yes</div><div class="line">pid file = /var/run/rsyncd.pid</div><div class="line">log file = /var/log/rsyncd.log</div><div class="line"># Directory to be synced</div><div class="line">[shareData]</div><div class="line">path = /usr/local/mydata</div><div class="line">ignore errors = yes</div><div class="line">read only = no</div><div class="line">write noly = no</div><div class="line">hosts allow = 132.148.129.154</div><div class="line">#hosts allow = *</div><div class="line">hosts deny = *</div><div class="line">list = false</div><div class="line">uid = root</div><div class="line">gid = root</div><div class="line">#auth users = bingetv</div><div class="line">#secrets file = /etc/rsync.passwd</div></pre></td></tr></table></figure></p>
+<p>关于这里面参数的介绍，截取网上的一段说明<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">uid = nobody      //运行RSYNC守护进程的用户</div><div class="line">gid = nobody      //运行RSYNC守护进程的组</div><div class="line">use chroot = 0    //不使用chroot</div><div class="line">max connections = 0   // 最大连接数,0为不限制</div><div class="line">port = 873  //默认端口873</div><div class="line">下面这些文件是安装完RSYNC服务后自动生成的文件</div><div class="line">pid file = /var/run/rsyncd.pid    //pid文件的存放位置</div><div class="line">lock file = /var/run/rsync.lock   //锁文件的存放位置.指定支持max connections参数的锁文件,默认值是/var/run/rsyncd.lock.</div><div class="line">log file = /var/log/rsyncd.log    //日志记录文件的存放位置</div><div class="line">Timeout = 300</div><div class="line">通过该选项可以覆盖客户指定的IP超时时间.通过该选项可以确保rsync服务器不会永远等待一个崩溃的客户端.超时单位为秒钟,0表示没有超时定义,这也是默认值.对于匿名rsync服务器来说,一个理想的数字是600.</div><div class="line">Log format = %t %a %m %f %b</div><div class="line">通过该选项用户在使用transfer logging可以自己定制日志文件的字段.其格式是一个包含格式定义符的字符串,可以使用的格式定义符如下所示：</div><div class="line">%h 远程主机名</div><div class="line">%a 远程IP地址</div><div class="line">%l 文件长度字符数</div><div class="line">%p 该次rsync会话的进程id</div><div class="line">%o 操作类型：" send" 或" recv"</div><div class="line">%f 文件名</div><div class="line">%P 模块路径</div><div class="line">%m 模块名</div><div class="line">%t 当前时间</div><div class="line">%u 认证的用户名(匿名时是null)</div><div class="line">%b 实际传输的字节数</div><div class="line">%c 当发送文件时,该字段记录该文件的校验码</div><div class="line">默认log格式为：" %o %h [%a] %m (%u) %f %l" ,一般来说,在每行的头上会添加" %t [%p] " .在源代码中同时发布有一个叫rsyncstats的perl脚本程序来统计这种格式的日志文件.</div><div class="line">#transfer logging = yes</div><div class="line">使rsync服务器使用ftp格式的文件来记录下载和上载操作在自己单独的日志中.</div><div class="line">syslog facility = local3 </div><div class="line">指定rsync发送日志消息给syslog时的消息级别,常见的消息级别是：uth, authpriv, cron, daemon, ftp, kern, lpr, mail, news, security, sys-log, user, uucp, local0, local1, local2, local3,local4, local5, local6和local7.默认值是daemon.</div><div class="line">模块参数</div><div class="line">[web1]   //这里是认证的模块名,在client端需要指定</div><div class="line">path = /data/www1/  //需要做镜像的目录,不可缺少！</div><div class="line">comment = backup web  //这个模块的注释信息</div><div class="line">ignore errors    //可以忽略一些无关的IO错误</div><div class="line">read only = yes  //该选项设定是否允许客户上载文件.如果为true那么任何上载请求都会失败,如果为false并且服务器目录读写权限允许那么上载是允许的.默认值为true.</div><div class="line">list = no        //不允许列文件</div><div class="line">auth users = bak    //认证的用户名,如果没有这行则表明是匿名,此用户与系统无关</div><div class="line">该选项指定由空格或逗号分隔的用户名列表,只有这些用户才允许连接该模块.这里的用户和系统用户没有任何关系.如果" auth users" 被设置,那么客户端发出对该模块的连接请求以后会被rsync请求challenged进行验证身份这里使用的challenge/response认证协议.用户的名和密码以明文方式存放在" secrets file" 选项指定的文件中.默认情况下无需密码就可以连接模块(也就是匿名方式).</div><div class="line">secrets file = /etc/www1.pwd      //密码和用户名对比表,密码文件自己生成</div><div class="line">该选项指定一个包含定义用户名:密码对的文件.只有在" auth users" 被定义时,该文件才有作用.文件每行包含一个username:passwd对.一般来说密码最好不要超过8个字符.没有默认的secures file名,需要限式指定一个(例如：/etc/www1.pwd).注意：该文件的权限一定要是600,否则客户端将不能连接服务器.</div><div class="line">hosts allow = 192.168.9.0/255.255.255.0  //允许主机或网段</div><div class="line">该选项指定哪些IP的客户允许连接该模块.客户模式定义可以是以下形式：</div><div class="line">单个IP地址,例如：192.168.9.227</div><div class="line">整个网段,例如：192.168.9.0/24,也可以是192.168.9.0/255.255.255.0</div><div class="line">多个IP或网段需要用空格隔开,“*”则表示所有,默认是允许所有主机连接.</div><div class="line">hosts deny = 0.0.0.0/0  //禁止主机</div></pre></td></tr></table></figure></p>
+<p>我在配置的时候遇到了模块名称错误的问题，[shareData]是指模块名称，待会会用到，还有权限错误问题，账号密码明明是对的却推送不到目的主机，然后我直接把账号密码的一套去掉了，就是那个auth user以及secrets file配置，这个问题暂时保留。</p>
+<p>假如，需要用到权限的话，需要再配置一个/etc/rsyncd.passwd。</p>
+<p>同样用vim新建一个<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim /etc/rsync.passwd</div></pre></td></tr></table></figure></p>
+<p>写入系统的登录信息<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">bingetv:zhebushimima</div></pre></td></tr></table></figure></p>
+<p>写法是这样  yourUserName:yourPassword</p>
+<p>之后需要更改passwd文件权限，<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">chmod <span class="number">600</span> /etc/.rsyncd.passwd</div></pre></td></tr></table></figure></p>
+<p>然后启动监听，开启服务<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">chkconfig rsync on</div><div class="line">service xinetd start</div></pre></td></tr></table></figure></p>
+<p>目的服务器的配置到此结束</p>
+<h3 id="更新源服务器"><a href="#更新源服务器" class="headerlink" title="更新源服务器"></a>更新源服务器</h3><p>由于inotify特性需要Linux内核的支持，在安装inotify-tools前要先确认Linux系统内核是否达到了2.6.13以上，如果Linux内核低于2.6.13版本，就需要重新编译内核加入inotify的支持，也可以用如下方法判断，内核是否支持inotify：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># uname -r</div><div class="line">2.6.32-431.el6.x86_64</div></pre></td></tr></table></figure></p>
+<p>查看内核是否支持inotify API，如果有以下三项，表示系统已经默认支持inotify，接着就可以开始安装inotify-tools了<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># ll /proc/sys/fs/inotify/</div><div class="line"></div><div class="line">total 0</div><div class="line">-rw-r--r-- 1 root root 0 Nov  7 10:29 max_queued_events</div><div class="line">-rw-r--r-- 1 root root 0 Nov  7 10:29 max_user_instances</div><div class="line">-rw-r--r-- 1 root root 0 Nov  7 10:29 max_user_watches</div></pre></td></tr></table></figure></p>
+<p>简单介绍一下这三个文件是做什么用的：</p>
+<ul>
+<li>max_queued_evnets:表示调用inotify_init时分配给inotify instance中可排队的event的数目的最大值，超出这个值的事件被丢弃，但会触发IN_Q_OVERFLOW事件。</li>
+<li>max_user_instances:表示每一个real user ID可创建的inotify instatnces的数量上限。</li>
+<li>max_user_watches:表示每个inotify instatnces可监控的最大目录数量。如果监控的文件数目巨大，需要根据情况，适当增加此值的大小，例如：echo “9000000” &gt; /proc/sys/fs/inotify/max_user_watches</li>
+</ul>
+<p>如果有这些信息就可以安装了，我这里不知道为啥yum安装不了，直接从网上下一个下载包下来装的，步骤如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@bingetv ~]#wget http://cloud.github.com/downloads/rvoicilas/inotify-tools/inotify-tools-3.14.tar.gz             #下载inotify-tools软件</div><div class="line">[root@bingetv ~]# ls</div><div class="line">anaconda-ks.cfg            install.log  </div><div class="line">inotify-tools-3.14.tar.gz  install.log.syslog</div><div class="line">[root@bingetv ~]# tar xf inotify-tools-3.14.tar.gz          #解压软件</div><div class="line">[root@bingetv ~]# cd inotify-tools-3.14</div><div class="line">[root@bingetv inotify-tools-3.14]# ./configure --prefix=/usr/local/inotify &amp;&amp; make &amp;&amp; make install                 #编译安装软件</div><div class="line">[root@bingetv ~]#cd /usr/local/inotify/</div><div class="line">[root@bingetv inotify]# echo "PATH=/usr/local/inotify/bin:$PATH" &gt;&gt;/etc/profile.d/inotify.sh             #设置能与系统关联的path路径</div><div class="line">[root@bingetv inotify]# source /etc/profile.d/inotify.sh</div><div class="line">[root@bingetv inotify]# echo "/usr/local/inotify/lib" &gt;/etc/ld.so.conf.d/inotify.conf         #设置系统能识别软件的库文件</div><div class="line">[root@bingetv inotify]# ldconfig -v | grep inotify</div><div class="line">/usr/local/inotify/lib:</div><div class="line">libinotifytools.so.0 -&gt; libinotifytools.so.0.4.1</div><div class="line">[root@bingetv inotify]# ln -sv /usr/local/inotify/include/ /usr/include/inotify                      #链接头文件到系统能识别的路径下</div><div class="line">`/usr/include/inotify' -&gt; `/usr/local/inotify/include/'</div><div class="line">[root@bingetv inotify]#</div></pre></td></tr></table></figure></p>
+<p>之后配置一个能连接rsync的密码文件和传输数据的脚本。</p>
+<p>首先写个远程密码文件，权限设为600，在文件里写远程服务器的密码就可以了。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/rsyncd.pwd</div><div class="line"></div><div class="line">yourPassword</div><div class="line"></div><div class="line">chmod <span class="number">600</span> /etc/rsyncd.pwd</div></pre></td></tr></table></figure></p>
+<p>先建一个需要共享的目录<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd /usr/local/</div><div class="line">mkdir mydata</div><div class="line">cd mydata</div></pre></td></tr></table></figure></p>
+<p>接着在此目录里建立一个运行脚本<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vim inotifyrsync.sh</div></pre></td></tr></table></figure></p>
+<p>写入以下内容<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">host=<span class="number">132.148</span><span class="number">.129</span><span class="number">.153</span></div><div class="line">data_dir=<span class="regexp">/usr/</span>local/mydata/</div><div class="line">dst=shareData</div><div class="line">username=bingetv</div><div class="line"></div><div class="line">inotifywait -mrq --timefmt <span class="string">'%d/%m/%y %H:%M'</span> --format <span class="string">'%T %w%f%e'</span> -e modify,<span class="keyword">delete</span>,create,attrib $data_dir | <span class="keyword">while</span> read fil</div><div class="line">es</div><div class="line"><span class="keyword">do</span></div><div class="line">/usr/bin/rsync -vzrtopg --<span class="keyword">delete</span> --progress --password-file=<span class="regexp">/etc/</span>rsyncd.passwd $data_dir $username@$host::$dst</div><div class="line">done</div></pre></td></tr></table></figure></p>
+<p>之后后台执行此脚本文件<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/bin/bash inotifyrsync.sh &amp;</div></pre></td></tr></table></figure></p>
+<p>然后在更新源服务器的/usr/local/mydata里添加文件，在目标服务器的/usr/local/mydata里也能得到了。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/数据同步/" rel="tag"># 数据同步</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/11/Spring框架（四）/" rel="next" title="Spring框架（四）">
+                <i class="fa fa-chevron-left"></i> Spring框架（四）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">23</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">18</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本介绍"><span class="nav-number">1.</span> <span class="nav-text">基本介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#具体操作"><span class="nav-number">2.</span> <span class="nav-text">具体操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境"><span class="nav-number">2.1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目的服务操作"><span class="nav-number">2.2.</span> <span class="nav-text">目的服务操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新源服务器"><span class="nav-number">2.3.</span> <span class="nav-text">更新源服务器</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
