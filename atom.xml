@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-06-24T00:57:50.811Z</updated>
+  <updated>2017-09-03T02:10:09.112Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,85 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>SpringBoot入门（一）</title>
+    <link href="http://yoursite.com/2017/09/03/SpringBoot%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%80%EF%BC%89/"/>
+    <id>http://yoursite.com/2017/09/03/SpringBoot入门（一）/</id>
+    <published>2017-09-03T02:08:48.000Z</published>
+    <updated>2017-09-03T02:10:09.112Z</updated>
+    
+    <content type="html"><![CDATA[<p>学了这么久的Java，终于有一种快赶上时代潮流的感觉。虽然SpringBoot也是出来了很久了，而且越来越火，现在也是恰逢好时候学习这个东西。今天看了慕课网的教程，感觉还可以，这里自己也稍微<del>抄袭</del>总结下吧</p>
+<hr>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.imooc.com/learn/767" target="_blank" rel="external">2小时学会SpringBoot</a></li>
+<li><a href="http://blog.csdn.net/Peng_Hong_fu/article/details/53691705" target="_blank" rel="external">IntelliJ Idea SpringBoot 数据库增删改查实例</a></li>
+<li><a href="http://git.oschina.net/lonecloud/springBoot-imooc-girl" target="_blank" rel="external">2小时学会SpringBoot实例代码</a></li>
+</ul>
+<hr>
+<h2 id="SpringBoot简介"><a href="#SpringBoot简介" class="headerlink" title="SpringBoot简介"></a>SpringBoot简介</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">  .   ____          _            __ _ _</div><div class="line"> /\\ / ___<span class="string">'_ __ _ _(_)_ __  __ _ \ \ \ \</span></div><div class="line">( ( )\___ | '_ | <span class="string">'_| | '</span>_ \/ _<span class="string">` | \ \ \ \</span></div><div class="line"> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )</div><div class="line">  '  |____| .__|_| |_|_| |_\__, | / / / /</div><div class="line"> =========|_|==============|___/=/_/_/_/</div><div class="line"> :: Spring Boot ::        (v1.4.2.RELEASE)</div></pre></td></tr></table></figure>
+<p>这个标志，就是SpringBoot运行时终端打印出来的图案，算是一个颜文字标志。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-1.jpg" alt=""></p>
+<p>SpringBoot是SpringMVC的一个升级版，在编码，配置，部署与监控方面会比SpringMVC要简单很多··很多！</p>
+<h3 id="微服务"><a href="#微服务" class="headerlink" title="微服务"></a>微服务</h3><p>微服务是个比较新的概念，我的理解就是把整个应用，拆分成多个服务，增加复用减少耦合。当然我的理解太过于浅显。想要了解微服务的可以参考写这篇文章：<a href="http://www.oschina.net/news/70121/microservice" target="_blank" rel="external">微服务（Microservice）那点事</a>。</p>
+<p>Spring为微服务提供了一整套的组件SpringCloud，用户可以调用需要的服务，而SpringBoot就是该微服务的基础。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-2.png" alt=""></p>
+<h2 id="第一个SpringBoot程序"><a href="#第一个SpringBoot程序" class="headerlink" title="第一个SpringBoot程序"></a>第一个SpringBoot程序</h2><p>原理什么的，我还是不打算深究，只要能用上就妥了。这里还是通过教程上的实例来搞定SpringBoot的用法就OK。</p>
+<p>用Intellij Idea新建一个Spring Initializr</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-3.png" alt=""></p>
+<p>点next</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-4.png" alt=""></p>
+<p>注意填好包名（Group），工程名（Artifact），以及选择jar打包，继续点next</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-5.png" alt=""></p>
+<p>教程开发的是web项目，所以这里选择web就好了，其他的我还没试过，反正看见这么多眼花缭乱的东西，感觉这东西还是很棒。之后点下一步</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-6.png" alt=""></p>
+<p>点finish，就创建好了工程，第一个创建SpringBoot会比较慢，因为会从Maven仓库里下载很多组件。</p>
+<p>工程建立好了之后，先删掉看起来很显眼但是没什么用的文件。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-7.png" alt=""></p>
+<p>一个完整的新建SpringBoot项目结构如下：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-8.png" alt=""></p>
+<p>先来看看maven配置文件pom.xml：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span>?&gt;</div><div class="line">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"</div><div class="line">	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"&gt;</div><div class="line">	&lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</div><div class="line"></div><div class="line">	&lt;groupId&gt;com.just4fun&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;girl&lt;/artifactId&gt;</div><div class="line">	&lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;</div><div class="line">	&lt;packaging&gt;jar&lt;/packaging&gt;</div><div class="line"></div><div class="line">	&lt;name&gt;girl&lt;/name&gt;</div><div class="line">	&lt;description&gt;Demo project for Spring Boot&lt;/description&gt;</div><div class="line"></div><div class="line">	&lt;parent&gt;</div><div class="line">		&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</div><div class="line">		&lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;</div><div class="line">		&lt;version&gt;1.5.4.RELEASE&lt;/version&gt;</div><div class="line">		&lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;</div><div class="line">	&lt;/parent&gt;</div><div class="line"></div><div class="line">	&lt;properties&gt;</div><div class="line">		&lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;</div><div class="line">		&lt;project.reporting.outputEncoding&gt;UTF-8&lt;/project.reporting.outputEncoding&gt;</div><div class="line">		&lt;java.version&gt;1.8&lt;/java.version&gt;</div><div class="line">	&lt;/properties&gt;</div><div class="line"></div><div class="line">	&lt;dependencies&gt;</div><div class="line">		&lt;dependency&gt;</div><div class="line">			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</div><div class="line">			&lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;</div><div class="line">		&lt;/dependency&gt;</div><div class="line"></div><div class="line">		&lt;dependency&gt;</div><div class="line">			&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</div><div class="line">			&lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;</div><div class="line">			&lt;scope&gt;test&lt;/scope&gt;</div><div class="line">		&lt;/dependency&gt;</div><div class="line">	&lt;/dependencies&gt;</div><div class="line"></div><div class="line">	&lt;build&gt;</div><div class="line">		&lt;plugins&gt;</div><div class="line">			&lt;plugin&gt;</div><div class="line">				&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</div><div class="line">				&lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;</div><div class="line">			&lt;/plugin&gt;</div><div class="line">		&lt;/plugins&gt;</div><div class="line">	&lt;/build&gt;</div><div class="line">&lt;/project&gt;</div></pre></td></tr></table></figure></p>
+<p>可以看到这个parent结点配置的就是spring-boot-starter-parent，这个Maven的SpringBoot默认配置。之后在dependencies依赖结点里添加了test与web的依赖，因为一开始配置的时候选择了web。</p>
+<p>之后还有一个空配置文件application.properties用于配置工程，与一个Application的java文件作为启动入口。下面就来启动一下。</p>
+<p>SpringBoot启动方式异常简单，直接像运行普通java程序一样，右键GirlApplication，点击run就可以了。</p>
+<p>点击run之后出现如下log<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">  .   ____          _            __ _ _</div><div class="line"> /\\ / ___<span class="string">'_ __ _ _(_)_ __  __ _ \ \ \ \</span></div><div class="line">( ( )\___ | '_ | <span class="string">'_| | '</span>_ \/ _<span class="string">` | \ \ \ \</span></div><div class="line"> \\/  ___)| |_)| | | | | || (_| |  ) ) ) )</div><div class="line">  '  |____| .__|_| |_|_| |_\__, | / / / /</div><div class="line"> =========|_|==============|___/=/_/_/_/</div><div class="line"> :: Spring Boot ::        (v1.5.4.RELEASE)</div><div class="line"></div><div class="line">2017-07-10 11:20:57.954  INFO 7012 --- [           main] com.just4fun.GirlApplication             : Starting GirlApplication on sdt14096 with PID 7012 (E:\IntellijProject\girl\target\classes started by sdt14096 in E:\IntellijProject\girl)</div><div class="line">2017-07-10 11:20:57.958  INFO 7012 --- [           main] com.just4fun.GirlApplication             : No active profile set, falling back to default profiles: default</div><div class="line">2017-07-10 11:20:58.478  INFO 7012 --- [           main] ationConfigEmbeddedWebApplicationContext : Refreshing org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@71d15f18: startup date [Mon Jul 10 11:20:58 CST 2017]; root of context hierarchy</div><div class="line">2017-07-10 11:21:02.226  INFO 7012 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat initialized with port(s): 8080 (http)</div><div class="line">2017-07-10 11:21:02.341  INFO 7012 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]</div><div class="line">2017-07-10 11:21:02.372  INFO 7012 --- [           main] org.apache.catalina.core.StandardEngine  : Starting Servlet Engine: Apache Tomcat/8.5.15</div><div class="line">2017-07-10 11:21:02.810  INFO 7012 --- [ost-startStop-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext</div><div class="line">2017-07-10 11:21:02.811  INFO 7012 --- [ost-startStop-1] o.s.web.context.ContextLoader            : Root WebApplicationContext: initialization completed in 4336 ms</div><div class="line">2017-07-10 11:21:03.095  INFO 7012 --- [ost-startStop-1] o.s.b.w.servlet.ServletRegistrationBean  : Mapping servlet: 'dispatcherServlet' to [/]</div><div class="line">2017-07-10 11:21:03.100  INFO 7012 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'characterEncodingFilter' to: [/*]</div><div class="line">2017-07-10 11:21:03.101  INFO 7012 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'hiddenHttpMethodFilter' to: [/*]</div><div class="line">2017-07-10 11:21:03.102  INFO 7012 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'httpPutFormContentFilter' to: [/*]</div><div class="line">2017-07-10 11:21:03.102  INFO 7012 --- [ost-startStop-1] o.s.b.w.servlet.FilterRegistrationBean   : Mapping filter: 'requestContextFilter' to: [/*]</div><div class="line">2017-07-10 11:21:03.669  INFO 7012 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : Looking for @ControllerAdvice: org.springframework.boot.context.embedded.AnnotationConfigEmbeddedWebApplicationContext@71d15f18: startup date [Mon Jul 10 11:20:58 CST 2017]; root of context hierarchy</div><div class="line">2017-07-10 11:21:03.811  INFO 7012 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "&#123;[/error]&#125;" onto public org.springframework.http.ResponseEntity&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; org.springframework.boot.autoconfigure.web.BasicErrorController.error(javax.servlet.http.HttpServletRequest)</div><div class="line">2017-07-10 11:21:03.812  INFO 7012 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped "&#123;[/error],produces=[text/html]&#125;" onto public org.springframework.web.servlet.ModelAndView org.springframework.boot.autoconfigure.web.BasicErrorController.errorHtml(javax.servlet.http.HttpServletRequest,javax.servlet.http.HttpServletResponse)</div><div class="line">2017-07-10 11:21:03.835  INFO 7012 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/webjars/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]</div><div class="line">2017-07-10 11:21:03.835  INFO 7012 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]</div><div class="line">2017-07-10 11:21:03.908  INFO 7012 --- [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Mapped URL path [/**/favicon.ico] onto handler of type [class org.springframework.web.servlet.resource.ResourceHttpRequestHandler]</div><div class="line">2017-07-10 11:21:04.188  INFO 7012 --- [           main] o.s.j.e.a.AnnotationMBeanExporter        : Registering beans for JMX exposure on startup</div><div class="line">2017-07-10 11:21:04.348  INFO 7012 --- [           main] s.b.c.e.t.TomcatEmbeddedServletContainer : Tomcat started on port(s): 8080 (http)</div><div class="line">2017-07-10 11:21:04.366  INFO 7012 --- [           main] com.just4fun.GirlApplication             : Started GirlApplication in 8.455 seconds (JVM running for 9.972)</div></pre></td></tr></table></figure></p>
+<p>可以看到SpringBoot的logo，最后有一条，tomcat在8080端口上运行，这里是SpringBoot很棒的地方，使用SpringBoot web就会隐式的引入了tomcat的相关包，这样就不比先下载服务器软件，然后打包，再发布再调试，省略了很多步骤，这对在开发环境下大大提高了效率。到了生产环境下再打包发布war。</p>
+<p>下面是一下在浏览器里输入 localhost:8080</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-9.png" alt=""></p>
+<p>虽然是404，但是看页面也是服务器返回的数据。算是启动服务了吧，下面还是写一个自定义的存在的页面。</p>
+<p>新建一个controller，如下图</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-10.png" alt=""></p>
+<p>在controller里写如下代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RequestMethod;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/10.</div><div class="line"> */</div><div class="line">@RestController</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">HelloController</span> </span>&#123;</div><div class="line"></div><div class="line">    @RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.GET)</div><div class="line">    public <span class="built_in">String</span> sayHello() &#123;</div><div class="line">        <span class="keyword">return</span> <span class="string">"hello AutumnShut"</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>学过SpringMVC的应该会很熟悉Controller的这一套流程，其中@RestController注解是一个新名词而不是新概念，其实就是@Controller与@ResponseBody的结合。</p>
+<p>接下来重启下应用。在浏览器里输入 localhost:8080/hello  可以得到：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-1-11.png" alt=""></p>
+<p>算是运行起来了SpringBoot的第一个程序。</p>
+<p><a href="https://github.com/kentwood/girl" target="_blank" rel="external">代码地址：https://github.com/kentwood/girl</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;学了这么久的Java，终于有一种快赶上时代潮流的感觉。虽然SpringBoot也是出来了很久了，而且越来越火，现在也是恰逢好时候学习这个东西。今天看了慕课网的教程，感觉还可以，这里自己也稍微&lt;del&gt;抄袭&lt;/del&gt;总结下吧&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;参考资料&quot;&gt;&lt;
+    
+    </summary>
+    
+      <category term="SpringBoot" scheme="http://yoursite.com/categories/SpringBoot/"/>
+    
+    
+      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+      <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
+    
+  </entry>
+  
+  <entry>
     <title>rsync+inotify实现数据实时同步备份</title>
     <link href="http://yoursite.com/2017/06/24/rsync-inotify%E5%AE%9E%E7%8E%B0%E6%95%B0%E6%8D%AE%E5%AE%9E%E6%97%B6%E5%90%8C%E6%AD%A5%E5%A4%87%E4%BB%BD/"/>
     <id>http://yoursite.com/2017/06/24/rsync-inotify实现数据实时同步备份/</id>
     <published>2017-06-24T00:56:56.000Z</published>
-    <updated>2017-06-24T00:57:50.811Z</updated>
+    <updated>2017-06-24T00:57:50.812Z</updated>
     
     <content type="html"><![CDATA[<p>干搞了一天运维的活，做一个工作总结，自己也学点东西。</p>
 <h2 id="基本介绍"><a href="#基本介绍" class="headerlink" title="基本介绍"></a>基本介绍</h2><p>全名是remote synchronize，远程同步。rsync是linux下一款非常强大的同步工具，采用差异同步的方法，只上传文件/文件夹的不同部分，同时可以对上传部分先进行压缩，所以rsync的传输效率是很高的但rsync也有缺点，最大的问题就是每次执行rsync命令都会遍历目标目录，当文件不多时，这没什么问题，一旦文件数到了一定规模，那么每次遍历都会消耗很多资源，如果只对经常改动的目录进行同步，也可以忽略这个问题，如果每次改动的目录多较大，那么就要用到inotify了，Inotify是一种强大的、细粒度的、异步的文件系统事件监控机制，Linux内核从2.6.13起，加入了对Inotify的支持，通过Inotify可以监控文件系统中的添加、删除、修改、移动等各种事件。</p>
@@ -82,7 +156,7 @@
     <link href="http://yoursite.com/2017/06/11/Spring%E6%A1%86%E6%9E%B6%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
     <id>http://yoursite.com/2017/06/11/Spring框架（四）/</id>
     <published>2017-06-11T01:46:26.000Z</published>
-    <updated>2017-06-11T02:03:41.301Z</updated>
+    <updated>2017-06-11T02:03:41.302Z</updated>
     
     <content type="html"><![CDATA[<p>已经有几个星期没写博客了，一方面是把全身心投入的工作（其实也没做出什么成绩），另一方面是自己太懒了。如果自己不坚持写下去的话，我怕以后都不会坚持了，我还是决定好好写写博客。</p>
 <hr>
@@ -544,7 +618,7 @@
     <link href="http://yoursite.com/2017/04/27/EasyUI%E8%AF%95%E8%AF%95%E6%B0%B4%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://yoursite.com/2017/04/27/EasyUI试试水（二）/</id>
     <published>2017-04-27T14:21:11.000Z</published>
-    <updated>2017-04-27T14:29:30.559Z</updated>
+    <updated>2017-04-27T14:29:30.560Z</updated>
     
     <content type="html"><![CDATA[<p>看别人写的代码好捉鸡，其实我还是能看懂的，但是实在是不想看，关键的问题是不知道看了之后能干啥。光是学习看代码，漫无目的，看了之后就忘了。虽然说熟悉业务也很重要，但是我还是更喜欢有目的的去做事，任务驱动应该学的很快些。摸个鱼，写个博客，学习一个！</p>
 <hr>
@@ -601,7 +675,7 @@
     <link href="http://yoursite.com/2017/04/27/SpringMVC%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
     <id>http://yoursite.com/2017/04/27/SpringMVC框架（二）/</id>
     <published>2017-04-27T14:12:48.000Z</published>
-    <updated>2017-04-27T14:29:32.037Z</updated>
+    <updated>2017-04-27T14:29:32.038Z</updated>
     
     <content type="html"><![CDATA[<p>有点惭愧，都不知道是咋了，明明什么活都没干的感觉，居然被说已经挑大梁了。着实让我有些捉鸡。没法了，只能硬着头皮上了，搞不好也无所谓了。人力资源奖励了一张欢乐谷门票，说是对优秀实习生的奖励，这样下次去欢乐谷就能省一张门票钱了。</p>
 <hr>
@@ -707,7 +781,7 @@
     <link href="http://yoursite.com/2017/04/26/SpringMVC%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://yoursite.com/2017/04/26/SpringMVC框架（一）/</id>
     <published>2017-04-26T13:36:31.000Z</published>
-    <updated>2017-04-27T14:19:55.456Z</updated>
+    <updated>2017-04-27T14:19:55.457Z</updated>
     
     <content type="html"><![CDATA[<p>整个项目组只剩下我一个人做java后台了，有点不知所措。除了好好学习也不知道该怎么做了，但是不管怎么说还是乐观点好，一个人扛成长的也快。我还是蛮喜欢公司的不加班的文化的，我可以自己多学一点，写写博客，充实一下新技术。</p>
 <hr>
@@ -1431,7 +1505,7 @@
     <link href="http://yoursite.com/2017/04/13/Spring%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%80%EF%BC%89/"/>
     <id>http://yoursite.com/2017/04/13/Spring框架（一）/</id>
     <published>2017-04-13T14:06:22.000Z</published>
-    <updated>2017-04-13T15:16:19.493Z</updated>
+    <updated>2017-04-13T15:16:19.494Z</updated>
     
     <content type="html"><![CDATA[<h2 id="Spring入门之IoC简介"><a href="#Spring入门之IoC简介" class="headerlink" title="Spring入门之IoC简介"></a>Spring入门之IoC简介</h2><hr>
 <p>今天在纠结是否该迁户口的问题，好处坏处只是和同学同事们交流了一下，听取了下意见，但是自己还是没有仔细思考迁户口不迁户口对自己的影响，最主要的原因一是自己没有去多了解相关政策所以不知道迁户口的好处，第二个原因就是自己也不知道自己想要的是什么。最终还是决定迁户口了，以后就是深圳本地屌丝了！请多指教！</p>
@@ -2023,81 +2097,6 @@
       <category term="myBatis" scheme="http://yoursite.com/tags/myBatis/"/>
     
       <category term="数据库" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ztree试试水</title>
-    <link href="http://yoursite.com/2017/04/08/ztree%E8%AF%95%E8%AF%95%E6%B0%B4/"/>
-    <id>http://yoursite.com/2017/04/08/ztree试试水/</id>
-    <published>2017-04-07T16:12:55.000Z</published>
-    <updated>2017-04-13T14:17:55.205Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="zTree的简单使用"><a href="#zTree的简单使用" class="headerlink" title="zTree的简单使用"></a>zTree的简单使用</h2><hr>
-<p>今天总算是发工资了，工资比我想的还是低了些，因为只有四位数，但是也算是够花了。从两个星期前开始，我感觉自己忽然省钱的意识特别强烈，吃东西买东西都会尽量想着怎样更经济一点。不知道这算不算是一点成长，也许只是更小气了。</p>
-<p>最近通过写博客感觉分享知识的过程其实还是蛮快乐的，我觉得我能坚持写下去，打算明天把博客的评论功能加上去，互动还是必要的，不啰嗦了，下面还是切入正题吧。</p>
-<hr>
-<p>zTree也是一个基于jQuery的前端控件，提供一个树形结构的可视化图形。zTree的性能优异，配置灵活。个人觉得，zTree这个东西也算是专门为ERP系统而生的吧，一般来说就是一个大目录，下面打开有各种类业务，再展开大类业务目录有增删改等具体业务。给出一个图形更直观的感受下zTree吧。</p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/ztreeDEMO.png" alt="ztree示例"></p>
-<p>zTree这种东西，也算是一个不美观但却很直观的东西。</p>
-<hr>
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
-<li><a href="http://www.treejs.cn" target="_blank" rel="external">zTree-jQuery 树插件：http://www.treejs.cn</a></li>
-</ul>
-<hr>
-<p>说一下zTree的具体使用方法吧，基于上一篇EasyUI试试水的博客，本篇博客zTree的示例使用其已有的代码，在其之上进行开发。</p>
-<p>zTree的开发其实也是比较简单，读者可以去zTree的官网“<a href="http://www.treejs.cn" target="_blank" rel="external">zTree-jQuery 树插件</a>”下载zTree的源码，下载完之后先别急着用，继续在官网里看demo演示，demo演示里有各种树形的应用，各种奇葩的树形应用都有。看你需要哪个应用或者是需要结合起来使用，参照右侧的源码路径去找。</p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/ztreeMuchDemo.png" alt="很多ztree示例"></p>
-<p>找到之后<del>抄</del>借鉴一下代码就可以，基本上就是这个套路。</p>
-<p>一看到这种树形的视图，我就想到了json。zTree的想法和我一样，生成zTree树形结构视图用到的数据就是json。但是zTree大概比我更聪明，因为它为了让json的排版不过于复杂，提供了一种简单json的表示方法。先来看看用标准json数据生成树形视图</p>
-<h3 id="标准json树"><a href="#标准json树" class="headerlink" title="标准json树"></a>标准json树</h3><p>首先需要在页面引入zTree相关的js与css文件，在EasyUITest工程中，在web/js将jquery.ztree.js复制进来，另外在web/css目录下将zTreeStyle文件夹复制进来。现在整个工程的目录结构如下：</p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/ztreemulu.png" alt="工程目录"></p>
-<p>在原来的index.jsp文件里再引入上面添加的两个文件。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;link rel=<span class="string">"stylesheet"</span> href=<span class="string">"$&#123;pageContext.request.contextPath &#125;/css/zTreeStyle.css"</span> type=<span class="string">"text/css"</span>&gt;</div><div class="line">&lt;script type="text/javascript" src="$&#123;pageContext.request.contextPath &#125;/js/jquery.ztree.all-3.5.js"&gt;&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>在ERP系统中，树形结构的视图一般是放在EasyUI的west区域中，与center区域关联，也就是点击west区域树形结构的子节点，center区域的tab就会显示子节点对应的业务视图。给一张图说明吧<br><img src="http://onv8ytvk1.bkt.clouddn.com/erp%E7%A4%BA%E4%BE%8B.png" alt="ERP示例"><br>西侧的那个可以折叠的面板就是。</p>
-<p>那就在west的div标签里加树形结构图试试水。先来标准的json文件生成树形图加在面板一里，面板二三四待会一步一步加深难度。</p>
-<p>在div标签体内添加一个ul标签<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;ul id=<span class="string">"ztree1"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"ztree"</span>&gt;&lt;/ul&gt;</div></pre></td></tr></table></figure></p>
-<p>class位ztree是必须的，一般的前端框架都是拿class来搞事，这是约定成俗。之后要拿json数据来生成ztree树，生成是一种行为，是要祭出JavaScript了，代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">	$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		<span class="comment">//当页面加载完成后，动态创建ztree菜单</span></div><div class="line">		<span class="keyword">var</span> setting = &#123;&#125;;<span class="comment">//设置ztree相关的属性</span></div><div class="line">		<span class="comment">//构造json数据</span></div><div class="line">		<span class="keyword">var</span> zNodes = [</div><div class="line">		              &#123;<span class="attr">name</span>:<span class="string">'系统管理'</span>&#125;,<span class="comment">//每个json对象对应一个节点数据</span></div><div class="line">		              &#123;<span class="attr">name</span>:<span class="string">'用户管理'</span>,<span class="attr">children</span>:[</div><div class="line">		                                     	&#123;<span class="attr">name</span>:<span class="string">'用户添加'</span>&#125;,</div><div class="line">		                                     	&#123;<span class="attr">name</span>:<span class="string">'用户修改'</span>&#125;</div><div class="line">		                                     ]&#125;,<span class="comment">//每个json对象对应一个节点数据</span></div><div class="line">		              &#123;<span class="attr">name</span>:<span class="string">'权限管理'</span>&#125;<span class="comment">//每个json对象对应一个节点数据</span></div><div class="line">		              ];</div><div class="line">		<span class="comment">//创建ztree</span></div><div class="line">		$.fn.zTree.init($(<span class="string">"#ztree1"</span>),setting,zNodes);</div><div class="line">	&#125;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>看这个json很容易看出就是一个二级菜单，用户管理下还有用户添加与用户修改两个子节点。setting为空即使用默认的配置，也就是标准json。最下面那条长的语句就是生成树形视图语句，第一个参数是在哪个ul标签下生成树，第二个参数为设定，第三个为json数据。</p>
-<p>重新部署项目之后运行，可以得到下图所示结果。<br><img src="http://onv8ytvk1.bkt.clouddn.com/ztreesimplejson.png" alt="ztreeSimpleJsonDemo"><br>西侧那个就是。</p>
-<h3 id="简单json树"><a href="#简单json树" class="headerlink" title="简单json树"></a>简单json树</h3><p>首先得什么叫简单json，我一开始看还以为是什么高大上的东西，其实也就是json，json还能难到哪去。简单json只是有特定格式的json，ztree刚好能从这些json数据里解析出树形结构的逻辑关系。直接给出例子更直观：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&#123;<span class="attr">id</span>:<span class="string">'1'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'系统管理'</span>&#125;,</div><div class="line">&#123;<span class="attr">id</span>:<span class="string">'2'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'用户管理'</span>&#125;,</div><div class="line">&#123;<span class="attr">id</span>:<span class="string">'21'</span>,<span class="attr">pId</span>:<span class="string">'2'</span>,<span class="attr">name</span>:<span class="string">'用户添加'</span>&#125;,</div><div class="line">&#123;<span class="attr">id</span>:<span class="string">'22'</span>,<span class="attr">pId</span>:<span class="string">'2'</span>,<span class="attr">name</span>:<span class="string">'用户修改'</span>&#125;,</div><div class="line">&#123;<span class="attr">id</span>:<span class="string">'3'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'权限管理'</span>&#125;</div></pre></td></tr></table></figure></p>
-<p>这样的简单json只是排版起来更直观一点。具体的含义也能看出来pId的意思就是parentID，父节点的ID，0的话就表示根节点。下面拿面板二来做示范</p>
-<p>首先还是在div里添加ul标签<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;ul id=<span class="string">"ztree2"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"ztree"</span>&gt;&lt;/ul&gt;</div></pre></td></tr></table></figure></p>
-<p>生成树的javascript代码<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">	$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		<span class="keyword">var</span> setting = &#123;</div><div class="line">		    <span class="attr">data</span> : &#123;</div><div class="line">		        <span class="attr">simpleData</span> : &#123;</div><div class="line">		            <span class="attr">enable</span> : <span class="literal">true</span></div><div class="line">		        &#125;</div><div class="line">		    &#125;</div><div class="line">		&#125;;</div><div class="line">		<span class="keyword">var</span> zNodes = [</div><div class="line">		            &#123;<span class="attr">id</span>:<span class="string">'1'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'系统管理'</span>&#125;,</div><div class="line">	                    &#123;<span class="attr">id</span>:<span class="string">'2'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'用户管理'</span>&#125;,</div><div class="line">	                    &#123;<span class="attr">id</span>:<span class="string">'21'</span>,<span class="attr">pId</span>:<span class="string">'2'</span>,<span class="attr">name</span>:<span class="string">'用户添加'</span>&#125;,</div><div class="line">	                    &#123;<span class="attr">id</span>:<span class="string">'22'</span>,<span class="attr">pId</span>:<span class="string">'2'</span>,<span class="attr">name</span>:<span class="string">'用户修改'</span>&#125;,</div><div class="line">	                    &#123;<span class="attr">id</span>:<span class="string">'3'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'权限管理'</span>&#125;</div><div class="line">		              ];</div><div class="line">		$.fn.zTree.init($(<span class="string">"#ztree2"</span>),setting,zNodes);</div><div class="line">	&#125;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>简单json生成树的方法就是将setting里添加了data，将simpleData的enable设置成了true。重新部署之后看页面,与标准json的是一毛一样<br><img src="http://onv8ytvk1.bkt.clouddn.com/ztreeTrueSimpleJson.png" alt="ztreeTrueSimpleJsonDemo"></p>
-<h3 id="高级点儿的应用"><a href="#高级点儿的应用" class="headerlink" title="高级点儿的应用"></a>高级点儿的应用</h3><p>不是说前端不重要，但是纯粹的前端肯定是上不了台面的。牛逼的项目还是得有强大的后台。这个生成树也是一样，直接在前端的javascript里写死树的结构肯定是不行的。实际的项目里这些树的结构与信息都是存储在数据库里，前端通过发送请求给后台，后台通过查询数据库获取数据之后再返还给前端，前端拿这些数据来生成树结构。</p>
-<p>在本博客的应用里，简化过程为前端发送请求给后台，后台不查询数据库直接返还json数据给前端，前端再拿这些json数据生成ztree树。反正前端的代码是一样的，后台查不查数据库不关前端的事，这篇博客只讨论ztree的生成。就拿面板三来做示范吧</p>
-<p>首先在后台web目录下创建json文件夹，在json文件夹里创建tree.json文件，tree.json如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[</div><div class="line">    &#123;<span class="attr">id</span>:<span class="string">'1'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'系统管理'</span>,<span class="attr">page</span>:<span class="string">'系统管理'</span>&#125;,</div><div class="line">    &#123;<span class="attr">id</span>:<span class="string">'2'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'用户管理'</span>&#125;,</div><div class="line">    &#123;<span class="attr">id</span>:<span class="string">'21'</span>,<span class="attr">pId</span>:<span class="string">'2'</span>,<span class="attr">name</span>:<span class="string">'用户添加'</span>,<span class="attr">page</span>:<span class="string">'用户添加'</span>&#125;,</div><div class="line">    &#123;<span class="attr">id</span>:<span class="string">'22'</span>,<span class="attr">pId</span>:<span class="string">'2'</span>,<span class="attr">name</span>:<span class="string">'用户修改'</span>,<span class="attr">page</span>:<span class="string">'用户修改'</span>&#125;,</div><div class="line">    &#123;<span class="attr">id</span>:<span class="string">'3'</span>,<span class="attr">pId</span>:<span class="string">'0'</span>,<span class="attr">name</span>:<span class="string">'权限管理'</span>,<span class="attr">page</span>:<span class="string">'权限管理'</span>&#125;</div><div class="line">];</div></pre></td></tr></table></figure></p>
-<p>再回到前端，第一步添加ul标签是肯定的<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;ul id=<span class="string">"ztree3"</span> <span class="class"><span class="keyword">class</span></span>=<span class="string">"ztree"</span>&gt;&lt;/ul&gt;</div></pre></td></tr></table></figure></p>
-<p>再之后这个js代码就有点小复杂了，姑且先贴出来再分析分析吧<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line">&lt;script type=<span class="string">"text/javascript"</span>&gt;</div><div class="line">	$(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">		<span class="keyword">var</span> setting = &#123;</div><div class="line">			<span class="attr">data</span> : &#123;</div><div class="line">				<span class="attr">simpleData</span> : &#123;</div><div class="line">					<span class="attr">enable</span> : <span class="literal">true</span></div><div class="line">				<span class="comment">//启用简单json数据描述节点数据 </span></div><div class="line">				&#125;</div><div class="line">			&#125;,</div><div class="line">			<span class="attr">callback</span>: &#123;<span class="comment">//绑定事件 </span></div><div class="line">				onClick: <span class="function"><span class="keyword">function</span>(<span class="params">(events, treeId,treeNode</span>)</span>&#123;</div><div class="line">					<span class="keyword">var</span> page = treeNode.page;</div><div class="line">					<span class="keyword">if</span>(page != <span class="literal">undefined</span>)&#123;<span class="comment">//需要打开选项卡</span></div><div class="line">						<span class="comment">//判断当前选项卡是否已经打开</span></div><div class="line">						<span class="keyword">var</span> e = $(<span class="string">"#tt"</span>).tabs(<span class="string">"exists"</span>,treeNode.name);</div><div class="line">						<span class="keyword">if</span>(e)&#123;</div><div class="line">							<span class="comment">//已经打开</span></div><div class="line">							$(<span class="string">"#tt"</span>).tabs(<span class="string">"select"</span>,treeNode.name);</div><div class="line">						&#125;<span class="keyword">else</span>&#123;</div><div class="line">							$(<span class="string">"#tt"</span>)</div><div class="line">							.tabs(</div><div class="line">									<span class="string">"add"</span>,</div><div class="line">									&#123;</div><div class="line">										<span class="attr">title</span> : treeNode.name,</div><div class="line">										<span class="attr">content</span> : page,</div><div class="line">										<span class="attr">closable</span> : <span class="literal">true</span>,</div><div class="line">										<span class="attr">iconCls</span> : <span class="string">'icon-edit'</span></div><div class="line">									&#125;);</div><div class="line">						&#125;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;;<span class="comment">//设置ztree相关的属性</span></div><div class="line">	    <span class="comment">//发送ajax请求获取json数据构造ztree</span></div><div class="line">	    <span class="keyword">var</span> url = <span class="string">"$&#123;pageContext.request.contextPath&#125;/json/tree.json"</span>;</div><div class="line">		$.post(url,&#123;&#125;,<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">			<span class="comment">//创建ztree</span></div><div class="line">			$.fn.zTree.init($(<span class="string">"#ztree3"</span>), setting, data);</div><div class="line">		&#125;,<span class="string">'json'</span>);</div><div class="line">	&#125;);</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure></p>
-<p>先看最后几行代码，这段代码里最后那个post方法才是用ajax请求后台的tree.json来生成ztree树。关于ajax的原理不明白的可以去网上搜，后续的博客我会再写，因为我也忘了具体的原理只知道用jQuery来一个函数搞定。关于post方法里的参数，第一个url不用说，就是请求的具体资源位置；第二参数是发送到服务器的数据，这里目前是不需要所以为空；第三个是回调函数，函数的参数data就是得到的json数据。具体函数里的tree生成方法和上述的一样，这就是使用ajax与后台交互得到json数据来生成ztree树。</p>
-<p>但是，但是得到ztree树你也干不了啥，谈不上应用对吧。这一节名字叫做高级点儿的应用还是要有点应用的样子才行，所以就多出来了那一段长长的代码，其实就是为setting添加了一个callback的属性。关于callback属性的详细说明可以查看“<a href="http://www.treejs.cn" target="_blank" rel="external">zTree-jQuery 树插件</a>”官网。callback里有一个onClick属性，顾名思义就是点击事件，意思就是对每一个节点（父节点和子节点都包括）的点击事件。官方文档里说，这个onClick函数有三个参数：event, treeId,treeNode，文档原文是这么说的：</p>
-<ul>
-<li>event：标准的 js event 对象</li>
-<li>treeId：对应 zTree 的 treeId，便于用户操控</li>
-<li>treeNode：被点击的节点 JSON 数据对象</li>
-</ul>
-<p>前两个我没有细究过，有兴趣自己去看文档，第三个treeNode是本次应用关注的重点。</p>
-<p><strong>模拟大多数传统的ERP应用，这次应用的目的是要达到一个点击树的叶子节点，如果对应tab不存在就添加这个tab，如果已经存在就选中它。</strong></p>
-<p>先放一下代码，回到后台的tree.json文件里，可以看到我为某些节点设置了page属性，某些没有，聪明的你可能还没有发现是为什么，更聪明的我就大发慈悲的告诉你设置了page的都是叶节点，是为了区分点击节点之后的效果而设置的。</p>
-<p>下面在回到代码，现在再看代码是不是就豁然开朗了，先获取单节点的page属性，如果是undefined，也就是非叶节点就跳过，叶节点就再看是否已经打开tab，打开了就选中，没打开就添加。关于tab的操作方法可以参照EasyUI的官方文档。</p>
-<p>妥了，部署项目，下面是具体效果图。<br><img src="http://onv8ytvk1.bkt.clouddn.com/zuizhong.png" alt="zuizhongxingtai"></p>
-<p>zTree的简单介绍就到这里，更细更高级的东西请看文档与源码。我懒，不想看···今天就到这里了</p>
-<hr>
-<h3 id="代码repo：https-github-com-kentwood-EasyUITest"><a href="#代码repo：https-github-com-kentwood-EasyUITest" class="headerlink" title="代码repo：https://github.com/kentwood/EasyUITest"></a><a href="https://github.com/kentwood/EasyUITest" target="_blank" rel="external">代码repo：https://github.com/kentwood/EasyUITest</a></h3>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;zTree的简单使用&quot;&gt;&lt;a href=&quot;#zTree的简单使用&quot; class=&quot;headerlink&quot; title=&quot;zTree的简单使用&quot;&gt;&lt;/a&gt;zTree的简单使用&lt;/h2&gt;&lt;hr&gt;
-&lt;p&gt;今天总算是发工资了，工资比我想的还是低了些，因为只有四位数，但是也
-    
-    </summary>
-    
-      <category term="前端" scheme="http://yoursite.com/categories/%E5%89%8D%E7%AB%AF/"/>
-    
-    
-      <category term="前端" scheme="http://yoursite.com/tags/%E5%89%8D%E7%AB%AF/"/>
-    
-      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
     
   </entry>
   
