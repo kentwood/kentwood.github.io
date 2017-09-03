@@ -1,0 +1,1057 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="入门,Spring,SpringBoot," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="我要码代码" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="马上就要去参加公司的培训了，感觉好紧张。真是不想去军训。捉鸡
+接着SpringBoot入门（二）来
+
+参考资料
+2小时学会SpringBoot
+IntelliJ Idea SpringBoot 数据库增删改查实例
+2小时学会SpringBoot实例代码
+
+
+SpringBoot数据库增删改查实例Restful与ControllerRestful交互方式是现在流行的一种，SpringBoot同样作为">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringBoot入门（三）">
+<meta property="og:url" content="http://yoursite.com/2017/09/03/SpringBoot入门（三）/index.html">
+<meta property="og:site_name" content="我要码代码">
+<meta property="og:description" content="马上就要去参加公司的培训了，感觉好紧张。真是不想去军训。捉鸡
+接着SpringBoot入门（二）来
+
+参考资料
+2小时学会SpringBoot
+IntelliJ Idea SpringBoot 数据库增删改查实例
+2小时学会SpringBoot实例代码
+
+
+SpringBoot数据库增删改查实例Restful与ControllerRestful交互方式是现在流行的一种，SpringBoot同样作为">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-1.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-2.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-3.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-4.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-5.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-6.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-7.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-8.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-9.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-10.png">
+<meta property="og:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-11.png">
+<meta property="og:updated_time" content="2017-09-03T02:19:49.657Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SpringBoot入门（三）">
+<meta name="twitter:description" content="马上就要去参加公司的培训了，感觉好紧张。真是不想去军训。捉鸡
+接着SpringBoot入门（二）来
+
+参考资料
+2小时学会SpringBoot
+IntelliJ Idea SpringBoot 数据库增删改查实例
+2小时学会SpringBoot实例代码
+
+
+SpringBoot数据库增删改查实例Restful与ControllerRestful交互方式是现在流行的一种，SpringBoot同样作为">
+<meta name="twitter:image" content="http://onv8ytvk1.bkt.clouddn.com/springboot-3-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/09/03/SpringBoot入门（三）/"/>
+
+
+
+
+
+  <title> SpringBoot入门（三） | 我要码代码 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">我要码代码</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocapitalize="off" autocomplete="off" autocorrect="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/03/SpringBoot入门（三）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="王苏苏">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="我要码代码">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                SpringBoot入门（三）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-03T10:18:56+08:00">
+                2017-09-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/SpringBoot/" itemprop="url" rel="index">
+                    <span itemprop="name">SpringBoot</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a class="cloud-tie-join-count" href="/2017/09/03/SpringBoot入门（三）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count join-count" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>马上就要去参加公司的培训了，感觉好紧张。真是不想去军训。捉鸡</p>
+<p>接着SpringBoot入门（二）来</p>
+<hr>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.imooc.com/learn/767" target="_blank" rel="external">2小时学会SpringBoot</a></li>
+<li><a href="http://blog.csdn.net/Peng_Hong_fu/article/details/53691705" target="_blank" rel="external">IntelliJ Idea SpringBoot 数据库增删改查实例</a></li>
+<li><a href="http://git.oschina.net/lonecloud/springBoot-imooc-girl" target="_blank" rel="external">2小时学会SpringBoot实例代码</a></li>
+</ul>
+<hr>
+<h2 id="SpringBoot数据库增删改查实例"><a href="#SpringBoot数据库增删改查实例" class="headerlink" title="SpringBoot数据库增删改查实例"></a>SpringBoot数据库增删改查实例</h2><h3 id="Restful与Controller"><a href="#Restful与Controller" class="headerlink" title="Restful与Controller"></a>Restful与Controller</h3><p>Restful交互方式是现在流行的一种，SpringBoot同样作为流行高逼格的框架，当然也得有支持Restful开发的方式。具体的体现就是在Controller的注解上。</p>
+<p>首先是Controller类上的注解。之前SpringMVC使用Restful的时候，需要在Controller类上写@Controller与@ResponseBody两个注解。而在SpringBoot中，只需要使用一个@RestController即可，用来返回json。</p>
+<p>另外，参考<a href="http://www.wangsusu.com.cn/2017/05/07/Restful_API%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97/" target="_blank" rel="external">Restful_API设计指南</a>，这篇博客，Restful中将对数据库的增删改查与http的方法对应的起来。可以参考教程上的图片</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-1.png" alt=""></p>
+<p>那么这些GET，POST，DELETE等http方法，在controller里也有对应的注解来表示。</p>
+<p>SpringMVC中Controller采用如下的注解来规定只能用对应的http方法访问<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.GET)</div><div class="line">@RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.POST)</div><div class="line">@RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.DELETE)</div><div class="line">@RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.PUT)</div></pre></td></tr></table></figure></p>
+<p>而在SpringBoot中增加了如下注解来简化：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@GetMapping(value = <span class="string">"/girls"</span>)</div><div class="line">@PostMapping(value = <span class="string">"/girls"</span>)</div><div class="line">@PutMapping(value = <span class="string">"/girls/&#123;id&#125;"</span>)</div><div class="line">@DeleteMapping(value = <span class="string">"/girls/&#123;id&#125;"</span>)</div></pre></td></tr></table></figure></p>
+<h3 id="spring-data-jpa"><a href="#spring-data-jpa" class="headerlink" title="spring-data-jpa"></a>spring-data-jpa</h3><p>第一次用这种东西，以前用的都是直接使用框架Hibernate，Mybatis啥的。</p>
+<p>JPA全称Java Persistence API.JPA通过JDK 5.0注解或XML描述对象－关系表的映射关系，并将运行期的实体对象持久化到数据库中。</p>
+<p>Hibernate3.2+、TopLink 10.1.3以及OpenJPA都提供了JPA的实现。</p>
+<p>这种东西用起来和hibernate应该是差不多。</p>
+<h3 id="利用jpa创建数据库"><a href="#利用jpa创建数据库" class="headerlink" title="利用jpa创建数据库"></a>利用jpa创建数据库</h3><p>重新建一个SpringBoot项目，与（一）中的步骤一样，选web就好。</p>
+<p>首先得在pom.xml里加入jpa与mysql-connector的依赖<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line"></div><div class="line">&lt;dependency&gt;</div><div class="line">	&lt;groupId&gt;mysql&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
+<p>之后把配置文件改为yml格式，写入如下内容<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">spring:</div><div class="line">  profiles:</div><div class="line">    active: a</div><div class="line">  datasource:</div><div class="line">      driver-class-name: com.mysql.jdbc.Driver</div><div class="line">      url: jdbc:mysql://127.0.0.1:3306/sb_fatty</div><div class="line">      username: root</div><div class="line">      password: a4570155</div><div class="line"></div><div class="line">  jpa:</div><div class="line">    hibernate:</div><div class="line">      ddl-auto: update</div><div class="line">    show-sql: true</div><div class="line">    </div><div class="line">server:</div><div class="line">  context-path: /fattyProj</div><div class="line">  port: 80</div></pre></td></tr></table></figure></p>
+<p>注意行的间距不能错，jpa属于sping下的东西。spring-boot-start-data-jpa应该是直接把hibernate的jar包也封装进去了。用起来非常方便，但是也越来越傻了。我觉得是好事。</p>
+<p>之后需要在数据库里新建一个数据库叫sb_fatty，sb是springboot的意思，不是shabi。</p>
+<p>之后创建一个Fatty实例，<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.entity;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.persistence.Entity;</div><div class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</div><div class="line"><span class="keyword">import</span> javax.persistence.Id;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/11.</div><div class="line"> */</div><div class="line">@Entity</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Fatty</span> </span>&#123;</div><div class="line">    @Id</div><div class="line">    @GeneratedValue</div><div class="line">    private Integer id;</div><div class="line"></div><div class="line">    private <span class="built_in">String</span> name;</div><div class="line"></div><div class="line">    private Integer age;</div><div class="line"></div><div class="line">    private Integer weight;</div><div class="line"></div><div class="line">    public Fatty() &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个Fatty实例用来映射数据库，首先需要在类上加入@Entity注解，之后在主键id上加入@Id，@GeneratedValue注解分别用来表示主键与自增长。另外默认构造函数一定要有，所有属性的getter与setter方法也必须有。</p>
+<p>然后先试着运行一下程序。完事之后应该可以看见sb_fatty数据库里有了fatty表</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-2.png" alt=""></p>
+<p>之后新建一个dao包，写个FattyRepository。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.dao;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.just4fun.entity.Fatty;</div><div class="line"><span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/11.</div><div class="line"> */</div><div class="line">public interface FattyRepository extends JpaRepository&lt;Fatty, Integer&gt; &#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个FattyRepository接口什么也没有，只是继承了JpaRepository，因为这个JpaRepository已经提供了数据库增删改查，查所有等基本方法。</p>
+<p>之后写FattyController<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.just4fun.dao.FattyRepository;</div><div class="line"><span class="keyword">import</span> com.just4fun.entity.Fatty;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/11.</div><div class="line"> */</div><div class="line">@RestController</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">FattyController</span> </span>&#123;</div><div class="line">    @Autowired</div><div class="line">    FattyRepository fattyRepository;</div><div class="line"></div><div class="line">    @GetMapping(<span class="string">"/fatty"</span>)</div><div class="line">    public List&lt;Fatty&gt; fattyList() &#123;</div><div class="line">        <span class="keyword">return</span> fattyRepository.findAll();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>注入FattyRepository，方法里写findAll()就会查找到所有的肥宅。</p>
+<p>接下来试试水，在数据库里手动添加两条数据</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-3.png" alt=""></p>
+<p>运行程序，可以得到返回正确的json结果，测试的话采用chrome插件postman，装chrome插件需要科学上网。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-4.png" alt=""></p>
+<p>同时可以看见控制台输出了<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hibernate: select fatty0_.id <span class="keyword">as</span> id1_0_, fatty0_.age <span class="keyword">as</span> age2_0_, fatty0_.name <span class="keyword">as</span> name3_0_, fatty0_.weight <span class="keyword">as</span> weight4_0_ <span class="keyword">from</span> fatty fatty0_</div></pre></td></tr></table></figure></p>
+<p>下面补全增删改查的所有操作，在Controller里补全方法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.just4fun.dao.FattyRepository;</div><div class="line"><span class="keyword">import</span> com.just4fun.entity.Fatty;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/11.</div><div class="line"> */</div><div class="line">@RestController</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">FattyController</span> </span>&#123;</div><div class="line">    @Autowired</div><div class="line">    FattyRepository fattyRepository;</div><div class="line"></div><div class="line">    @GetMapping(<span class="string">"/fatty"</span>)</div><div class="line">    public List&lt;Fatty&gt; fattyList() &#123;</div><div class="line">        <span class="keyword">return</span> fattyRepository.findAll();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @PostMapping(<span class="string">"/fatty"</span>)</div><div class="line">    public Fatty fattyAdd(@RequestParam(<span class="string">"name"</span>) <span class="built_in">String</span> name,</div><div class="line">                          @RequestParam(<span class="string">"age"</span>) Integer age,</div><div class="line">                          @RequestParam(<span class="string">"weight"</span>) Integer weight) &#123;</div><div class="line">        Fatty fatty = <span class="keyword">new</span> Fatty();</div><div class="line">        fatty.setName(name);</div><div class="line">        fatty.setAge(age);</div><div class="line">        fatty.setWeight(weight);</div><div class="line">        <span class="keyword">return</span> fattyRepository.save(fatty);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @DeleteMapping(<span class="string">"/fatty/&#123;id&#125;"</span>)</div><div class="line">    public <span class="keyword">void</span> fattyDelete(@PathVariable(<span class="string">"id"</span>) Integer id) &#123;</div><div class="line">        fattyRepository.delete(id);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @PutMapping(<span class="string">"/fatty/&#123;id&#125;"</span>)</div><div class="line">    public Fatty fattyUpdate(@PathVariable(<span class="string">"id"</span>) Integer id,</div><div class="line">                             @RequestParam(<span class="string">"name"</span>) <span class="built_in">String</span> name,</div><div class="line">                             @RequestParam(<span class="string">"age"</span>) Integer age,</div><div class="line">                             @RequestParam(<span class="string">"weight"</span>) Integer weight) &#123;</div><div class="line">        Fatty fatty = <span class="keyword">new</span> Fatty();</div><div class="line">        fatty.setId(id);</div><div class="line">        fatty.setName(name);</div><div class="line">        fatty.setAge(age);</div><div class="line">        fatty.setWeight(weight);</div><div class="line">        <span class="keyword">return</span> fattyRepository.save(fatty);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @GetMapping(<span class="string">"fatty/&#123;id&#125;"</span>)</div><div class="line">    public Fatty fattyFindOne(@PathVariable(<span class="string">"id"</span>) Integer id)&#123;</div><div class="line">        <span class="keyword">return</span> fattyRepository.findOne(id);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来重新运行，</p>
+<ul>
+<li>测试查询单个：</li>
+</ul>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-5.png" alt=""></p>
+<ul>
+<li>测试插入方法：</li>
+</ul>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-6.png" alt=""></p>
+<p>可以看到数据库里多了肥傲天的信息。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-7.png" alt=""></p>
+<ul>
+<li>测试更新方法：</li>
+</ul>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-8.png" alt=""></p>
+<p>看数据库里的信息：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-9.png" alt=""></p>
+<ul>
+<li>测试删除方法</li>
+</ul>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-10.png" alt=""></p>
+<p>看数据库</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-11.png" alt=""></p>
+<p>妥妥的，需要注意的点是PUT方法的param，不能选择form-data传输，要选择x-www-form-urlencoded。</p>
+<p>今天的先到这里。明天继续加一点数据库内容和事务管理</p>
+<p><a href="https://github.com/kentwood/springbootfatty" target="_blank" rel="external">代码地址：https://github.com/kentwood/springbootfatty</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>老司机的面包车马上发车了，请扫描下面二维码买票上车，不要拥挤</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="http://onv8ytvk1.bkt.clouddn.com/alipay.jpg" alt="王苏苏 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/入门/" rel="tag"># 入门</a>
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+            <a href="/tags/SpringBoot/" rel="tag"># SpringBoot</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/03/SpringBoot入门（二）/" rel="next" title="SpringBoot入门（二）">
+                <i class="fa fa-chevron-left"></i> SpringBoot入门（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/03/SpringBoot入门（四）/" rel="prev" title="SpringBoot入门（四）">
+                SpringBoot入门（四） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="王苏苏" />
+          <p class="site-author-name" itemprop="name">王苏苏</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/kentwood" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/elizajiang" target="_blank" title="Weibo">
+                  
+                    <i class="fa fa-fw fa-weibo"></i>
+                  
+                  Weibo
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#参考资料"><span class="nav-number">1.</span> <span class="nav-text">参考资料</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringBoot数据库增删改查实例"><span class="nav-number"></span> <span class="nav-text">SpringBoot数据库增删改查实例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Restful与Controller"><span class="nav-number">1.</span> <span class="nav-text">Restful与Controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#spring-data-jpa"><span class="nav-number">2.</span> <span class="nav-text">spring-data-jpa</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用jpa创建数据库"><span class="nav-number">3.</span> <span class="nav-text">利用jpa创建数据库</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">王苏苏</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+    
+    <script>
+      var cloudTieConfig = {
+        url: document.location.href, 
+        sourceId: "",
+        productKey: "1b04d849e6a34facabf14cca03199bc1",
+        target: "cloud-tie-wrapper"
+      };
+    </script>
+    <script src="https://img1.ws.126.net/f2e/tie/yun/sdk/loader.js"></script>
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+      search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.popup').toggle();
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+      $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = $( "entry", xmlResponse ).map(function() {
+            return {
+              title: $( "title", this ).text(),
+              content: $("content",this).text(),
+              url: $( "url" , this).text()
+            };
+          }).get();
+          var $input = document.getElementById(search_id);
+          var $resultContent = document.getElementById(content_id);
+          $input.addEventListener('input', function(){
+            var matchcounts = 0;
+            var str='<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length > 1) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var content_index = [];
+                var data_title = data.title.trim().toLowerCase();
+                var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                var data_url = decodeURIComponent(data.url);
+                var index_title = -1;
+                var index_content = -1;
+                var first_occur = -1;
+                // only match artiles with not empty titles and contents
+                if(data_title != '') {
+                  keywords.forEach(function(keyword, i) {
+                    index_title = data_title.indexOf(keyword);
+                    index_content = data_content.indexOf(keyword);
+                    if( index_title >= 0 || index_content >= 0 ){
+                      isMatch = true;
+                      if (i == 0) {
+                        first_occur = index_content;
+                      }
+                    }
+
+                  });
+                }
+                // show search results
+                if (isMatch) {
+                  matchcounts += 1;
+                  str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                  var content = data.content.trim().replace(/<[^>]+>/g,"");
+                  if (first_occur >= 0) {
+                    // cut out 100 characters
+                    var start = first_occur - 20;
+                    var end = first_occur + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if(start == 0){
+                      end = 50;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    var match_content = content.substring(start, end);
+                    // highlight all keywords
+                    keywords.forEach(function(keyword){
+                      var regS = new RegExp(keyword, "gi");
+                      match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                    });
+
+                    str += "<p class=\"search-result\">" + match_content +"...</p>"
+                  }
+                  str += "</li>";
+                }
+              })};
+            str += "</ul>";
+            if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+            if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+            $resultContent.innerHTML = str;
+          });
+          proceedsearch();
+        }
+      });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

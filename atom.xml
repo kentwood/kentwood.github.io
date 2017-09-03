@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-03T02:17:56.498Z</updated>
+  <updated>2017-09-03T02:22:29.824Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,310 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>关于架构</title>
+    <link href="http://yoursite.com/2017/09/03/%E5%85%B3%E4%BA%8E%E6%9E%B6%E6%9E%84/"/>
+    <id>http://yoursite.com/2017/09/03/关于架构/</id>
+    <published>2017-09-03T02:21:05.000Z</published>
+    <updated>2017-09-03T02:22:29.824Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="关于架构"><a href="#关于架构" class="headerlink" title="关于架构"></a>关于架构</h2><hr>
+<p>太久没写博客了。标题起的很大，有点虚。</p>
+<p>写这篇文章是因为前段时间试着玩了下，Dubbo &amp; Zookeeper &amp; SpringBoot搭建SOA，顺带看了几篇博客，学到了点东西想写下搭建的过程。</p>
+<p>一个月前我还觉得这三个东西是宇宙无敌高大上的存在，现在一用起来，发现真是异常的方便。感觉这些东西确实是牛逼，封装的好，功能也强大。难怪这么多人推崇。</p>
+<p>但是发现光写怎样操作怎样编码有点不够，架构的基础知识应该先于技术。自己能把这东西用会也是在对架构有点理解的基础上，所以决定还是先整一篇自己关于架构的学习与理解。</p>
+<hr>
+<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><ul>
+<li><a href="http://geek.csdn.net/news/detail/73332" target="_blank" rel="external">在首席架构师手里，应用架构如此设计：http://geek.csdn.net/news/detail/73332</a></li>
+</ul>
+<h2 id="架构分类"><a href="#架构分类" class="headerlink" title="架构分类"></a>架构分类</h2><p>先简单说一下架构的基本概念吧，软件架构师应该是程序员从事技术道路的一个终极目标之一，一般说起架构师都是干了十几年的牛逼程序员才能担当的起的，其实每个行业应该都是一样，做一款产品，基础的架构的工作当然得要最有经验的人才能承担。好了，不哔哔了。</p>
+<p>在计算机软件领域，可谓是无架构，不系统，架构是大型系统的关键。从形上看，架构是系统的骨架，支撑和链接各个部分；从神上看，架构是系统的灵魂，深刻体现业务本质。</p>
+<p>对于一个计算机软件的架构，可以分为以下几种：</p>
+<ul>
+<li>业务架构</li>
+<li>技术架构</li>
+<li>应用架构</li>
+</ul>
+<p>业务架构很好理解，软件需要做什么事，满足用户怎样的需求，实现怎样的功能，这就是业务架构，这些多半是产品经理做的事情，当然如果程序员能做好拿更多工资也是妥妥的。</p>
+<p>技术架构也很好理解，就是这些功能具体的实现，比如如果我要做一个个人web网页，前端使用html/css/js语言，采用angularjs框架，ajax与后台交互，部署在nginx服务器上。后台采用java语言，springboot一站式解决。数据库。前后交互采用json数据格式。</p>
+<p>应用架构是本文要说的重点了，应用架构是衡量架构师6不6的精髓了，应用架构是作为一个承上启下的的作用，一方面承接业务架构的落地，另一方面影响技术选型。</p>
+<h2 id="应用架构"><a href="#应用架构" class="headerlink" title="应用架构"></a>应用架构</h2><p>理解应用架构先要理解什么是应用，应用是系统中独立的部署单元，是系统划分明确的边界。而应用架构定义系统有哪些应用，以及应用之间是如何分工与合作的。</p>
+<p>应用的分，主要有两种方式，</p>
+<ul>
+<li>水平划分，在javaweb项目中，习惯把系统拆分成web前端/controller或action层/service层/dao层/数据库，这是面向业务深度的划分</li>
+<li>垂直划分，按照不同的业务类型划分应用。举个栗子，比如一个商城系统，可以类比淘宝，有商品应用，客户可以访问淘宝网，购买商品；另外与商家交谈，淘宝还提供了阿里旺旺的应用，在具体的商品页里点击交谈客服就可以发送商品订单详情给商家客服的阿里旺旺。这是应用之间的交互。然后和商家砍价之后，商家可以修改你的价格。这就是应用与应用之间的交互</li>
+</ul>
+<p>而应用的合，反应应用之间如何协作，共同完成复杂的业务。主要体现在应用的通讯机制与数据格式，通讯机制包括同步调用/异步消息/共享DB等，数据格式可以是文本/xml/json/二进制等。</p>
+<p>总之，应用架构的本质是通过系统的拆分，平衡业务和技术的复杂性，保证系统形散神不散。</p>
+<p>以上的话是从参考文献的文档里抄的加上了点自己的理解，还是有点玄。没事，硬着头皮看应用架构的分类就能理解了。</p>
+<h3 id="单体式应用"><a href="#单体式应用" class="headerlink" title="单体式应用"></a>单体式应用</h3><h4 id="架构模型"><a href="#架构模型" class="headerlink" title="架构模型"></a>架构模型</h4><p>单体式算是架构里最简单的了，单体表示系统只有一个应用，所有的代码放在一个工程里管理，打包成一个应用，部署在一台机器，在一个DB里存储数据，java初学者们写的应用，一般都是单体式应用。拿一个最开始写的javaweb层次结构来看，图形结构类似如下：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou01.jpg" alt=""></p>
+<p>单体式的应用采用分层架构，按照调用的顺序，从上到下一般为表示层，业务层，数据访问层，DB层，表示层负责用户的体验（html，css，js），业务层负责业务逻辑，数据访问层负责DB层的数据存取</p>
+<p>单体应用在水平方向上，上下层之间的职责划分清晰；但是垂直方向上缺乏清晰的边界，上下层模块间是多对多的依赖关系。</p>
+<p>单体应用通过水平分层，降低了业务复杂性；同时模块间是进程内部调用，技术实现简单。</p>
+<p>单体应用对系统的切分不彻底，只有水平切分，并且是逻辑上的，因此适合的业务比较单一但是深度上比较复杂的系统，比如网络协议，从应用层/传输层/网络层/链路层，层层递进，类似这样的系统可以方便的增加水平层次去适配。</p>
+<p>对于广度上复杂的业务，由于缺乏垂直切分，强行把不同业务绑定在一起，会导致系统的维护困难等一系列问题。OTA（Online Trave Agent）网站包括机票\酒店\旅游等多个垂直业务板块，每个板块比较独立，不适合放在一起开发。</p>
+<h4 id="优缺点"><a href="#优缺点" class="headerlink" title="优缺点"></a>优缺点</h4><p>单体应用的优缺点还是比较明显的。</p>
+<h5 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h5><ul>
+<li>现有IDE都是集成开发环境，非常适合单体式应用的开发、编译调试，基本上一站式搞定，非常爽</li>
+<li>运行在一个物理结点，环境单一，运行稳定，故障恢复简单</li>
+</ul>
+<h5 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h5><ul>
+<li>业务边界模糊，模块职责不清晰，当系统逐渐变大，代码依赖复杂，难以维护</li>
+<li>所有人同时在一个工程上开发，容易发生代码修改冲突，依赖复杂导致项目协调困难，并且局部修改影响不可知，需要全覆盖测试，需要重新部署，难以支持大团队并行开发</li>
+<li>当系统很大时，编译和部署耗时</li>
+<li>应用水平扩展难，一方面状态再应用内部管理，无法透明路由；另一方面，不同模块对资源需求差异大，当业务量增大时，一视同仁地为所有模块增加机器导致硬件浪费</li>
+</ul>
+<h3 id="分布式应用"><a href="#分布式应用" class="headerlink" title="分布式应用"></a>分布式应用</h3><h4 id="架构模型-1"><a href="#架构模型-1" class="headerlink" title="架构模型"></a>架构模型</h4><p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou02.jpg" alt=""></p>
+<p>分布式架构应用中，应用是相互独立的，每个应用代码独立开发，独立部署，应用通过有限的API接口互相关联。API接口属于应用的一部分，一般和表示层处于同一个层次（这里的表示层，如果套用在JavaWeb开发里应该是理解成controller层），两者共享业务逻辑层，API和表示层采用同样的web端技术，通讯协议一般使用HTTP，数据格式是JSON，应用集成方式比较简单。</p>
+<p>分布式架构首先对系统按照业务进行垂直划分，对广度上复杂的业务实现了物理解耦，单个应用内部还是水平切分，对深度上复杂的业务也实现了逻辑解耦。分布式架构可以解决业务量大的问题，对于某些高并发/大流量系统，把系统切分为不同应用，针对资源需求特点(比如CPU/IO/存储密集型)，通过加强硬件配置满足不同应用需求，避免一刀切方式带来的资源浪费。</p>
+<p>技术上，API采用标准的HTTP/JSON进行通讯，调用双方实现难度都不大，但是API一般都是“裸奔”的，在系统层面，调用依赖关系不透明，调用可靠性缺乏保障，因此只使用应用之间链路较少，调用量不大的系统，即应用之间耦合确实够松的系统。</p>
+<h4 id="优缺点-1"><a href="#优缺点-1" class="headerlink" title="优缺点"></a>优缺点</h4><p>分布式架构的每个应用内部高内聚，独立开发、测试和部署，支持敏捷开发；同时应用之间松耦合，业务边界清晰，业务依赖明确，支持大项目并行开发，实现业务敏捷。</p>
+<p>在分布式架构中，应用的表示层和API没有物理分离，需要同时满足自身业务需求和关联业务需求，相互影响，比如API接口会随外部应用的需求经常变化，导致整个应用重新部署。</p>
+<p>在运行时，API以HTTP/JSON方式通过网络对外提供接口，其通信可靠性和数据的封装性相对于进程内调用比较差，如果没有一些可靠的技术机制，如路由保障/失败重试/监控等，裸奔API的方式将严重影响系统整体可用性</p>
+<h3 id="SOA架构"><a href="#SOA架构" class="headerlink" title="SOA架构"></a>SOA架构</h3><h4 id="架构模型-2"><a href="#架构模型-2" class="headerlink" title="架构模型"></a>架构模型</h4><p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou03.jpg" alt=""></p>
+<p>SOA，Service-Oriented-Architecture，面向服务架构，广义上SOA也是分布式应用架构的一种，但是内涵不同。这里有两种类型“应用”，应用1~N是前端应用，面向用户，服务1~N是service，只提供业务逻辑和数据。这些应用都是独立部署，前端应用不再通过API直接关联，而是通过后端服务共享业务逻辑。</p>
+<p>此外相对于“裸奔”的API，SOA架构提供配套的服务治理，包括服务注册、服务路由、服务授权、服务降级、服务监控等。这些功能通过专门的中间件支持，有中心化和去中心化两种方式。具体的实现方式与框架有dubbo+zookeeper，或是springcloud等技术，在今后的博客里会讲到。</p>
+<p>SOA架构在分布式架构垂直切分的基础上，进一步把原来单体应用的业务逻辑层独立成service，做到了物理上的彻底分离。</p>
+<p>每个service专注于特定的职责，实现系统核心业务逻辑，前端应用通过调用不同service，可以完成复杂业务逻辑，解决业务深度上的问题；对于service，以共享的方式支持众多的应用，达到逻辑复用的效果。所以SOA架构既体现业务的分，又体现业务的和，更多地从业务整体上考虑系统拆分。</p>
+<p>相比分布式应用架构，基于SOA的系统有大量的service应用，整个系统基础服务调用，所以对服务依赖的透明性和服务调用的可靠性提出很高的要求，需要专门的SOA框架（dubbo）支持，还需要配套的监控体系（zookeeper）和自动化的运维系统支持，技术复杂性高，SOA框架可以集中体现一个企业IT技术能力</p>
+<h4 id="优缺点-2"><a href="#优缺点-2" class="headerlink" title="优缺点"></a>优缺点</h4><p>SOA架构优缺点如下图所示：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou04.jpg" alt=""></p>
+<p>相比较普通API方式，SOA架构更进一步：</p>
+<ul>
+<li>每个service都是浓缩的精华，聚焦某方面核心业务，同时以复用的方式供整个系统共享</li>
+<li>服务作为独立的应用，独立部署，接口清晰，很容易做自动化测试和部署</li>
+<li>服务是无状态的，很容易做水平扩展；通过容器虚拟化技术（docker，后期得学学），实现故障隔离和资源高效利用，业务量大的时候，加机器即可</li>
+<li>基于SOA的系统可以根据服务运行情况，灵活调控服务资源，包括服务上下架、服务升降级等，使系统真正具备可运营的能力</li>
+</ul>
+<p>当然SOA也带来了额外的复杂性和弊端</p>
+<ol>
+<li>系统依赖复杂，给开发/测试/部署增加难度</li>
+<li>端到端的调用链路长，可靠性降低，依赖网络状况、服务框架以及具体的service质量</li>
+<li>分布式数据一致性和分布式事务支持困难，一般通过最终一致性简化解决（这个问题没遇到过，暂时理解起来有困难）</li>
+<li>端到端的测试和排障复杂，SOA对运维提出更高要求</li>
+</ol>
+<h3 id="SOA的落地方式"><a href="#SOA的落地方式" class="headerlink" title="SOA的落地方式"></a>SOA的落地方式</h3><p>在实践中，SOA架构不断发展，具体的落地形式也多种多样。</p>
+<h4 id="面向外部SOA"><a href="#面向外部SOA" class="headerlink" title="面向外部SOA"></a>面向外部SOA</h4><p>SOA的前身是webservice，webservice初衷是企业间通过Internet进行互联，如下图</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou05.jpg" alt=""></p>
+<p>每个公司把自己的优势资源通过webservice发布，如图中天气服务/机票服务/酒店预订服务来自不同公司，其他企业可以直接调用服务或整合多个服务，实现企业间资源共享</p>
+<h4 id="面向应用SOA"><a href="#面向应用SOA" class="headerlink" title="面向应用SOA"></a>面向应用SOA</h4><p>面向应用SOA把原来单体应用里的业务逻辑剥离出来，作为单独的服务对外提供。</p>
+<p>举个栗子，一个电商有两个应用，首先是商品应用，顾客使用商品详情页，展示商品的信息、商品库存、商品价格；内部客服人员使用客服系统，根据顾客来电要求，修改订单，同时也需要获取商品的基本信息、价格信息等。</p>
+<p>如果单体应用就需要为两套应用提供不同的service层，两套service会出现重合等现象，不利于开发与维护。但是经过SOA改造，应用架构可以设计成如下图所示结构：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou06.jpg" alt=""></p>
+<p>这里的service实现底层数据对与前端页面的透明化，表示层和业务逻辑各自独立维护，同时全部业务逻辑对其他应用开放，新应用可以自由整合来自多个服务的接口，快速支持业务创新。</p>
+<p>面向应用的SOA架构对系统进行物理上的水平切分，结果是表示层单飞，逻辑层对外全开放。但每个service是原系统业务逻辑的封装，接口设计面向原应用业务case，如果其他应用的需求有差异，则自己创建service访问底层数据。如此导致service职责不够聚焦，类似的接口分散化，同时底层数据被多方修改，数据模型修改困难，数据一致性难以保障。</p>
+<p>最终系统整体依赖复杂，容易形成网状结构，修改时，往往牵一发动全身。</p>
+<h4 id="微内核SOA"><a href="#微内核SOA" class="headerlink" title="微内核SOA"></a>微内核SOA</h4><p>每个企业都有自己的核心数据，比如对于电商系统来说，用户/商品/订单/库存/价格都是核心数据，称之为主数据。微内核SOA聚焦各类主数据，封装相关表的所有访问，架构如下图</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou07.jpg" alt=""></p>
+<p>每个服务独占式地封装对应主数据表的访问，这些服务构成系统的基础服务，一起组成系统的微内核，供所有上层应用共享。</p>
+<p>微内核服务是原子服务，接口粒度比较细，可以在其上构造聚合服务，为上层应用提供粗粒度服务。可以是信息聚合，比如图中商品聚合服务整合商品的基本信息/库存/价格；也可以是流程聚合，比如下单接口，调用来自多个服务的接口，共同完成复杂的下单操作。</p>
+<p>这里服务是分层次的，聚合服务是上层，基础服务是底层，依赖规则如下：</p>
+<ul>
+<li>上层服务可以调用同层服务和基础服务</li>
+<li>基础服务是原子服务，不可相互调用</li>
+<li>前端应用可以调用聚合服务和跨层调用基础服务</li>
+</ul>
+<p>微内核的微表示服务的数量有限，接口粒度细；微内核的内核表示这些基础服务处于调用底层，负责核心数据和业务，这和操作系统的内核概念上相似，主数据相当于核心的硬件，如CPU/内存/外存等，微内核的各个基础服务分别负责这些核心资源的管理，屏蔽底层的复杂性，对上层应用提供统一入口和透明化访问。</p>
+<p>最近微服务很火，其特征是职责单一、接口粒度细、轻量级通讯协议等，微内核SOA架构有微服务的形，同时又业务内核的神，是架构形散神不散思想的很好体现，这个在淘宝，京东等大型电商系统已有丰富实践。</p>
+<h4 id="方式比较"><a href="#方式比较" class="headerlink" title="方式比较"></a>方式比较</h4><p>面向企业外部SOA，业务场景有特殊性，不深入分析，这里主要比较面向应用SOA和微内核SOA区别，一个大型B2C电商系统，应用和主数据时多对多依赖关系，如下图：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou08.jpg" alt=""></p>
+<h5 id="面向应用"><a href="#面向应用" class="headerlink" title="面向应用"></a>面向应用</h5><p>面向应用的服务从特定应用出发，整合应用相关数据的访问需求；微内核服务从特定主数据为中心，收敛各个业务对数据的访问需求</p>
+<p>在面向应用的服务设计下，数据表的访问入口是发散的，来自多个应用，这带来一系列弊端：</p>
+<ul>
+<li>数据模型碎片化<br>每个应用都会基于自己的需求，往表里加字段，很多电商的商品表/订单表有多达200个字段，都是野蛮增长，缺少控制的结果</li>
+<li>数据模型修改困难<br>类似的访问需求散步在多个服务，缺乏整理，同时表schema修改会影响很多服务和应用</li>
+<li>连接资源利用率低<br>多个服务直连数据库，并且每个服务会尽可能多地配置连接数，在应用数量多，业务并发量大的情况下，往往导致数据库连接数不够</li>
+</ul>
+<h5 id="微内核"><a href="#微内核" class="headerlink" title="微内核"></a>微内核</h5><p>微内核SOA通过收敛对主数据的访问，保证数据模型一致性、优化接口和有效利用数据库连接资源。同时通过服务分层，简化系统依赖关系。更为重要的是，微内核服务保证了业务模型的一致性，比如电商系统的商品体系，包含单品/系列商品/组合商品/搭售商品/虚拟商品等一系列复杂概念，这些复杂逻辑在基础商品服务里处理，对上层业务透明一致。</p>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><p>如果业务模式简单，应用数量少，特定主数据的访问绝大多数（比如80%）来自某个应用，则服务设计以应用为中心是可行的，不利影响较少。</p>
+<p>但是对于大型互联网系统，业务广度和深度都复杂，但无论多复杂的系统，主数据类型都是有限的，可以通过聚焦有限的基础业务，以此支持无线的应用业务，结果是底层业务模型稳定，上层业务可以灵活扩展。</p>
+<p>面向应用的服务设计是SOA初级阶段，从具体业务着手，自底向下，难度小；微内核服务设计是SOA高级阶段，从全局着手，对业务和数据模型高度抽象，自顶向下，难度大。</p>
+<p>值得注意的是，在提供基础服务的同时，每个应用也可以创建自己的服务（但主数据的访问必须通过基础服务），所以为微内核服务和面向应用的服务可以有机的结合在一起，当业务应用变得很多，并且不断增长，可以考虑逐步往基础服务过度，整合特定主数据有关的业务逻辑。</p>
+<p>顺带提一下，应用架构会影响组织架构，如果采用面向应用的服务设计，具体service一般由相关应用团队负责；如果是微内核的服务设计，一般由单独的共享服务部门负责所有的基础服务开发，和各个业务研发部门并列，保证设计的中立性和需求响应的及时性</p>
+<h2 id="应用架构的进化"><a href="#应用架构的进化" class="headerlink" title="应用架构的进化"></a>应用架构的进化</h2><p>软件是人类活动的虚拟，业务架构是生产活动的体现，应用架构是具体分工合作关系的体现。<br>单体应用类似原始氏族时代，氏族内部有简单分工，氏族之间没有联系；分布式架构类似封建社会，每个家庭自给自足，家庭之间有少量交换关系；SOA架构类似工业时代，企业提供各种成品服务，我为人人，人人为我，相互依赖。微内核的SOA架构类似后工业时代，有些企业聚焦提供水电煤等基础设施服务，其他企业在之上提供生活服务，依赖有层次。</p>
+<p>业务架构是生产力，应用架构是生产关系，技术架构是生产工具。业务架构决定应用架构，应用架构需要适配业务架构，并随着业务架构不断进化，同时应用架构依托技术架构最终落地。</p>
+<p>企业一开始业务比较简单，比如进销存，此时面向内部用户，提供简单的信息管理系统（MIS），支持数据增删改查即可，单体应用可以满足要求。</p>
+<p>随着业务深入，进销存每块业务都变复杂，同时新增客户关系管理，以更好支持营销，业务的深度和广度都增加，这时需要对系统按照业务拆分，变成一个分布式系统。</p>
+<p>更进一步，企业转向互联网+战略，拓展在线交易，线上系统和内部系统业务类似，没必要重做一套，此时把内部系统的逻辑做服务化改造，同时供线上线下系统使用，变成一个简单的SOA架构。</p>
+<p>紧接着业务模式越来越复杂，订单、商品、库存、价格每块玩法都很深入，比如价格区分会员等级，访问渠道（无线还是PC），销售方式（团购还是普通）等，还有大量的价格促销，这些规则很复杂，容易相互冲突，需要把分散到各个业务的价格逻辑进行统一管理，以基础价格服务的方式透明地提供给上层应用，变成一个微内核的SOA架构。</p>
+<p>同时不管是企业内部用户，还是外部顾客所需要的功能，都由很多细分的应用提供支持，需要提供portal，集成相关应用，为不同用户提供统一视图，顶层变成一个AOA的架构（application orientated architecture）。</p>
+<p>随着业务和系统不断进化，最后一个比较完善的大型互联网应用架构如下图所示：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/jiagou09.jpg" alt=""></p>
+<p>最终整个系统化整为零，形神兼备，支持积木式拼装，支持开发敏捷和业务敏捷。</p>
+<p>应用架构，需要站在业务和技术中间，在正确的时间点做正确的架构选择，保证系统有序进化。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h2 id=&quot;关于架构&quot;&gt;&lt;a href=&quot;#关于架构&quot; class=&quot;headerlink&quot; title=&quot;关于架构&quot;&gt;&lt;/a&gt;关于架构&lt;/h2&gt;&lt;hr&gt;
+&lt;p&gt;太久没写博客了。标题起的很大，有点虚。&lt;/p&gt;
+&lt;p&gt;写这篇文章是因为前段时间试着玩了下，Dubbo &amp;amp; 
+    
+    </summary>
+    
+      <category term="web软件架构" scheme="http://yoursite.com/categories/web%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/"/>
+    
+    
+      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
+    
+      <category term="分布式" scheme="http://yoursite.com/tags/%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    
+      <category term="SOA" scheme="http://yoursite.com/tags/SOA/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBoot入门（四）</title>
+    <link href="http://yoursite.com/2017/09/03/SpringBoot%E5%85%A5%E9%97%A8%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
+    <id>http://yoursite.com/2017/09/03/SpringBoot入门（四）/</id>
+    <published>2017-09-03T02:20:03.000Z</published>
+    <updated>2017-09-03T02:20:33.480Z</updated>
+    
+    <content type="html"><![CDATA[<p>今天公司一大早就有人在吵架，感觉气氛弥漫着紧张与不和谐。也没有人出来解调。我问另一个要走的同事这是为什么，他说就是这样。不知道这是公司出了什么问题还是怎么的。</p>
+<p>接着SpringBoot入门（三）来</p>
+<hr>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.imooc.com/learn/767" target="_blank" rel="external">2小时学会SpringBoot</a></li>
+<li><a href="http://blog.csdn.net/Peng_Hong_fu/article/details/53691705" target="_blank" rel="external">IntelliJ Idea SpringBoot 数据库增删改查实例</a></li>
+<li><a href="http://git.oschina.net/lonecloud/springBoot-imooc-girl" target="_blank" rel="external">2小时学会SpringBoot实例代码</a></li>
+</ul>
+<hr>
+<h2 id="数据库查询补充"><a href="#数据库查询补充" class="headerlink" title="数据库查询补充"></a>数据库查询补充</h2><p>上回说到了基本的增删改查方法，只用继承JpaRepository就有了基本的方法。但是需要增加较为特殊的方法，比如按照年龄来查询肥宅这些基本方法就实现不了了。</p>
+<p>按年龄来查询的实现方式也比较简单，在FattyRepository里加入一个接口方法就好，不过要注意命名和返回值的准确。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">public interface FattyRepository extends JpaRepository&lt;Fatty, Integer&gt; &#123;</div><div class="line">    List&lt;Fatty&gt; findByAge(Integer age);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>之后在FattyController里写按年龄查找的方法。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@GetMapping(<span class="string">"/fatty/age/&#123;age&#125;"</span>)</div><div class="line">public List&lt;Fatty&gt; fattyFindByAge(@PathVariable(<span class="string">"age"</span>) Integer age) &#123;</div><div class="line">    <span class="keyword">return</span> fattyRepository.findByAge(age);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>完了之后点击运行，试着在postman里访问下，可以得到</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-4-1.png" alt=""></p>
+<h2 id="事务管理"><a href="#事务管理" class="headerlink" title="事务管理"></a>事务管理</h2><p>事务管理的基本概念这里就不多说了，参考博客<a href="http://www.wangsusu.com.cn/2017/06/11/Spring%E6%A1%86%E6%9E%B6%EF%BC%88%E5%9B%9B%EF%BC%89/" target="_blank" rel="external">Spring框架（四）</a>。简单的说就是两条 sql 语句同时在一个方法中执行，为了防止一个 sql 语句执行成功而另一个 sql 语句执行失败，引入了事务管理。</p>
+<p>SpringBoot为方法添加事务的方式也十分简单。只需要在方法上添加一个@Transaction就可以。试验一下，先添加一个service包，在service包里添加FattyService类<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.just4fun.dao.FattyRepository;</div><div class="line"><span class="keyword">import</span> com.just4fun.entity.Fatty;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.stereotype.Service;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.transaction.Transactional;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/12.</div><div class="line"> */</div><div class="line">@Service</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">FattyService</span> </span>&#123;</div><div class="line">    @Autowired</div><div class="line">    private FattyRepository fattyRepository;</div><div class="line"></div><div class="line">    <span class="comment">//@Transactional</span></div><div class="line">    public <span class="keyword">void</span> insertTwoFatty() &#123;</div><div class="line">        Fatty fatty = <span class="keyword">new</span> Fatty();</div><div class="line">        fatty.setAge(<span class="number">100</span>);</div><div class="line">        fatty.setName(<span class="string">"old fatty"</span>);</div><div class="line">        fatty.setWeight(<span class="number">114115</span>);</div><div class="line">        fattyRepository.save(fatty);</div><div class="line"></div><div class="line">        System.out.println(<span class="number">255</span>/<span class="number">0</span>);</div><div class="line"></div><div class="line">        Fatty fatty1 = <span class="keyword">new</span> Fatty();</div><div class="line">        fatty1.setAge(<span class="number">99</span>);</div><div class="line">        fatty1.setName(<span class="string">"old fatty2"</span>);</div><div class="line">        fatty1.setWeight(<span class="number">115114</span>);</div><div class="line">        fattyRepository.save(fatty);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后在Controller里注入fattyService，添加插入两个肥宅的方法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@RestController</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">FattyController</span> </span>&#123;</div><div class="line">    @Autowired</div><div class="line">    FattyRepository fattyRepository;</div><div class="line"></div><div class="line">    ···</div><div class="line">    </div><div class="line">    @PostMapping(<span class="string">"/fatty/two"</span>)</div><div class="line">    public <span class="keyword">void</span> fattyInsertTwo() &#123;</div><div class="line">        fattyService.insertTwoFatty();</div><div class="line">    &#125;    </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>先试试水，注释点@Transaction，试试没有事务的情况下回怎么样。首先运行程序，在postman中输入url，post测试</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-4-2.png" alt=""></p>
+<p>返回了错误的json信息，在log里可以看到异常信息</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-4-3.png" alt=""></p>
+<p>但是数据库里，可以看到</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-4-4.png" alt=""></p>
+<p>添加了一条肥宅信息，另一条没有添加。这个是没有事务的情况下。现在我们希望的是，在service的insertTwo方法里，如果出现异常，则方法里所有的对数据库的操作都要回滚。下面在把@Transaction的注释去掉，删掉数据库的old fatty数据。重新运行程序。</p>
+<p>在postman里再次测试，程序同样报了异常，但是数据库里什么也没有发生。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-4-5.png" alt=""></p>
+<p>以上就是事务管理。</p>
+<p><a href="https://github.com/kentwood/springbootfatty" target="_blank" rel="external">代码地址：https://github.com/kentwood/springbootfatty</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;今天公司一大早就有人在吵架，感觉气氛弥漫着紧张与不和谐。也没有人出来解调。我问另一个要走的同事这是为什么，他说就是这样。不知道这是公司出了什么问题还是怎么的。&lt;/p&gt;
+&lt;p&gt;接着SpringBoot入门（三）来&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;参考资料&quot;&gt;&lt;a href=
+    
+    </summary>
+    
+      <category term="SpringBoot" scheme="http://yoursite.com/categories/SpringBoot/"/>
+    
+    
+      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+      <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>SpringBoot入门（三）</title>
+    <link href="http://yoursite.com/2017/09/03/SpringBoot%E5%85%A5%E9%97%A8%EF%BC%88%E4%B8%89%EF%BC%89/"/>
+    <id>http://yoursite.com/2017/09/03/SpringBoot入门（三）/</id>
+    <published>2017-09-03T02:18:56.000Z</published>
+    <updated>2017-09-03T02:19:49.657Z</updated>
+    
+    <content type="html"><![CDATA[<p>马上就要去参加公司的培训了，感觉好紧张。真是不想去军训。捉鸡</p>
+<p>接着SpringBoot入门（二）来</p>
+<hr>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li><a href="http://www.imooc.com/learn/767" target="_blank" rel="external">2小时学会SpringBoot</a></li>
+<li><a href="http://blog.csdn.net/Peng_Hong_fu/article/details/53691705" target="_blank" rel="external">IntelliJ Idea SpringBoot 数据库增删改查实例</a></li>
+<li><a href="http://git.oschina.net/lonecloud/springBoot-imooc-girl" target="_blank" rel="external">2小时学会SpringBoot实例代码</a></li>
+</ul>
+<hr>
+<h2 id="SpringBoot数据库增删改查实例"><a href="#SpringBoot数据库增删改查实例" class="headerlink" title="SpringBoot数据库增删改查实例"></a>SpringBoot数据库增删改查实例</h2><h3 id="Restful与Controller"><a href="#Restful与Controller" class="headerlink" title="Restful与Controller"></a>Restful与Controller</h3><p>Restful交互方式是现在流行的一种，SpringBoot同样作为流行高逼格的框架，当然也得有支持Restful开发的方式。具体的体现就是在Controller的注解上。</p>
+<p>首先是Controller类上的注解。之前SpringMVC使用Restful的时候，需要在Controller类上写@Controller与@ResponseBody两个注解。而在SpringBoot中，只需要使用一个@RestController即可，用来返回json。</p>
+<p>另外，参考<a href="http://www.wangsusu.com.cn/2017/05/07/Restful_API%E8%AE%BE%E8%AE%A1%E6%8C%87%E5%8D%97/" target="_blank" rel="external">Restful_API设计指南</a>，这篇博客，Restful中将对数据库的增删改查与http的方法对应的起来。可以参考教程上的图片</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-1.png" alt=""></p>
+<p>那么这些GET，POST，DELETE等http方法，在controller里也有对应的注解来表示。</p>
+<p>SpringMVC中Controller采用如下的注解来规定只能用对应的http方法访问<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.GET)</div><div class="line">@RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.POST)</div><div class="line">@RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.DELETE)</div><div class="line">@RequestMapping(value = <span class="string">"/hello"</span>, method = RequestMethod.PUT)</div></pre></td></tr></table></figure></p>
+<p>而在SpringBoot中增加了如下注解来简化：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">@GetMapping(value = <span class="string">"/girls"</span>)</div><div class="line">@PostMapping(value = <span class="string">"/girls"</span>)</div><div class="line">@PutMapping(value = <span class="string">"/girls/&#123;id&#125;"</span>)</div><div class="line">@DeleteMapping(value = <span class="string">"/girls/&#123;id&#125;"</span>)</div></pre></td></tr></table></figure></p>
+<h3 id="spring-data-jpa"><a href="#spring-data-jpa" class="headerlink" title="spring-data-jpa"></a>spring-data-jpa</h3><p>第一次用这种东西，以前用的都是直接使用框架Hibernate，Mybatis啥的。</p>
+<p>JPA全称Java Persistence API.JPA通过JDK 5.0注解或XML描述对象－关系表的映射关系，并将运行期的实体对象持久化到数据库中。</p>
+<p>Hibernate3.2+、TopLink 10.1.3以及OpenJPA都提供了JPA的实现。</p>
+<p>这种东西用起来和hibernate应该是差不多。</p>
+<h3 id="利用jpa创建数据库"><a href="#利用jpa创建数据库" class="headerlink" title="利用jpa创建数据库"></a>利用jpa创建数据库</h3><p>重新建一个SpringBoot项目，与（一）中的步骤一样，选web就好。</p>
+<p>首先得在pom.xml里加入jpa与mysql-connector的依赖<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;dependency&gt;</div><div class="line">	&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;</div><div class="line">&lt;/dependency&gt;</div><div class="line"></div><div class="line">&lt;dependency&gt;</div><div class="line">	&lt;groupId&gt;mysql&lt;/groupId&gt;</div><div class="line">	&lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</div><div class="line">&lt;/dependency&gt;</div></pre></td></tr></table></figure></p>
+<p>之后把配置文件改为yml格式，写入如下内容<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">spring:</div><div class="line">  profiles:</div><div class="line">    active: a</div><div class="line">  datasource:</div><div class="line">      driver-class-name: com.mysql.jdbc.Driver</div><div class="line">      url: jdbc:mysql://127.0.0.1:3306/sb_fatty</div><div class="line">      username: root</div><div class="line">      password: a4570155</div><div class="line"></div><div class="line">  jpa:</div><div class="line">    hibernate:</div><div class="line">      ddl-auto: update</div><div class="line">    show-sql: true</div><div class="line">    </div><div class="line">server:</div><div class="line">  context-path: /fattyProj</div><div class="line">  port: 80</div></pre></td></tr></table></figure></p>
+<p>注意行的间距不能错，jpa属于sping下的东西。spring-boot-start-data-jpa应该是直接把hibernate的jar包也封装进去了。用起来非常方便，但是也越来越傻了。我觉得是好事。</p>
+<p>之后需要在数据库里新建一个数据库叫sb_fatty，sb是springboot的意思，不是shabi。</p>
+<p>之后创建一个Fatty实例，<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.entity;</div><div class="line"></div><div class="line"><span class="keyword">import</span> javax.persistence.Entity;</div><div class="line"><span class="keyword">import</span> javax.persistence.GeneratedValue;</div><div class="line"><span class="keyword">import</span> javax.persistence.Id;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/11.</div><div class="line"> */</div><div class="line">@Entity</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">Fatty</span> </span>&#123;</div><div class="line">    @Id</div><div class="line">    @GeneratedValue</div><div class="line">    private Integer id;</div><div class="line"></div><div class="line">    private <span class="built_in">String</span> name;</div><div class="line"></div><div class="line">    private Integer age;</div><div class="line"></div><div class="line">    private Integer weight;</div><div class="line"></div><div class="line">    public Fatty() &#123;</div><div class="line"></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个Fatty实例用来映射数据库，首先需要在类上加入@Entity注解，之后在主键id上加入@Id，@GeneratedValue注解分别用来表示主键与自增长。另外默认构造函数一定要有，所有属性的getter与setter方法也必须有。</p>
+<p>然后先试着运行一下程序。完事之后应该可以看见sb_fatty数据库里有了fatty表</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-2.png" alt=""></p>
+<p>之后新建一个dao包，写个FattyRepository。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.dao;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.just4fun.entity.Fatty;</div><div class="line"><span class="keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/11.</div><div class="line"> */</div><div class="line">public interface FattyRepository extends JpaRepository&lt;Fatty, Integer&gt; &#123;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个FattyRepository接口什么也没有，只是继承了JpaRepository，因为这个JpaRepository已经提供了数据库增删改查，查所有等基本方法。</p>
+<p>之后写FattyController<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.just4fun.dao.FattyRepository;</div><div class="line"><span class="keyword">import</span> com.just4fun.entity.Fatty;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.GetMapping;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.RestController;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/11.</div><div class="line"> */</div><div class="line">@RestController</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">FattyController</span> </span>&#123;</div><div class="line">    @Autowired</div><div class="line">    FattyRepository fattyRepository;</div><div class="line"></div><div class="line">    @GetMapping(<span class="string">"/fatty"</span>)</div><div class="line">    public List&lt;Fatty&gt; fattyList() &#123;</div><div class="line">        <span class="keyword">return</span> fattyRepository.findAll();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>注入FattyRepository，方法里写findAll()就会查找到所有的肥宅。</p>
+<p>接下来试试水，在数据库里手动添加两条数据</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-3.png" alt=""></p>
+<p>运行程序，可以得到返回正确的json结果，测试的话采用chrome插件postman，装chrome插件需要科学上网。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-4.png" alt=""></p>
+<p>同时可以看见控制台输出了<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Hibernate: select fatty0_.id <span class="keyword">as</span> id1_0_, fatty0_.age <span class="keyword">as</span> age2_0_, fatty0_.name <span class="keyword">as</span> name3_0_, fatty0_.weight <span class="keyword">as</span> weight4_0_ <span class="keyword">from</span> fatty fatty0_</div></pre></td></tr></table></figure></p>
+<p>下面补全增删改查的所有操作，在Controller里补全方法<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div></pre></td><td class="code"><pre><div class="line">package com.just4fun.controller;</div><div class="line"></div><div class="line"><span class="keyword">import</span> com.just4fun.dao.FattyRepository;</div><div class="line"><span class="keyword">import</span> com.just4fun.entity.Fatty;</div><div class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</div><div class="line"><span class="keyword">import</span> org.springframework.web.bind.annotation.*;</div><div class="line"></div><div class="line"><span class="keyword">import</span> java.util.List;</div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * Created by sdt14096 on 2017/7/11.</div><div class="line"> */</div><div class="line">@RestController</div><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">FattyController</span> </span>&#123;</div><div class="line">    @Autowired</div><div class="line">    FattyRepository fattyRepository;</div><div class="line"></div><div class="line">    @GetMapping(<span class="string">"/fatty"</span>)</div><div class="line">    public List&lt;Fatty&gt; fattyList() &#123;</div><div class="line">        <span class="keyword">return</span> fattyRepository.findAll();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @PostMapping(<span class="string">"/fatty"</span>)</div><div class="line">    public Fatty fattyAdd(@RequestParam(<span class="string">"name"</span>) <span class="built_in">String</span> name,</div><div class="line">                          @RequestParam(<span class="string">"age"</span>) Integer age,</div><div class="line">                          @RequestParam(<span class="string">"weight"</span>) Integer weight) &#123;</div><div class="line">        Fatty fatty = <span class="keyword">new</span> Fatty();</div><div class="line">        fatty.setName(name);</div><div class="line">        fatty.setAge(age);</div><div class="line">        fatty.setWeight(weight);</div><div class="line">        <span class="keyword">return</span> fattyRepository.save(fatty);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @DeleteMapping(<span class="string">"/fatty/&#123;id&#125;"</span>)</div><div class="line">    public <span class="keyword">void</span> fattyDelete(@PathVariable(<span class="string">"id"</span>) Integer id) &#123;</div><div class="line">        fattyRepository.delete(id);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @PutMapping(<span class="string">"/fatty/&#123;id&#125;"</span>)</div><div class="line">    public Fatty fattyUpdate(@PathVariable(<span class="string">"id"</span>) Integer id,</div><div class="line">                             @RequestParam(<span class="string">"name"</span>) <span class="built_in">String</span> name,</div><div class="line">                             @RequestParam(<span class="string">"age"</span>) Integer age,</div><div class="line">                             @RequestParam(<span class="string">"weight"</span>) Integer weight) &#123;</div><div class="line">        Fatty fatty = <span class="keyword">new</span> Fatty();</div><div class="line">        fatty.setId(id);</div><div class="line">        fatty.setName(name);</div><div class="line">        fatty.setAge(age);</div><div class="line">        fatty.setWeight(weight);</div><div class="line">        <span class="keyword">return</span> fattyRepository.save(fatty);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @GetMapping(<span class="string">"fatty/&#123;id&#125;"</span>)</div><div class="line">    public Fatty fattyFindOne(@PathVariable(<span class="string">"id"</span>) Integer id)&#123;</div><div class="line">        <span class="keyword">return</span> fattyRepository.findOne(id);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>接下来重新运行，</p>
+<ul>
+<li>测试查询单个：</li>
+</ul>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-5.png" alt=""></p>
+<ul>
+<li>测试插入方法：</li>
+</ul>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-6.png" alt=""></p>
+<p>可以看到数据库里多了肥傲天的信息。</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-7.png" alt=""></p>
+<ul>
+<li>测试更新方法：</li>
+</ul>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-8.png" alt=""></p>
+<p>看数据库里的信息：</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-9.png" alt=""></p>
+<ul>
+<li>测试删除方法</li>
+</ul>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-10.png" alt=""></p>
+<p>看数据库</p>
+<p><img src="http://onv8ytvk1.bkt.clouddn.com/springboot-3-11.png" alt=""></p>
+<p>妥妥的，需要注意的点是PUT方法的param，不能选择form-data传输，要选择x-www-form-urlencoded。</p>
+<p>今天的先到这里。明天继续加一点数据库内容和事务管理</p>
+<p><a href="https://github.com/kentwood/springbootfatty" target="_blank" rel="external">代码地址：https://github.com/kentwood/springbootfatty</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;马上就要去参加公司的培训了，感觉好紧张。真是不想去军训。捉鸡&lt;/p&gt;
+&lt;p&gt;接着SpringBoot入门（二）来&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;参考资料&quot;&gt;&lt;a href=&quot;#参考资料&quot; class=&quot;headerlink&quot; title=&quot;参考资料&quot;&gt;&lt;/a&gt;参考资料&lt;
+    
+    </summary>
+    
+      <category term="SpringBoot" scheme="http://yoursite.com/categories/SpringBoot/"/>
+    
+    
+      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
+    
+      <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
+    
+      <category term="SpringBoot" scheme="http://yoursite.com/tags/SpringBoot/"/>
+    
+  </entry>
   
   <entry>
     <title>SpringBoot入门（二）</title>
@@ -1655,474 +1959,6 @@
       <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
     
       <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MyBatis框架（四）</title>
-    <link href="http://yoursite.com/2017/04/12/MyBatis%E6%A1%86%E6%9E%B6%EF%BC%88%E5%9B%9B%EF%BC%89/"/>
-    <id>http://yoursite.com/2017/04/12/MyBatis框架（四）/</id>
-    <published>2017-04-12T14:14:25.000Z</published>
-    <updated>2017-04-22T06:54:00.495Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="MyBatis映射文件"><a href="#MyBatis映射文件" class="headerlink" title="MyBatis映射文件"></a>MyBatis映射文件</h2><hr>
-<p>最近感觉更紧迫了些，这个星期每天晚上都是加班到8点半以后。其实还是蛮充实的。感觉前天摔车，受到的最影响我的伤就是右脚的膝盖被磕破了，第一天还化脓了，现在连续两天都没能骑车下班。感觉身体也松懈了。昨天和今天下班回家在公交车上的时候眼睛酸胀疼的一直流眼泪，不知道是盯电脑盯久了的原因还是其他。总之还是得多花点时间锻炼身体，路得一步一步的走。感觉今天的哔哔有点太正经了，不符合我的风格。</p>
-<hr>
-<p>还是接着<a href="">MyBatis框架（三）</a>来，这一篇主要说说主配置文件里mappers标签里所引入的mapper映射文件，映射文件里的东西才是操作数据库具体逻辑的体现，mapper映射文件不像主配置文件里的其他引入的东西，是MyBatis的核心所在。</p>
-<h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>首先拿一段简单的代码分析下吧，这是<a href="">MyBatis框架（二）</a>里工程里UserMapper.xml里截的一段代码，我把它进一步简化了，只保留了一个statement做分析。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span> ?&gt;</div><div class="line">&lt;!DOCTYPE mapper</div><div class="line">		PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"</div><div class="line">		"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;mapper namespace="com.just4fun.mapperType.mapper.UserMapper"&gt;</div><div class="line">	&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">		SELECT * FROM USER WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure></p>
-<p>这个xml文件的结构就是这样，dtd文件里有全部的描述信息，可惜我只是略懂，有空要去学学才行，从dtd里可以看出，mapper是根标签，里面可以是<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cache-ref | cache | resultMap* | parameterMap* | sql* | insert* | update* | <span class="keyword">delete</span>* | select*</div></pre></td></tr></table></figure></p>
-<p>这些标签，*表示可以出现一次或者多次。</p>
-<p>下面在来看上一段简单的代码，从里面的sql语句可以看出这个select标签是一个像jdbc里statement的东西，具体执行对数据库的操作就是靠它没跑了。下面就来简单分析一下它，首先是id属性，从<a href="">MyBatis框架（二）</a>里，UserMapper.java文件里接口的方法名要和这个id一致才能实现mapper代理开发方式，所以···没有所以，id就是id嘛，没什么好说的。然后是parameterType，把select和UserMapper.java里方法结合起来看，这个是传入参数类型也就是形参的意思，形参类型为int，resultType是返回值，这里返回值用到了主配置文件的typeAliases简化，忘了可以回到上一篇康康。至于里面这个#{id}，“#{}”是占位符的意思，其实里面的id可以随意指定，因为只能传一个参数，但是为了不引起阅读困难还是和方法里的形参名称一致的好。</p>
-<h3 id="输入映射（parameterType）"><a href="#输入映射（parameterType）" class="headerlink" title="输入映射（parameterType）"></a>输入映射（parameterType）</h3><h4 id="简单类型输入"><a href="#简单类型输入" class="headerlink" title="简单类型输入"></a>简单类型输入</h4><p>关于简单类型的输入在简介里已经基本介绍完了。需要补充的是，如果传入java内置的类型（非集合类），比如String类型，parameterType需要写全名或者参照<a href="">MyBatis框架（三）</a>里的内建别名表格，写简化的别名。</p>
-<h4 id="POJO类型"><a href="#POJO类型" class="headerlink" title="POJO类型"></a>POJO类型</h4><p>还是贴出UserMapper.xml的另一个statement标签：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;insert id="insertUser" parameterType="User"&gt;</div><div class="line">	&lt;selectKey keyProperty="id" resultType="int" order="AFTER"&gt;</div><div class="line">		SELECT LAST_INSERT_ID()</div><div class="line">	&lt;/selectKey&gt;</div><div class="line">	INSERT INTO USER</div><div class="line">	(name,birthday,address,sex)</div><div class="line">	VALUES(#&#123;name&#125;,#&#123;birthday&#125;,#&#123;address&#125;,#&#123;sex&#125;)</div><div class="line">&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
-<p>其中#{name}就是取传入user对象的属性值，其他的也是同理。</p>
-<h4 id="POJO包装类型"><a href="#POJO包装类型" class="headerlink" title="POJO包装类型"></a>POJO包装类型</h4><p>当parameterType需要传入复杂信息，比如多表关联查询时，需要将查询的信息封装在一个包装对象里。举个栗子，貌似这里不太好举栗子，因为POJO包装类型的话有关联映射查询在先才能更好的说明，关于关联映射查询在后面的博客会讲。这里就拿单表简单说一下什么是包装类型，比如我要查user表以及它所购买的商品信息，但是传入的参数只能是一个，所以我需要新建一个UserExt类，将User包装进来，同时加入订单与商品的信息。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserVO</span></span>&#123;</div><div class="line">    User user;</div><div class="line">    <span class="comment">//其他扩展信息</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>然后在statement的parameterType里传入UserVO对象，就可以根据POJO对象里的信息写sql综合查询了。</p>
-<h4 id="hashmap类型"><a href="#hashmap类型" class="headerlink" title="hashmap类型"></a>hashmap类型</h4><p>这个HashMap类型和传递POJO对象是一样的，在sql语句中使用的时候，map中的key相当于POJO的属性，value相当于值。</p>
-<p>拿原来的工程做个实验，写个hashmap来封装一个user信息来传递，首先是在UserMapper.java里增加一个接口：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public <span class="keyword">void</span> insertUserMap(<span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; map);</div></pre></td></tr></table></figure></p>
-<p>然后写UserMapper.xml添加statement：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;insert id="insertUserMap" parameterType="hashmap"&gt;</div><div class="line">	&lt;selectKey keyProperty="id" resultType="int" order="AFTER"&gt;</div><div class="line">		SELECT LAST_INSERT_ID()</div><div class="line">	&lt;/selectKey&gt;</div><div class="line">	INSERT INTO USER</div><div class="line">	(name,birthday,address,sex)</div><div class="line">	VALUES (#&#123;name&#125;,#&#123;birthday&#125;,#&#123;address&#125;,#&#123;sex&#125;)</div><div class="line">&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
-<p>hashmap是简写，参考上一节<a href="http://www.wangsusu.com.cn/2017/04/11/MyBatis框架（三）" target="_blank" rel="external">MyBatis全局文件配置简介</a>，之后写测试方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testInsertUserHashMap() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">Object</span>&gt; userMap = <span class="keyword">new</span> HashMap();</div><div class="line">    userMap.put(<span class="string">"name"</span>, <span class="string">"mapName"</span>);</div><div class="line">    userMap.put(<span class="string">"birthday"</span>, <span class="keyword">new</span> <span class="built_in">Date</span>());</div><div class="line">    userMap.put(<span class="string">"address"</span>, <span class="string">"深圳"</span>);</div><div class="line">    userMap.put(<span class="string">"sex"</span>, <span class="string">"男"</span>);</div><div class="line">    userMapper.insertUserMap(userMap);</div><div class="line">    sqlSession.commit();</div><div class="line">    sqlSession.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>运行之后得到测试结果：</p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mapperName.png" alt=""></p>
-<h3 id="输出映射"><a href="#输出映射" class="headerlink" title="输出映射"></a>输出映射</h3><h4 id="resultType"><a href="#resultType" class="headerlink" title="resultType"></a>resultType</h4><p>resultType这个东西是通过查询的字段名和对象的属性名匹配，将字段的值传给对象的属性。期间用到了类型转换器，这个在之后的博客会讲。但是现在要引申出几个问题，第一，如果将字段用别名表示会怎样？第二，如果查询的字段与对象的属性只有部分匹配会怎样，所谓部分匹配包括整体缺少，缺少部分多余部分。</p>
-<p>我测试了一下，</p>
-<ol>
-<li>首先我把根据id查询的statement改成了如下：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT name FROM USER WHERE id =#&#123;aa&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>运行test：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindUserById() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = userMapper.findUserById(<span class="number">6</span>);</div><div class="line">    sqlSession.close();</div><div class="line">    System.out.println(user.getName()+<span class="string">":"</span>+user.getSex());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>得到的结果如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">小都比:<span class="literal">null</span></div></pre></td></tr></table></figure></p>
-<p>可见查询出来的字段如果缺少的话还是会生成返回对象，只是对应的属性为空。</p>
-<ol>
-<li>然后我更改了代码，将statement改成如下：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT name as 'hahaha' FROM USER WHERE id =#&#123;aa&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>运行test直接报错了，报了空指针异常，可见没有字段映射到user属性时user不会被创建。</p>
-<ol>
-<li>接着我把statement代码更改成如下：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT name as 'hahaha',sex FROM USER WHERE id =#&#123;aa&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>得到结果如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="literal">null</span>:男</div></pre></td></tr></table></figure></p>
-<p>可见字段部分缺少部分多余的也是会把对应的字段映射到对象中。</p>
-<ol>
-<li>最后我突发奇想又做了这个测试，我把name的别名直接改成address，然后在测试文件里输出address康康：<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT name as 'address' FROM USER WHERE id =#&#123;aa&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
-</li>
-</ol>
-<p>测试代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindUserById() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = userMapper.findUserById(<span class="number">6</span>);</div><div class="line">    sqlSession.close();</div><div class="line">    System.out.println(<span class="string">"address : "</span> + user.getAddress());</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>得到结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">address : 小都比</div></pre></td></tr></table></figure></p>
-<p>居然address变成了“小都比”，终于发现了封装对象传字段变属性的本质。就是把查到的最终表格的字段和对象的属性去比对。对上了就创建对象，没对上就不创建。都对上了就创建完整的，部分对上了就有多少上多少。</p>
-<p>大白话不好听，从网上找来了稍微说的官方一点的映射的规则：</p>
-<ol>
-<li>使用resultType进行结果映射时，需要查询出的列名和映射的对象的属性名一致，才能映射成功。</li>
-<li>如果查询的列名和对象的属性名全部不一致，那么映射的对象为空。</li>
-<li>如果查询的列名和对象的属性名有一个一致，那么映射的对象不为空，但是只有映射正确那一个属性才有值。</li>
-<li>如果查询的sql的列名有别名，那么这个别名就是和属性映射的列名。</li>
-</ol>
-<p>另外，当查询结果为单列时，例如使用select(*)之类的语句时，可以进行简单类型映射。比如这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id=<span class="string">"findCount"</span> resultType=<span class="string">"int"</span>&gt;</div><div class="line">	SELECT COUNT(*) <span class="keyword">from</span> USER ;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>测试代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindCount() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    int num = userMapper.findCount();</div><div class="line">    System.out.println(num);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>结果：8</p>
-<h4 id="resultMap"><a href="#resultMap" class="headerlink" title="resultMap"></a>resultMap</h4><p>下面来康康resultMap这个东西，这个东西一般会用在高级映射里，高级映射指的是多少相关联的表之间的映射，有一对一映射，一对多映射，多对一映射，多对多映射。高级映射会在之后的博客讲解，这里只是想要的说一下resultMap的基本用法，为之后的讲解做铺垫。</p>
-<p>关于上面的两个问题，就是最后表格的字段名称和匹配的属性名称不一致的问题。那么现在我有一个任性的想法，老子*它打野的就是要把这两个名称映射在一起，老子非要把address映射给name，老子就想这样玩。该怎么办？这个时候MyBatis为了满足我哔它他打野的欲望，给了resultMap这个东西。</p>
-<p>来看具体的代码：<br>首先得为UserMapper接口添加方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">User findUserById2(int id);</div></pre></td></tr></table></figure></p>
-<p>完了之后写UserMapper.xml映射文件：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap id="userResultMap" type="user"&gt;</div><div class="line">	&lt;id column="id_" property="id"&gt;&lt;/id&gt;</div><div class="line">	&lt;result column="name_" property="name"&gt;&lt;/result&gt;</div><div class="line">	&lt;result column="sex_" property="sex"&gt;&lt;/result&gt;</div><div class="line">	&lt;result column="address_" property="address"&gt;&lt;/result&gt;</div><div class="line">	&lt;result column="birthday_" property="birthday"&gt;&lt;/result&gt;</div><div class="line">&lt;/resultMap&gt;</div><div class="line"></div><div class="line">&lt;select id="findUserById2" resultMap="userResultMap" parameterType="int"&gt;</div><div class="line">	SELECT id as id_, name as name_, sex as sex_, address as address_, birthday as birthday_ from USER where id=#&#123;id&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>关于resultMap里的一点写法：</p>
-<ul>
-<li>[id]：定义resultMap的唯一标识</li>
-<li>[type]：定义该resultMap最终映射的pojo对象</li>
-<li>[id标签]：映射结果集的唯一标识列，如果是多个字段联合唯一，则定义多个id标签</li>
-<li>[result标签]：映射结果集的普通列</li>
-<li>[column]：SQL查询的列名，如果列有别名，则该处填写别名</li>
-<li>[property]：pojo对象的属性名<br>测试代码如下：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindUserById2() &#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = userMapper.findUserById2(<span class="number">2</span>);</div><div class="line">    System.out.println(user.getName() + <span class="string">" : "</span> + user.getAddress() + <span class="string">" : "</span> + user.getSex() + <span class="string">" :"</span> + user.getBirthday());</div><div class="line">    sqlSession.close();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>最后可以得到一个住在漯河的虎妞：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">虎妞 : 漯河 : 女 :Mon Mar <span class="number">09</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> CST <span class="number">1992</span></div></pre></td></tr></table></figure></p>
-<p>这是基本的测试结果，下面要来正题了，刚才不是说非要哔它打野的把name当成address用么，很简单，只要改改resultMap，把它改成这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;resultMap id=<span class="string">"userResultMap"</span> type=<span class="string">"user"</span>&gt;</div><div class="line">	&lt;id column="id_" property="id"&gt;&lt;/id&gt;</div><div class="line">	&lt;result column=<span class="string">"name_"</span> property=<span class="string">"address"</span>&gt;&lt;/result&gt;</div><div class="line">	&lt;result column=<span class="string">"sex_"</span> property=<span class="string">"sex"</span>&gt;&lt;/result&gt;</div><div class="line">	&lt;result column=<span class="string">"address_"</span> property=<span class="string">"name"</span>&gt;&lt;/result&gt;</div><div class="line">	&lt;result column=<span class="string">"birthday_"</span> property=<span class="string">"birthday"</span>&gt;&lt;/result&gt;</div><div class="line">&lt;<span class="regexp">/resultMap&gt;</span></div></pre></td></tr></table></figure></p>
-<p>在运行测试程序，可以得到一个住在虎妞的漯河，这种哔它打野的感觉真是舒畅~~~~<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">漯河 : 虎妞 : 女 :Mon Mar <span class="number">09</span> <span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span> CST <span class="number">1992</span></div></pre></td></tr></table></figure></p>
-<p>今天的就到这里了，明天再搞！新的代码，贴在后面，其实相对于myBatis框架（二）也没变太多，但是还是贴上吧。</p>
-<h2 id="代码：https-github-com-kentwood-myBatisLesson4"><a href="#代码：https-github-com-kentwood-myBatisLesson4" class="headerlink" title="代码：https://github.com/kentwood/myBatisLesson4"></a><a href="https://github.com/kentwood/myBatisLesson4" target="_blank" rel="external">代码：https://github.com/kentwood/myBatisLesson4</a></h2>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;MyBatis映射文件&quot;&gt;&lt;a href=&quot;#MyBatis映射文件&quot; class=&quot;headerlink&quot; title=&quot;MyBatis映射文件&quot;&gt;&lt;/a&gt;MyBatis映射文件&lt;/h2&gt;&lt;hr&gt;
-&lt;p&gt;最近感觉更紧迫了些，这个星期每天晚上都是加班到8点半以后。
-    
-    </summary>
-    
-      <category term="MyBatis" scheme="http://yoursite.com/categories/MyBatis/"/>
-    
-    
-      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
-    
-      <category term="myBatis" scheme="http://yoursite.com/tags/myBatis/"/>
-    
-      <category term="数据库" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MyBatis框架（三）</title>
-    <link href="http://yoursite.com/2017/04/11/MyBatis%E6%A1%86%E6%9E%B6%EF%BC%88%E4%B8%89%EF%BC%89/"/>
-    <id>http://yoursite.com/2017/04/11/MyBatis框架（三）/</id>
-    <published>2017-04-11T14:59:06.000Z</published>
-    <updated>2017-04-22T06:53:59.760Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="MyBatis全局配置文件简介"><a href="#MyBatis全局配置文件简介" class="headerlink" title="MyBatis全局配置文件简介"></a>MyBatis全局配置文件简介</h2><hr>
-<p>昨天晚上骑车回宿舍的时候摔了一跤，把脸给摔肿了，肿了好大一个包。第一次把脸摔肿，右侧的眼睛都能感觉到下面凸起的包，好新鲜。去药店买了药，就一瓶消毒的，一瓶消肿的药，硬是被坑了75块。*它大爷的。说好的骑车挣餐票，第一天就受打击。好了，还是说正事，看来挣钱还是只能靠代码。</p>
-<hr>
-<h2 id="MyBatis全局配置文件"><a href="#MyBatis全局配置文件" class="headerlink" title="MyBatis全局配置文件"></a>MyBatis全局配置文件</h2><p>接着<a href="http://www.wangsusu.com.cn/2017/04/10/MyBatis%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89/" target="_blank" rel="external">myBatis框架（二）</a>的内容来。</p>
-<p>MyBatis的全局配置文件其实就是工程里src目录下的sqlMapConfig.xml。想必通过代码的逻辑大家也可以推测出来了，我说sqlMapConfig.xml的命名是固定的其实是骗人的。这个全局配置文件可以随便起。只要SqlSessionFactoryBuilder在创建SqlSessionFactory时加载到某个书写格式正确的xml文件就行了。既然说到了书写格式，那下面就来捋一捋全局配置文件的一些东西。</p>
-<p>首先是xml头，dtd文件的引入，如果能读懂dtd的话直接在dtd文件里就能获取全局配置文件写法的全部信息。但是难读的话就随便听我哔哔下里面项目中估计会用到的一些信息。首先是configuration标签，该标签是根标签，是必须的。随后的常用的子标签结构如下：</p>
-<ul>
-<li>Properties（属性）</li>
-<li>Settings（全局参数设置）</li>
-<li>typeAliases（类型别名）</li>
-<li>typeHandlers（类型处理器）</li>
-<li>objectFactory（对象工厂）</li>
-<li>plugins（插件）</li>
-<li>environments（环境信息集合）<ul>
-<li>environment（单个环境信息）</li>
-<li>transactionManager（事物）</li>
-<li>dataSource（数据源）</li>
-</ul>
-</li>
-<li>mappers（映射器）</li>
-</ul>
-<p>注意顺序是不能乱的，子标签可以不写，但是顺序一定要按照这个来。</p>
-<h3 id="properties"><a href="#properties" class="headerlink" title="properties"></a>properties</h3><p>下面就来说说每一个子标签的具体用法，说现实properties，顾名思义这个就是属性的意思。一般来说，properties的用法是用来引入加载java的配置文件或者声明属性信息，数据库的连接配置信息用的比较多。在<a href="网址">myBatis框架（二）</a>工程项目中，db.properties文件里的内容如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">db.driver=com.mysql.jdbc.Driver</div><div class="line">db.url=jdbc:mysql:<span class="comment">//localhost:3306/mybatistest?useUnicode=true&amp;characterEncoding=utf8</span></div><div class="line">db.username=root</div><div class="line">db.password=a4570155</div></pre></td></tr></table></figure></p>
-<p>而在主配置文件sqlMapConfig.xml文件里：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;properties resource=<span class="string">"db.properties"</span>&gt;&lt;/properties&gt;</div></pre></td></tr></table></figure></p>
-<p>通过加载的方式获取db.properties的配置信息，在后面的environment会用到，代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;environments <span class="keyword">default</span>=<span class="string">"development"</span>&gt;</div><div class="line">	&lt;environment id="development"&gt;</div><div class="line">		&lt;!-- 配置JDBC事务控制，由mybatis进行管理 --&gt;</div><div class="line">		&lt;transactionManager type="JDBC"&gt;&lt;/transactionManager&gt;</div><div class="line">		&lt;!-- 配置数据源，采用mybatis连接池 --&gt;</div><div class="line">		&lt;dataSource type="POOLED"&gt;</div><div class="line">			&lt;property name="driver" value="$&#123;db.driver&#125;" /&gt;</div><div class="line">			&lt;property name="url" value="$&#123;db.url&#125;" /&gt;</div><div class="line">			&lt;property name="username" value="$&#123;db.username&#125;" /&gt;</div><div class="line">			&lt;property name="password" value="$&#123;db.password&#125;" /&gt;</div><div class="line">		&lt;/dataSource&gt;</div><div class="line">	&lt;/environment&gt;</div><div class="line">&lt;/environments&gt;</div></pre></td></tr></table></figure></p>
-<p>可以看到使用${属性名}的方式可以获取db.properties的属性值。</p>
-<hr>
-<p>打断一下，刚才想通过修改properties的内部属性与引用属性的操作数据库的时候发现一个问题，原来我特码的数据库特码的无论用什么账号密码都能登进去，不输用户名与密码也能登。原来我本机的数据库一直就这么暴露，这就很尴尬了。</p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng3.png" alt=""></p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng2.png" alt=""></p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mysql-suibiandeng.png" alt=""></p>
-<p>后来我在网上搜了下，参考了<a href="http://linzm.blog.51cto.com/1854885/1275701" target="_blank" rel="external">这篇文章</a>,大概意思是说，mysql的“mysql”数据库的“user”表里，也就是存储用户信息的表里，有一个user字段为空字符串的用户，这个会匹配所有的用户名与密码，导致所有用户名密码包括空，都能登进mysql数据库，把它删了然后刷新就能好。</p>
-<hr>
-<p>好了，解决了这个问题再回到原来要说的properties属性，还是先来说说我为什么会发现上述那个问题，是因为我要测试properties的标签体定义属性，与引用属性，还有parameterType里接受的属性之间如果重名的话，是报错还是会出现覆盖的情况，如果出现覆盖，谁又覆盖谁。</p>
-<p>经我的测试，有空你也可以自己测试，得出以下结论：</p>
-<ul>
-<li><p>Properties标签体内定义的属性首先被读取</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;properties&gt; </div><div class="line">	&lt;property name="db.username" value="root"/&gt;&lt;!--这个是标签体内--&gt;</div><div class="line">&lt;/properties&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>Properties引用的属性会被读取，如果发现上面已经有同名的属性了，那后面会覆盖前面的值</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;properties resource=<span class="string">"db.properties"</span>&gt;&lt;!--这个是引用属性--&gt;</div><div class="line">&lt;/properties&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>parameterType接收的值会最后被读取，如果发现上面已经有同名的属性了，那后面会覆盖前面的值</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;select id=<span class="string">"findUsersByName"</span> parameterType=<span class="string">"java.lang.String"</span></div><div class="line">		resultType=<span class="string">"com.just4fun.mapperType.po.User"</span>&gt;</div><div class="line">	SELECT * FROM USER WHERE name LIKE <span class="string">'%$&#123;value&#125;%'</span>  &lt;!--$&#123;value&#125;是parameterType接收的值--&gt;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="settings"><a href="#settings" class="headerlink" title="settings"></a>settings</h3><p>setting是全局参数设置的意思，MyBatis的全局参数会影响MyBatis的运行行为。这个文档里有详细的说明，我也就不一个参数一个参数的介绍了，下面贴几张网上找的图来，中文版看着舒心，这只是部分，全部的还是参看文档吧。</p>
-<table>
-<thead>
-<tr>
-<th>设置项</th>
-<th>描述</th>
-<th>允许值</th>
-<th>默认值</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>cacheEnabled</td>
-<td>对在此配置文件下的所有cache 进行全局性开/关设置。</td>
-<td>true&#124;false</td>
-<td>true</td>
-</tr>
-<tr>
-<td>lazyLoadingEnabled</td>
-<td>全局性设置懒加载。如果设为‘false’，则所有相关联的都会被初始化加载。</td>
-<td>true&#124;false</td>
-<td>true</td>
-</tr>
-<tr>
-<td>aggressiveLazyLoading</td>
-<td>当设置为‘true’的时候，懒加载的对象可能被任何懒属性全部加载。否则，每个属性都按需加载。</td>
-<td>true&#124;false</td>
-<td>true</td>
-</tr>
-<tr>
-<td>multipleResultSetsEnabled</td>
-<td>允许和不允许单条语句返回多个数据集（取决于驱动需求）</td>
-<td>true&#124;false</td>
-<td>true</td>
-</tr>
-<tr>
-<td>useColumnLabel</td>
-<td>使用列标签代替列名称。不同的驱动器有不同的作法。参考一下驱动器文档，或者用这两个不同的选项进行测试一下。</td>
-<td>true&#124;false</td>
-<td>true</td>
-</tr>
-<tr>
-<td>useGeneratedKeys</td>
-<td>允许JDBC 生成主键。需要驱动器支持。如果设为了true，这个设置将强制使用被生成的主键，有一些驱动器不兼容不过仍然可以执行。</td>
-<td>true&#124;false</td>
-<td>false</td>
-</tr>
-<tr>
-<td>autoMappingBehavior</td>
-<td>指定MyBatis 是否并且如何来自动映射数据表字段与对象的属性。PARTIAL将只自动映射简单的，没有嵌套的结果。FULL 将自动映射所有复杂的结果。</td>
-<td>NONE,PARTIAL,FULL</td>
-<td>PARTIAL</td>
-</tr>
-<tr>
-<td>defaultExecutorType</td>
-<td>配置和设定执行器，SIMPLE 执行器执行其它语句。REUSE 执行器可能重复使用prepared statements 语句，BATCH执行器可以重复执行语句和批量更新。</td>
-<td>SIMPLE,REUSE,BATCH</td>
-<td>SIMPLE</td>
-</tr>
-<tr>
-<td>defaultStatementTimeout</td>
-<td>设置一个时限，以决定让驱动器等待数据库回应的多长时间为超时</td>
-<td>正整数</td>
-<td>Not Set(null)</td>
-</tr>
-</tbody>
-</table>
-<h3 id="typeAliases"><a href="#typeAliases" class="headerlink" title="typeAliases"></a>typeAliases</h3><p>别名算是配置文件里最好理解的了，别名的使用是为了在映射文件中，更方便的去指定入参和结果集的类型，不再用写很长的一段全限定名。</p>
-<p>首先是MyBatis的内建别名：</p>
-<table>
-<thead>
-<tr>
-<th>别名</th>
-<th>映射的类型</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>_byte</td>
-<td>byte</td>
-</tr>
-<tr>
-<td>_long</td>
-<td>long</td>
-</tr>
-<tr>
-<td>_short</td>
-<td>short</td>
-</tr>
-<tr>
-<td>_int</td>
-<td>int</td>
-</tr>
-<tr>
-<td>_integer</td>
-<td>int</td>
-</tr>
-<tr>
-<td>_double</td>
-<td>double</td>
-</tr>
-<tr>
-<td>_float</td>
-<td>float</td>
-</tr>
-<tr>
-<td>_boolean</td>
-<td>boolean</td>
-</tr>
-<tr>
-<td>string</td>
-<td>String</td>
-</tr>
-<tr>
-<td>byte</td>
-<td>Byte</td>
-</tr>
-<tr>
-<td>long</td>
-<td>Long</td>
-</tr>
-<tr>
-<td>short</td>
-<td>Short</td>
-</tr>
-<tr>
-<td>int</td>
-<td>Integer</td>
-</tr>
-<tr>
-<td>integer</td>
-<td>Integer</td>
-</tr>
-<tr>
-<td>double</td>
-<td>Double</td>
-</tr>
-<tr>
-<td>float</td>
-<td>Float</td>
-</tr>
-<tr>
-<td>boolean</td>
-<td>Boolean</td>
-</tr>
-<tr>
-<td>date</td>
-<td>Date</td>
-</tr>
-<tr>
-<td>decimal</td>
-<td>BigDecimal</td>
-</tr>
-<tr>
-<td>bigdecimal</td>
-<td>BigDecimal</td>
-</tr>
-<tr>
-<td>object</td>
-<td>Object</td>
-</tr>
-<tr>
-<td>map</td>
-<td>Map</td>
-</tr>
-<tr>
-<td>hashmap</td>
-<td>HashMap</td>
-</tr>
-<tr>
-<td>list</td>
-<td>List</td>
-</tr>
-<tr>
-<td>arraylist</td>
-<td>ArrayList</td>
-</tr>
-<tr>
-<td>collection</td>
-<td>Collection</td>
-</tr>
-<tr>
-<td>iterator</td>
-<td>Iterator</td>
-</tr>
-</tbody>
-</table>
-<p>再来看看自定义别名，基本语法如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!-- 自定义别名 --&gt;</div><div class="line">&lt;typeAliases&gt;</div><div class="line">	&lt;!-- 单个别名定义 --&gt;</div><div class="line">	&lt;!-- &lt;typeAlias type="com.just4fun.mapperType.User" alias="user"/&gt; --&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 批量别名定义（推荐） --&gt;</div><div class="line">	&lt;!-- package：指定包名称来为该包下的po类声明别名，默认的别名就是类名（首字母大小写都可） --&gt;</div><div class="line">	&lt;package name="com.just4fun.mapperType.po" /&gt;</div><div class="line">&lt;/typeAliases&gt;</div></pre></td></tr></table></figure></p>
-<p>定义别名有两种方式，单个别名与批量别名，具体的语法看上面的代码。定义好别名之后，在UserMapper.xml里的parameterType与返回类型就可以直接写别名而不用写全名了。<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUserById" parameterType="int" resultType="User"&gt;</div><div class="line">	SELECT * FROM USER WHERE id =#&#123;id&#125;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>typeAliases是纯粹为了偷懒而存在的标签。</p>
-<h3 id="typeHandlers"><a href="#typeHandlers" class="headerlink" title="typeHandlers"></a>typeHandlers</h3><p>类型转换器是解决java类型与数据库类型的转换问题。mybatis已经内置了很多的类型转换器，我们在写mybatis项目的时候不经意已经用到了很多次，就拿下面那一段代码说事<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">&lt;insert id="insertUser" parameterType="User"&gt;</div><div class="line">	INSERT INTO USER</div><div class="line">	(name,birthday,address,sex)</div><div class="line">	VALUES(#&#123;name&#125;,#&#123;birthday&#125;,#&#123;address&#125;,#&#123;sex&#125;)</div><div class="line">&lt;/insert&gt;</div></pre></td></tr></table></figure></p>
-<p>问题来了，user属性是String，Date等javaType；但是java与数据库交互的类型是JDBCType。所以mybatis的类型转换器就充当了类型转换的功能。只是myBatis已经内置的很多类型转化器，我们不用再配置文件里一一列出来，mybatis在执行代码的时候碰到了就会帮我们转换。<br>类型转换器 | JAVA类型 | JDBC类型<br>—|—|—<br>BooleanTypeHandler    |java.lang.Boolean, boolean    |任何兼容的布尔值<br>ByteTypeHandler    |java.lang.Byte, byte    |任何兼容的数字或字节类型<br>ShortTypeHandler    |java.lang.Short, short    |任何兼容的数字或短整型<br>IntegerTypeHandler    |java.lang.Integer, int    |任何兼容的数字和整型<br>LongTypeHandler    |java.lang.Long, long    |任何兼容的数字或长整型<br>FloatTypeHandler    |java.lang.Float, float    |任何兼容的数字或单精度浮点型<br>DoubleTypeHandler    |java.lang.Double, double    |任何兼容的数字或双精度浮点型<br>BigDecimalTypeHandler    |java.math.BigDecimal    |任何兼容的数字或十进制小数类型<br>StringTypeHandler    |java.lang.String    |CHAR 和 VARCHAR 类型<br>ClobTypeHandler    |java.lang.String    |CLOB 和 LONGVARCHAR 类型<br>NStringTypeHandler    |java.lang.String    |NVARCHAR 和 NCHAR 类型<br>NClobTypeHandler    |java.lang.String    |NCLOB 类型<br>ByteArrayTypeHandler    |byte[]    |任何兼容的字节流类型<br>BlobTypeHandler    |byte[]    |BLOB 和 LONGVARBINARY 类型<br>DateTypeHandler    |java.util.Date    |TIMESTAMP 类型<br>DateOnlyTypeHandler    |java.util.Date    |DATE 类型<br>TimeOnlyTypeHandler    |java.util.Date    |TIME 类型<br>SqlTimestampTypeHandler    |java.sql.Timestamp    |TIMESTAMP 类型<br>SqlDateTypeHandler    |java.sql.Date    |DATE 类型<br>SqlTimeTypeHandler    |java.sql.Time    |TIME 类型<br>ObjectTypeHandler    |Any    |其他或未指定类型<br>EnumTypeHandler    |Enumeration Type    |VARCHAR-任何兼容的字符串类型, 作为代码存储(而不是索引)<br>EnumOrdinalTypeHandler    |Enumeration Type    |Any compatible NUMERIC or DOUBLE, as the position is stored (not the code itself).<br>按照以前的学习经验，内置的东西往往是不够的，因为程序员总喜欢搞事情，比如要弄一个AddressType直接存到数据库里，这个时候就需要自定义类型转化器了。关于自定义类型转换器现在不说了，因为这篇文章主要还是讲MyBatis的主配置文件。估计会在下一篇博客里讲自定义类型转换器。</p>
-<h3 id="objectFactory"><a href="#objectFactory" class="headerlink" title="objectFactory"></a>objectFactory</h3><p>关于这个标签我是完全没用过，从网上抄了一段话不知道是不是适用，不过我看了半天也没看出什么东西来。</p>
-<p><strong>MyBatis每次创建结果对象的新实例时，它都会使用一个对象工厂（ObjectFactory）实例来完成。 默认的对象工厂需要做的仅仅是实例化目标类，要么通过默认构造方法，要么在参数映射存在的时候通过参数构造方法来实例化。如果想覆盖对象工厂的默认行为，则可以通过创建自己的对象工厂来实现。</strong></p>
-<p>这个东西我看了别人的博客之后，感觉也能讲一节，所以这里也不在多哔哔，下下节再讲吧。</p>
-<h3 id="plugins"><a href="#plugins" class="headerlink" title="plugins"></a>plugins</h3><p>这东西妥妥的能讲一篇博客，留着之后讲吧</p>
-<h3 id="environments"><a href="#environments" class="headerlink" title="environments"></a>environments</h3><p>这个应该是用到最有用的标签了，之前的代码也用到很多次。它就是用来配置与数据库的数据源连接信息的。先贴一段代码吧，之前的代码并不能说明问题，这里贴一段其他的代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">&lt;environments <span class="keyword">default</span>=<span class="string">"oracle_jdbc"</span>&gt;  </div><div class="line">    &lt;environment id="oracle_jdbc"&gt;  </div><div class="line">        &lt;transactionManager type="JDBC" /&gt;  </div><div class="line">        &lt;dataSource type="POOLED"&gt;  </div><div class="line">            &lt;property name="driver" value="$&#123;jdbc.oracle.driverClassName&#125;" /&gt;  </div><div class="line">            &lt;property name="url" value="$&#123;jdbc.oracle.url&#125;" /&gt;  </div><div class="line">            &lt;property name="username" value="$&#123;jdbc.oracle.username&#125;" /&gt;  </div><div class="line">            &lt;property name="password" value="$&#123;jdbc.oracle.password&#125;" /&gt;   </div><div class="line">        &lt;/dataSource&gt;  </div><div class="line">    &lt;/environment&gt;  </div><div class="line">    </div><div class="line">    &lt;environment id="mysql_jdbc"&gt;  </div><div class="line">        &lt;transactionManager type="JDBC" /&gt;  </div><div class="line">        &lt;dataSource type="POOLED"&gt;  </div><div class="line">            &lt;property name="driver" value="$&#123;jdbc.mysql.driverClassName&#125;" /&gt;  </div><div class="line">            &lt;property name="url" value="$&#123;jdbc.mysql.url&#125;" /&gt;  </div><div class="line">            &lt;property name="username" value="$&#123;jdbc.mysql.username&#125;" /&gt;  </div><div class="line">            &lt;property name="password" value="$&#123;jdbc.mysql.password&#125;" /&gt;   </div><div class="line">        &lt;/dataSource&gt;  </div><div class="line">    &lt;/environment&gt; </div><div class="line">&lt;/environments&gt;</div></pre></td></tr></table></figure></p>
-<p>可以看到environments标签下有两个environment，分别配置了两个数据库连接，一个是mysql一个是oracle。可以看到environments标签还有一个default属性，表示默认使用oracle的数据库。在environment标签里，有transactionManager用来配置使用JDBC来管理事物，它还有一个type=“MANAGED”的配置方法，这个配置几乎什么都没做，它从来不提交或回滚一个链接，而它让容器来管理事务的整个生命周期，在以后和spring或者其他框架和起来的时候可能会用到。再往下走，是dataSource标签，标签内的property没什么好说的，就是配置连接的信息，这个type属性得说说，type有三种写法，第一个是type=“UNPOOLED”，这个数据源的实现是每次被请求时打开和关闭连接。速度会有一些慢，适用于简单的应用程序。第二个type=“UNPOOLED”，这是JDBC链接对象的数据源连接池的实现，用来避免创建新的链接实例时必要的连接和认证时间。适用于当前Web应用程序用来快速响应请求。第三个type=“JNDI”，这个数据源是为了使用如Spring或应用服务器这类的容器，容器可以集中或在外部配置数据源，然后设置JNDI上下文的引用。再补充一下，这个dataSource里的property还是有很多可以说的，对应每一种type都有不同的属性可以配置，一看文档内容确实有点多，展开的话我觉得我都能出书了。所以还是就此收住，就到这里。</p>
-<h3 id="mappers"><a href="#mappers" class="headerlink" title="mappers"></a>mappers</h3><p>mappers标签是为了引入资源映射文件的。引入映射文件有四种方式。</p>
-<h4 id=""><a href="#" class="headerlink" title=""></a><mapper resource="’’/"></mapper></h4><p>这种方式是引入相对路径的映射文件，在前几个工程中都是用的这种方式,基本语法如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;mappers&gt;</div><div class="line">	&lt;mapper resource="com/just4fun/mapperType/mapper/UserMapper.xml"/&gt;</div><div class="line">&lt;/mappers&gt;</div></pre></td></tr></table></figure></p>
-<h4 id="-1"><a href="#-1" class="headerlink" title=""></a><mapper url="’’/"></mapper></h4><p>url的方式是引入绝对路径下的映射文件：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;mappers&gt;</div><div class="line">	&lt;mapper url="file:///D:\IntelljProj\myBatisLesson2\src\com\just4fun\mapperType\mapper"/&gt;</div><div class="line">&lt;/mappers&gt;</div></pre></td></tr></table></figure></p>
-<h4 id="-2"><a href="#-2" class="headerlink" title=""></a><mapper class="’’/"></mapper></h4><p>此种方式是通过Mapper接口的限定全名引入，要求Mapper接口与它的它的映射文件同名，且在同一文件夹下。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;mappers&gt;</div><div class="line">	&lt;mapper class="com.just4fun.mapperType.UserMapper"/&gt;</div><div class="line">&lt;/mappers&gt;</div></pre></td></tr></table></figure></p>
-<h4 id="-3"><a href="#-3" class="headerlink" title=""></a><package name="’’/"></package></h4><p>该方式是一种批量引入的方式，将包下的所有映射文件都引入，同样也要求Mapper接口与它的它的映射文件同名，且在同一文件夹下。</p>
-<hr>
-<p>主配置文件算是mybatis的中心点，能扩展的内容也很多，这一篇博客只是简单介绍一下主配置文件里的内容，凑合着看吧</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;MyBatis全局配置文件简介&quot;&gt;&lt;a href=&quot;#MyBatis全局配置文件简介&quot; class=&quot;headerlink&quot; title=&quot;MyBatis全局配置文件简介&quot;&gt;&lt;/a&gt;MyBatis全局配置文件简介&lt;/h2&gt;&lt;hr&gt;
-&lt;p&gt;昨天晚上骑车回宿舍的时候摔
-    
-    </summary>
-    
-      <category term="MyBatis" scheme="http://yoursite.com/categories/MyBatis/"/>
-    
-    
-      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
-    
-      <category term="myBatis" scheme="http://yoursite.com/tags/myBatis/"/>
-    
-      <category term="数据库" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MyBatis框架（二）</title>
-    <link href="http://yoursite.com/2017/04/10/MyBatis%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%8C%EF%BC%89/"/>
-    <id>http://yoursite.com/2017/04/10/MyBatis框架（二）/</id>
-    <published>2017-04-10T15:01:24.000Z</published>
-    <updated>2017-04-22T06:53:29.463Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="MyBatis两种开发方式"><a href="#MyBatis两种开发方式" class="headerlink" title="MyBatis两种开发方式"></a>MyBatis两种开发方式</h2><hr>
-<p>今天终于下了狠心，在淘宝上弄了一辆折叠车。花了2000大洋，按照上一篇的分析，每天挣28块钱，得三个多月才能吃回来了。不过没事，一想三个月后瘦的有八块腹肌，而且还白挣一辆折叠车真是美滋滋啊。继续接着myBatis框架（一）来。<br>在这一篇博客里我想主要介绍myBatis的两种开发方式，第一种是传统Dao方式，第二种是Mapper代理方式。首先来介绍些第一种方式。</p>
-<hr>
-<h2 id="myBatis的Dao开发方式"><a href="#myBatis的Dao开发方式" class="headerlink" title="myBatis的Dao开发方式"></a>myBatis的Dao开发方式</h2><p>Dao开发方式与传统的javaweb的Dao类似，先写Dao接口，再写实现类。需要注意的是MyBatis里的SqlSession，内部有一块数据区域，会存在线程不安全的问题，所以需要在方法内部声明SqlSession，同时在方法内部关闭它。</p>
-<p>基于上一篇博客的环境搭建的过程，新建工程，引入jar包，<del>复制</del>编写配置文件。先把在工程里定义下结构，最后得到的工程目录如下：</p>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis-lesson2-structure.png" alt=""></p>
-<p>有dao包，mapper包，po包（po是persistence object的缩写，意思是持久化对象），还有test包。先写简单的，po类，省略了getter和setter方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</div><div class="line">    private int id;</div><div class="line">    private <span class="built_in">String</span> name;</div><div class="line">    private <span class="built_in">Date</span> birthday;</div><div class="line">    private <span class="built_in">String</span> sex;</div><div class="line">    private <span class="built_in">String</span> address;</div><div class="line">    <span class="comment">//getter and setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>之后写UserDao，先把接口定义好，依赖倒转原则告诉我们要面向接口编程而不是面向实现，UserDao的代码如下，姑且测试三个方法，根据ID找用户，根据姓名匹配多个用户，添加用户。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public interface UserDao &#123;</div><div class="line">    public User findUserById(int id);</div><div class="line"></div><div class="line">    public List&lt;User&gt; findUsersByName(<span class="built_in">String</span> name);</div><div class="line"></div><div class="line">    public <span class="keyword">void</span> insertUser(User user);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>传统Dao的开发方式按理说之后应该写Dao的实现类，但是myBatis的dao实现类是依赖于mapper.xml配置文件的，所以在写UserDao实现类之前要先写UserMapper.xml，代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span> ?&gt;</div><div class="line">&lt;!DOCTYPE mapper    </div><div class="line">PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    </div><div class="line">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line">&lt;!-- namespace：命名空间，对statement的信息进行分类管理 --&gt;</div><div class="line">&lt;!-- 注意：在mapper代理时，它具有特殊及重要的作用 --&gt;</div><div class="line">&lt;mapper namespace="test"&gt;</div><div class="line">	&lt;!-- 根据用户ID查询用户信息 --&gt;</div><div class="line">	&lt;!-- select：表示一个MappedStatement对象 --&gt;</div><div class="line">	&lt;!-- id：statement的唯一标示 --&gt;</div><div class="line">	&lt;!-- #&#123;&#125;：表示一个占位符？ --&gt;</div><div class="line">	&lt;!-- #&#123;id&#125;：里面的id表示输入参数的参数名称，如果该参数是简单类型，那么#&#123;&#125;里面的参数名称可以任意 --&gt;</div><div class="line">	&lt;!-- parameterType：输入参数的java类型 --&gt;</div><div class="line">	&lt;!-- resultType：输出结果的所映射的java类型（单条结果所对应的java类型） --&gt;</div><div class="line">	&lt;select id="findUserById" parameterType="int"</div><div class="line">		resultType="com.just4fun.daoType.po.User"&gt;</div><div class="line">		SELECT * FROM USER WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 根据用户名称模糊查询用户列表 --&gt;</div><div class="line">	&lt;!-- $&#123;&#125;：表示一个sql的连接符 --&gt;</div><div class="line">	&lt;!-- $&#123;value&#125;：里面的value表示输入参数的参数名称，如果该参数是简单类型，那么$&#123;&#125;里面的参数名称必须是value --&gt;</div><div class="line">	&lt;!-- $&#123;&#125;这种写法存在sql注入的风险，所以要慎用！！但是在一些场景下，必须使用$&#123;&#125;，比如排序时，动态传入排序的列名，$&#123;&#125;会原样输出，不加解释 --&gt;</div><div class="line">	&lt;select id="findUsersByName" parameterType="java.lang.String"</div><div class="line">		resultType="com.just4fun.daoType.po.User"&gt;</div><div class="line">		SELECT * FROM USER WHERE name LIKE '%$&#123;value&#125;%'</div><div class="line">	&lt;/select&gt;</div><div class="line">	</div><div class="line">	&lt;!-- 添加用户 --&gt;</div><div class="line">	&lt;!-- selectKey：查询主键，在标签内需要输入查询主键的sql --&gt;</div><div class="line">	&lt;!-- order：指定查询主键的sql和insert语句的执行顺序，相当于insert语句来说 --&gt;</div><div class="line">	&lt;!-- LAST_INSERT_ID：该函数是mysql的函数，获取自增主键的ID，它必须配合insert语句一起使用 --&gt;</div><div class="line">	&lt;insert id="insertUser" parameterType="com.just4fun.daoType.po.User"&gt;</div><div class="line">		&lt;selectKey keyProperty="id" resultType="int" order="AFTER"&gt;</div><div class="line">			SELECT LAST_INSERT_ID() </div><div class="line">		&lt;/selectKey&gt;</div><div class="line">		INSERT INTO USER</div><div class="line">		(name,birthday,address,sex)</div><div class="line">		VALUES(#&#123;name&#125;,#&#123;birthday&#125;,#&#123;address&#125;,#&#123;sex&#125;)</div><div class="line">	&lt;/insert&gt;</div><div class="line"></div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure></p>
-<p>这里有两个新知识点，一个是sql连接符，另一个是主键查询，这些程序在注释里有详细的说明。写完UserMapper.xml映射文件之后应该写UserDao的实现类了，但是在此之前需要再弄清楚一个问题，关于SqlSession的生命周期与如何使用，因为UserDao的实现类涉及到SqlSession的具体操作，而且类里有多个方法的实现，需要对多个方法抽取共性的东西。</p>
-<p>根据<a href="http://www.wangsusu.com.cn/2017/04/09/myBatis%E5%85%A5%E9%97%A8/" target="_blank" rel="external">MyBatis框架（一）</a>里的程序过程，知道SqlSession是有SqlSesionFactory创建，而SqlSessionFactory是由SqlSessionFactoryBuilder创建。反正UserDao的实现类里对数据库的操作就用这三个类没跑了。下面分析下这三个类的生命周期：</p>
-<ul>
-<li>SqlSessionFactoryBuilder，这货的作用就是用来创建SqlSesionFactory工厂类的，创建完了之后就没用了，就可以被销毁了。所以它的生命周期应该是和具体UserDao实现类的方法无关，也就是说它的一切都不应该出现在方法内。</li>
-<li>SqlSessionFactory， 这个工厂类是用来创建SqlSession的，上一篇博客里是用sqlSessionFactory.openSession()来获取SqlSession的。UserDao实现类里有多个方法，所以这个工厂类应该被多个方法共享，应该定义为实现类的一个属性被多个方法共享。</li>
-<li>SqlSession，这个应该就很好理解了，一般情况下一个方法里有一个SqlSession来操作数据库，执行完毕之后commit在close掉就行了。它的最佳生命周期就是一个方法体内。</li>
-</ul>
-<p>下面就来写UserDao的具体实现类：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserDaoImpl</span> <span class="title">implements</span> <span class="title">UserDao</span></span>&#123;</div><div class="line">    private SqlSessionFactory sqlSessionFactory;</div><div class="line"></div><div class="line">    public UserDaoImpl(SqlSessionFactory sqlSessionFactory) &#123;</div><div class="line">        <span class="keyword">this</span>.sqlSessionFactory = sqlSessionFactory;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public User findUserById(int id) &#123;</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        User user = sqlSession.selectOne(<span class="string">"test.findUserById"</span>, id);</div><div class="line">        sqlSession.close();</div><div class="line">        <span class="keyword">return</span> user;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public List&lt;User&gt; findUsersByName(<span class="built_in">String</span> name) &#123;</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        List&lt;User&gt; users = sqlSession.selectList(<span class="string">"test.findUsersByName"</span>, name);</div><div class="line">        sqlSession.close();</div><div class="line">        <span class="keyword">return</span> users;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Override</div><div class="line">    public <span class="keyword">void</span> insertUser(User user) &#123;</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        sqlSession.insert(<span class="string">"test.insertUser"</span>,user);</div><div class="line">        sqlSession.commit();</div><div class="line">        sqlSession.close();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>其中SqlSessionFactory是作为类的属性存在被三个方法共享，SqlSession每个方法里有一个，而SqlSessionFactoryBuilder将在测试类里定义，下面是测试类：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserTest</span> </span>&#123;</div><div class="line">    private SqlSessionFactory sqlSessionFactory;</div><div class="line"></div><div class="line">    @Before</div><div class="line">    public <span class="keyword">void</span> setUp() throws IOException &#123;</div><div class="line">        <span class="built_in">String</span> resource = <span class="string">"SqlMapConfig.xml"</span>;</div><div class="line">        InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">        sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</div><div class="line">    &#125;</div><div class="line">    @Test</div><div class="line">    public <span class="keyword">void</span> testInsertUser() throws ParseException &#123;</div><div class="line">        UserDao userDao = <span class="keyword">new</span> UserDaoImpl(sqlSessionFactory);</div><div class="line">        User user = <span class="keyword">new</span> User();</div><div class="line">        user.setName(<span class="string">"大虎娃子"</span>);</div><div class="line">        user.setAddress(<span class="string">"漯河"</span>);</div><div class="line">        user.setBirthday(<span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>).parse(<span class="string">"1992-03-09"</span>));</div><div class="line">        user.setSex(<span class="string">"男"</span>);</div><div class="line">        userDao.insertUser(user);</div><div class="line">        System.out.println(user.getId());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public <span class="keyword">void</span> testFindUserById() &#123;</div><div class="line">        UserDao userDao = <span class="keyword">new</span> UserDaoImpl(sqlSessionFactory);</div><div class="line">        User user = userDao.findUserById(<span class="number">2</span>);</div><div class="line">        System.out.println(user.getName());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public <span class="keyword">void</span> testFindUsersByName() &#123;</div><div class="line">        UserDao userDao = <span class="keyword">new</span> UserDaoImpl(sqlSessionFactory);</div><div class="line">        List&lt;User&gt; list = userDao.findUsersByName(<span class="string">"虎"</span>);</div><div class="line">        <span class="keyword">for</span> (User user : list) &#123;</div><div class="line">            System.out.println(user.getId() + <span class="string">" : "</span> + user.getName());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这段测试代码在执行每个@Test方法之前会执行有@Before注解的方法，也就是setUp，在setUp里定义SqlSessionFactoryBuilder，再通过在setUp里定义SqlSessionFactoryBuilder与配置文件SqlMapConfig.xml创建一个SqlSessionFactory工厂供UserDaoImpl里所有的方法使用。</p>
-<p>下面是具体测试过程：</p>
-<ul>
-<li>执行三次testInsertUser方法，期间把名字分别改成“虎妞”，“虎蛋”，再查询数据库可以得到：</li>
-</ul>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis2-dao-insert.png" alt=""></p>
-<p>在执行完testInsertUser方法，可以看到在控制台打印出了对应的ID号，是在插入的时候通过LAST_INSERT_ID()将新的ID号插在了user的id属性里。</p>
-<ul>
-<li>执行testFindUserById方法</li>
-</ul>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis2-dao-byid.png" alt=""></p>
-<ul>
-<li>执行testFindUsersByName方法</li>
-</ul>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis2-dao-bynames.png" alt=""></p>
-<p>写的好累。以上就是MyBatis的传统dao方式开发方式，但是，这种方式其实是有问题的。什么问题呢，首先是存在很多模板代码，比如通过SqlSessionFactory创建SqlSession，SqlSession的commit与close，这些每个方法里都出现，每个方法程序员都要写一遍sqlSession.close()，让人觉得很傻。第二点就是存在一些硬编码，在调用sqlsession方法时，传入参数存在硬编码，而sqlSession方法参数为泛型，即使传入参数类型错误，代码编译过程中也不会报错，这样非常不利于开发。</p>
-<h2 id="MyBatis的mapper代理开发方式"><a href="#MyBatis的mapper代理开发方式" class="headerlink" title="MyBatis的mapper代理开发方式"></a>MyBatis的mapper代理开发方式</h2><p>为了解决传统Dao开发方式不足，方便程序员偷懒，聪明的MyBatis有了Mapper代理开发方式。关于Mapper代理的核心思想就是程序员只需要通过编写Mapper接口与xml映射文件，通过命名的方式，MyBatis会自动为mapper接口生成代理实现类，相当于Dao的实现类由MyBatis代理生成。关于mapper代理方式，需要遵循一些开发规范：</p>
-<ul>
-<li>mapper接口的全限定名要与xml映射文件里的namespace相同</li>
-<li>mapper接口的方法名称要和mapper映射文件中的statement的id相同</li>
-<li>mapper接口的方法参数只能有一个，且类型要和mapper映射文件中statement的parameterType的值保持一致</li>
-<li>mapper接口的返回值类型要和mapper映射文件中statement的resultType值或resultMap中的type值保持一致</li>
-</ul>
-<p>复制过来的，感觉总结的还是十分到位，多用几次基本上就记住了，反正报错了再改就是。下面来具体搞代码。</p>
-<p>还是同一个工程，在上面那张工程结构图里，预知到现在的我已经创建好了mapper开发所需要的包。其实把包也就是工程结构定好的话思路基本上也会清晰了。</p>
-<p>首先是PO类，直接把dao方式里的User类复制过来就妥了，intellij会自动更改包名，其他的IDE如果把类复制过来报错的话记得更改包名。</p>
-<p>然后是UserMapper.java的接口，写在mapper包里，关于UserMapper接口里的内容和dao开发里的UserDao接口一样，复制过来就妥了。</p>
-<p>UserMapper.xml文件的基本内容也和dao里的UserMapper.xml一样，但是要注意，特别注意，首先是mapper标签的namespace属性，根据开发规范第一点，需要把namespace属性设置成UserMapper接口的全限定名；再根据开发规范的第二点，UserMapper接口的方法名称要和statement的id相同··算了，感觉是废话，直接上代码自己看吧<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"UTF-8"</span> ?&gt;</div><div class="line">&lt;!DOCTYPE mapper    </div><div class="line">PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    </div><div class="line">"http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;</div><div class="line"></div><div class="line">&lt;!-- namespace：命名空间，和UserMapper接口的限定名一致 --&gt;</div><div class="line">&lt;mapper namespace="com.just4fun.mapperType.mapper.UserMapper"&gt;</div><div class="line"></div><div class="line">    &lt;!-- id要和UserMapper方法名称相同 --&gt;</div><div class="line">	&lt;select id="findUserById" parameterType="int"</div><div class="line">		resultType="com.just4fun.mapperType.po.User"&gt;</div><div class="line">		SELECT * FROM USER WHERE id =#&#123;id&#125;</div><div class="line">	&lt;/select&gt;</div><div class="line"></div><div class="line">    &lt;!-- resultType要和UserMapper方法的返回值一致 --&gt;</div><div class="line">	&lt;select id="findUsersByName" parameterType="java.lang.String"</div><div class="line">		resultType="com.just4fun.mapperType.po.User"&gt;</div><div class="line">		SELECT * FROM USER WHERE name LIKE '%$&#123;value&#125;%'</div><div class="line">	&lt;/select&gt;</div><div class="line"></div><div class="line">	&lt;insert id="insertUser" parameterType="com.just4fun.mapperType.po.User"&gt;</div><div class="line">		&lt;selectKey keyProperty="id" resultType="int" order="AFTER"&gt;</div><div class="line">			SELECT LAST_INSERT_ID() </div><div class="line">		&lt;/selectKey&gt;</div><div class="line">		INSERT INTO USER</div><div class="line">		(name,birthday,address,sex)</div><div class="line">		VALUES(#&#123;name&#125;,#&#123;birthday&#125;,#&#123;address&#125;,#&#123;sex&#125;)</div><div class="line">	&lt;/insert&gt;</div><div class="line">&lt;/mapper&gt;</div></pre></td></tr></table></figure></p>
-<p>写完这两个其实就已经妥了，下面直接上测试代码了：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserTest</span> </span>&#123;</div><div class="line">    private SqlSessionFactory sqlSessionFactory;</div><div class="line"></div><div class="line">    @Before</div><div class="line">    public <span class="keyword">void</span> setUp() throws IOException &#123;</div><div class="line">        <span class="built_in">String</span> resource = <span class="string">"SqlMapConfig.xml"</span>;</div><div class="line">        InputStream inputStream = Resources.getResourceAsStream(resource);</div><div class="line">        sqlSessionFactory = <span class="keyword">new</span> SqlSessionFactoryBuilder().build(inputStream);</div><div class="line">    &#125;</div><div class="line">    @Test</div><div class="line">    public <span class="keyword">void</span> testInsertUser() &#123;</div><div class="line">        User user = <span class="keyword">new</span> User();</div><div class="line">        user.setName(<span class="string">"大都比"</span>);</div><div class="line">        user.setBirthday(<span class="keyword">new</span> <span class="built_in">Date</span>());</div><div class="line">        user.setAddress(<span class="string">"深圳"</span>);</div><div class="line">        user.setSex(<span class="string">"男"</span>);</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">        userMapper.insertUser(user);</div><div class="line">        sqlSession.commit();</div><div class="line">        sqlSession.close();</div><div class="line">        System.out.println(user.getId());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public <span class="keyword">void</span> testFindUserById() &#123;</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">        User user = userMapper.findUserById(<span class="number">6</span>);</div><div class="line">        sqlSession.close();</div><div class="line">        System.out.println(user.getName());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    @Test</div><div class="line">    public <span class="keyword">void</span> testFindUsersByName() &#123;</div><div class="line">        SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">        UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">        List&lt;User&gt; userList = userMapper.findUsersByName(<span class="string">"大"</span>);</div><div class="line">        sqlSession.close();</div><div class="line">        <span class="keyword">for</span> (User user : userList) &#123;</div><div class="line">            System.out.println(user.getName());</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>可以看到，通过SqlSession的getMapper方法，参数输入UserMapper.class就可以创建UserMapper的实现类。下面是具体测试：</p>
-<ul>
-<li>执行三遍testInsertUser方法，将name改为“大都不比”，“小都比”。完了之后查询数据user表可得到：</li>
-</ul>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis2-mapper-insert.png" alt=""></p>
-<ul>
-<li>执行testFindUserById方法，可以得到</li>
-</ul>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis2-mapper-findbyid.png" alt=""></p>
-<ul>
-<li>执行testFindUsersByName方法，可得到</li>
-</ul>
-<p><img src="http://onv8ytvk1.bkt.clouddn.com/mybatis2-bynames-mapper.png" alt=""></p>
-<p>以上就是MyBatis的mapper代理开发方式，首先通过这种方式消除了模板代码，这里得澄清一个问题，所谓模板代码是指在实现类里的模板代码，这里因为测试需要，在测试类里还是用到了SqlSession.close()。等到之后与spring结合之后就会发现这种方式真是美滋滋，感觉除了sql啥都不用写。第二点是解决了硬编码的问题，因为开发规范的直接把接口与接口方法的所有信息与xml映射文件与文件里的statement一一映射，对参数与返回值的映射也一样，所以硬编码问题也得到了解决。今天就到这里</p>
-<h2 id="代码：https-github-com-kentwood-myBatisLesson2"><a href="#代码：https-github-com-kentwood-myBatisLesson2" class="headerlink" title="代码：https://github.com/kentwood/myBatisLesson2"></a><a href="https://github.com/kentwood/myBatisLesson2" target="_blank" rel="external">代码：https://github.com/kentwood/myBatisLesson2</a></h2><p>工程里没有jar包，记得自己加，上一篇文章的代码里应该有。工程的配置也自己搞吧，反正代码都给了</p>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;MyBatis两种开发方式&quot;&gt;&lt;a href=&quot;#MyBatis两种开发方式&quot; class=&quot;headerlink&quot; title=&quot;MyBatis两种开发方式&quot;&gt;&lt;/a&gt;MyBatis两种开发方式&lt;/h2&gt;&lt;hr&gt;
-&lt;p&gt;今天终于下了狠心，在淘宝上弄了一辆折叠车。
-    
-    </summary>
-    
-      <category term="MyBatis" scheme="http://yoursite.com/categories/MyBatis/"/>
-    
-    
-      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
-    
-      <category term="myBatis" scheme="http://yoursite.com/tags/myBatis/"/>
-    
-      <category term="数据库" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
   </entry>
   
