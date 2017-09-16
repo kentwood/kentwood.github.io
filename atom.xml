@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-09-13T15:03:07.148Z</updated>
+  <updated>2017-09-16T08:13:17.586Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -14,6 +14,73 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>面试试试水（微众一面）</title>
+    <link href="http://yoursite.com/2017/09/16/%E9%9D%A2%E8%AF%95%E8%AF%95%E8%AF%95%E6%B0%B4%EF%BC%88%E5%BE%AE%E4%BC%97%E4%B8%80%E9%9D%A2%EF%BC%89/"/>
+    <id>http://yoursite.com/2017/09/16/面试试试水（微众一面）/</id>
+    <published>2017-09-16T06:17:46.000Z</published>
+    <updated>2017-09-16T08:13:17.586Z</updated>
+    
+    <content type="html"><![CDATA[<p>昨晚算是自己的一次突破，终于鼓起了勇气迈出了一步。</p>
+<p>面试之后发现自己基础还是太薄弱，有些东西之前都有学过，还刻意去记过都忘却了。明明自己能做的更好，实在是有遗憾，不过好在结果还是好的。</p>
+<p>本篇主要还是以贴出他人的博客资料为主，因为我发现自己写的博客的话，如果只是单纯的罗列自己学到的知识点，有点太费时间，自己输出的东西不应该是已经可以在网上找到的知识点，应该输出自己的见解与自己的创新，或是自己遇到的真是困难而有如何去解决的。</p>
+<hr>
+<p>关于问题的解答，应该能在以下文章中找到答案。架构类的东西都忘了，当时应该拍个照的，捉鸡。</p>
+<ul>
+<li>简单画画Http协议的报文格式 </li>
+</ul>
+<p><a href="http://www.cnblogs.com/ranyonsue/p/5984001.html" target="_blank" rel="external">关于HTTP协议，一篇就够了</a></p>
+<ul>
+<li>Https到底加密了什么</li>
+</ul>
+<p><a href="https://www.zhihu.com/question/28617156" target="_blank" rel="external">HTTPS 加密了什么内容？</a></p>
+<p>这里没看全，有些复杂，但是提炼出的答案应该是https加密了除了ip和端口之外的所有内容。</p>
+<ul>
+<li>网络拥塞是在哪一层实现的</li>
+</ul>
+<p><a href="http://blog.csdn.net/sicofield/article/details/9708383" target="_blank" rel="external">TCP的拥塞控制</a></p>
+<p>我只是简单的回答了TCP层，其实应该把整个TCP网络拥塞控制的流程说一说的</p>
+<ul>
+<li>画一下JavaGC的分代</li>
+</ul>
+<p><a href="https://yemengying.com/2016/05/13/jvm-GC/" target="_blank" rel="external">Java中的垃圾回收机制</a></p>
+<p>这个问题当时被问的解释下minorGC和majorGC的区别，但是我只是说了对象被GC的过程，从新生代到老年代。其实我根本都不知道有minorGC和majorGC这两个词汇。还好没被追问，这里还是贴出文章解释下。</p>
+<p><a href="http://www.importnew.com/15820.html" target="_blank" rel="external">Minor GC、Major GC和Full GC之间的区别</a></p>
+<ul>
+<li>画一下JVM的结构</li>
+</ul>
+<p><a href="http://www.importnew.com/16388.html" target="_blank" rel="external">JVM的相关知识整理和学习</a></p>
+<ul>
+<li>简单架构一下QQ登录注册模块</li>
+</ul>
+<p>这个我算是用我学到的知识简单的架构了一下，但是感觉自己实在弄的太水。我用的是架构公司后台管理系统那一套东西去理解这个高并发的登录注册模块。然后硬是加上了一点微服务的理念。感觉面试官不太满意，总之自己水平确实也就是这样，这个问题也是很好的体现出了自己的水准。所以暂时也不重新回答这个问题，我想今后更牛逼了再来回顾会有更深刻的见解。</p>
+<hr>
+<p>另外还学到了很多专有词汇，只能记住几个了，其实记住名字也没用，还是需要知道内核的东西，在今后工作中如果遇到会再仔细学。</p>
+<p>后来在详谈的时候，有说到腾讯的架构，微众的架构，这些架构比现在公司的架构确实不是一个等级了，我估计现在公司在未来十年都很难超越了。</p>
+<p>另外有说到互联网技术栈，罗列了很多工具和技术，感觉自己对分析与抓包这一块根本没有重视过，之前写的代码，只要http同了，收到正确信息就没管了，到最后连天天接触的http报文格式都有点记不太清楚。总之抓包与协议内部的学习还要加强，这是内在功底，分析问题的关键。</p>
+<p>不管能不能成，这次经历学到了很多有用了东西，也极大的启发了自己。</p>
+<p>路很长，要坚持。</p>
+<hr>
+<p>今天巩固下</p>
+<p><a href="http://www.ruanyifeng.com/blog/2012/05/internet_protocol_suite_part_i.html" target="_blank" rel="external">互联网协议入门（一）</a></p>
+<p><a href="http://www.ruanyifeng.com/blog/2012/06/internet_protocol_suite_part_ii.html" target="_blank" rel="external">互联网协议入门（二）</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;昨晚算是自己的一次突破，终于鼓起了勇气迈出了一步。&lt;/p&gt;
+&lt;p&gt;面试之后发现自己基础还是太薄弱，有些东西之前都有学过，还刻意去记过都忘却了。明明自己能做的更好，实在是有遗憾，不过好在结果还是好的。&lt;/p&gt;
+&lt;p&gt;本篇主要还是以贴出他人的博客资料为主，因为我发现自己写的博客
+    
+    </summary>
+    
+      <category term="面试" scheme="http://yoursite.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="面试" scheme="http://yoursite.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>Java并发入门</title>
@@ -1913,61 +1980,6 @@
       <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
     
       <category term="Spring" scheme="http://yoursite.com/tags/Spring/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MyBatis框架（五）</title>
-    <link href="http://yoursite.com/2017/04/14/MyBatis%E6%A1%86%E6%9E%B6%EF%BC%88%E4%BA%94%EF%BC%89/"/>
-    <id>http://yoursite.com/2017/04/14/MyBatis框架（五）/</id>
-    <published>2017-04-14T14:05:43.000Z</published>
-    <updated>2017-04-22T06:54:01.167Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="动态SQL语句"><a href="#动态SQL语句" class="headerlink" title="动态SQL语句"></a>动态SQL语句</h2><hr>
-<p>今天是一个大日子，感觉一下子被激活了感觉。因为今天参加了一个会议，导师轻描淡写的说就把项目交给他吧，然后就这样被交付了一个项目，是做一个数据收集与传递的服务器后台，功能不复杂，不懂的问题也能问。关于这个项目，我思考了一整天，考虑了各种技术细节，到最后都被同事说需求都没弄清就开始扣技术细节，这样不好。。感觉大概是自己太激动了吧，得开始努力加班了。</p>
-<hr>
-<p>这是MyBatis里一个非常碉堡与实用的东西，他通过实用MyBatis的标签实现动态的拼接sql语句，使得mapper映射文件在编写sql的时候更加灵活。常用的MyBatis的SQL标签有：</p>
-<ul>
-<li>if</li>
-<li>where</li>
-<li>foreach</li>
-</ul>
-<h3 id="if和where标签"><a href="#if和where标签" class="headerlink" title="if和where标签"></a>if和where标签</h3><p>一般来说，这个两个标签是用来查询用的，根据某些判断的插入查询的条件。下面来看具体的用法吧，工程还是原来那个工程。数据库也是原来那个数据库。改的只有UserMapper.xml文件，现在要让一个statement的能够在paramenterType变化的条件下，得到不同的查询语句进而查询到不同的结果。来看看具体用法吧，在com.just4fun.mapper包里，首先在UserMapper接口里添加一个findDynamicUser方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">List&lt;User&gt;  findDynamicUser(User user);</div></pre></td></tr></table></figure></p>
-<p>然后在UserMapper.xml里添加一个statement<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findDynamicUser" parameterType="user" resultType="user"&gt;</div><div class="line">	SELECT * FROM USER </div><div class="line">	&lt;where&gt;</div><div class="line">		&lt;if test="name != null"&gt;</div><div class="line">			AND NAME LIKE '%$&#123;name&#125;%'</div><div class="line">		&lt;/if&gt;</div><div class="line">		&lt;if test="sex != null"&gt;</div><div class="line">			AND sex = #&#123;sex&#125;</div><div class="line">		&lt;/if&gt;</div><div class="line">	&lt;/where&gt;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>where标签就是sql语句里的where的意思，这个很好理解。if标签里的test是判断条件，里面的查询条件的写法感觉上是和java里的写法差不多，我还没有细看，反正这个不等于null的写法是抄过来的，暂且先记住，如果以后有特殊需求再学学。需要注意的一点是，如果if标签条件全部满足，生成的语句按理说应该是多了一个‘AND’。但事实上是没有，这个是where标签的功能之一，删掉查询条件里的第一个‘AND’。</p>
-<p>下面来测试下，在UserTest里添加一个方法，第一次测试代码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindDynamicUser()&#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = <span class="keyword">new</span> User();</div><div class="line">    user.setName(<span class="string">"大"</span>);</div><div class="line">    user.setSex(<span class="string">"男"</span>);</div><div class="line">    List&lt;User&gt; list = userMapper.findDynamicUser(user);</div><div class="line">    <span class="keyword">for</span> (User singleUser : list) &#123;</div><div class="line">        System.out.println(singleUser.getId());</div><div class="line">        System.out.println(singleUser.getName());</div><div class="line">        System.out.println(singleUser.getAddress());</div><div class="line">        System.out.println(singleUser.getBirthday());</div><div class="line">        System.out.println(singleUser.getSex());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>运行得到结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">DEBUG [main] - Created connection <span class="number">1586845078.</span></div><div class="line">DEBUG [main] - Setting autocommit to <span class="literal">false</span> on JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">5e955596</span>]</div><div class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM USER WHERE NAME LIKE <span class="string">'%大%'</span> AND sex = ? </div><div class="line">DEBUG [main] - ==&gt; Parameters: 男(<span class="built_in">String</span>)</div><div class="line">DEBUG [main] - &lt;==      Total: 2</div><div class="line">4</div><div class="line">大都比</div><div class="line">深圳</div><div class="line">Fri Apr 14 00:00:00 CST 2017</div><div class="line">男</div><div class="line">5</div><div class="line">大都不比</div><div class="line">深圳</div><div class="line">Fri Apr 14 00:00:00 CST 2017</div><div class="line">男</div><div class="line"></div><div class="line">Process finished with exit code 0</div></pre></td></tr></table></figure></p>
-<p>可以看到查询到了两条数据，查询语句可以看到，通过name与sex两者一起匹配查询。</p>
-<p>下面不修改statement，只是将user.setSex那条语句注释掉：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindDynamicUser()&#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    User user = <span class="keyword">new</span> User();</div><div class="line">    user.setName(<span class="string">"大"</span>);</div><div class="line">    <span class="comment">//user.setSex("男");</span></div><div class="line">    List&lt;User&gt; list = userMapper.findDynamicUser(user);</div><div class="line">    <span class="keyword">for</span> (User singleUser : list) &#123;</div><div class="line">        System.out.println(singleUser.getId());</div><div class="line">        System.out.println(singleUser.getName());</div><div class="line">        System.out.println(singleUser.getAddress());</div><div class="line">        System.out.println(singleUser.getBirthday());</div><div class="line">        System.out.println(singleUser.getSex());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>再运行测试方法，可以得到：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">DEBUG [main] - Created connection <span class="number">1586845078.</span></div><div class="line">DEBUG [main] - Setting autocommit to <span class="literal">false</span> on JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">5e955596</span>]</div><div class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM USER WHERE NAME LIKE <span class="string">'%大%'</span> </div><div class="line">DEBUG [main] - ==&gt; Parameters: </div><div class="line">DEBUG [main] - &lt;==      Total: 3</div><div class="line">1</div><div class="line">大虎娃子</div><div class="line">漯河</div><div class="line">Mon Mar 09 00:00:00 CST 1992</div><div class="line">女</div><div class="line">4</div><div class="line">大都比</div><div class="line">深圳</div><div class="line">Fri Apr 14 00:00:00 CST 2017</div><div class="line">男</div><div class="line">5</div><div class="line">大都不比</div><div class="line">深圳</div><div class="line">Fri Apr 14 00:00:00 CST 2017</div><div class="line">男</div><div class="line"></div><div class="line">Process finished with exit code 0</div></pre></td></tr></table></figure></p>
-<p>可以看到查询用的sql语句已经变了，只用到了name一个属性，而且查询的结果也变成了三条。只是通过将sex设置成null就达到了这个效果。MyBatis的动态sql还是很强大的。</p>
-<h3 id="SQL片段"><a href="#SQL片段" class="headerlink" title="SQL片段"></a>SQL片段</h3><p>where标签里签到if标签写查询条件很强大，但是也有一点毛病，就是如果条件太复杂，会造成写的一个statement很长，看起来不太美观。而且如果查询条件被也有其他的statement用到，达不到复用的效果。于是聪明的MyBatis就引入的SQL片段的概念，通过一个标签，将SQL片段封装进去给其他的statement调用。说起来有点虚，还是直接来看代码：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">&lt;sql id="select_user_where"&gt;</div><div class="line">	&lt;if test="name != null"&gt;</div><div class="line">		AND NAME LIKE '%$&#123;name&#125;%'</div><div class="line">	&lt;/if&gt;</div><div class="line">	&lt;if test="sex != null"&gt;</div><div class="line">		AND sex = #&#123;sex&#125;</div><div class="line">	&lt;/if&gt;</div><div class="line">&lt;/sql&gt;</div><div class="line"></div><div class="line">&lt;select id="findDynamicUser" parameterType="user" resultType="user"&gt;</div><div class="line">	SELECT * FROM USER </div><div class="line">	&lt;where&gt;</div><div class="line">		&lt;include refid="select_user_where"&gt;&lt;/include&gt;</div><div class="line">	&lt;/where&gt;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>实际然后还是用同样的测试代码测试，结果是一样。</p>
-<h3 id="foreach"><a href="#foreach" class="headerlink" title="foreach"></a>foreach</h3><p>关于这个foreach标签的适用场合，感觉多半也是用在查询上，比如说，查询某个ID集合里的所有用户之类的。下面来试试水，这里正好强行运用一<a href="http://www.wangsusu.com.cn/2017/04/12/MyBatis%E6%A1%86%E6%9E%B6%EF%BC%88%E5%9B%9B%EF%BC%89/" target="_blank" rel="external">myBatis框架（四）</a>，里的POJO包装类型知识点。</p>
-<p>还是原来的工程，在PO包下创建一个UserVO类：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public <span class="class"><span class="keyword">class</span> <span class="title">UserVO</span> </span>&#123;</div><div class="line">    private User user;</div><div class="line">    private List&lt;Integer&gt; idList;</div><div class="line">    <span class="comment">//getter和setter</span></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>这个类里封装了User对象，然后在User的信息之外增加用户id集合的信息，整个UserVO就是一个传递需要查询的条件。下面在UserMapper接口中增加一个findUsersByNameInIDs方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">List&lt;User&gt; findUsersByNameInIDs(UserVO userVO);</div></pre></td></tr></table></figure></p>
-<p>然后在UserMapper.xml里写实现的statement：<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">&lt;select id="findUsersByNameInIDs" parameterType="com.just4fun.mapperType.po.UserVO" resultType="user"&gt;</div><div class="line">	SELECT * FROM USER</div><div class="line">	&lt;where&gt;</div><div class="line">		&lt;if test="user.name != null"&gt;</div><div class="line">			AND NAME LIKE '%$&#123;user.name&#125;%'</div><div class="line">		&lt;/if&gt;</div><div class="line">		&lt;if test="idList != null and idList.size &gt; 0"&gt;</div><div class="line">			&lt;foreach collection="idList" item="id" open="AND id IN(" close=")" separator=","&gt;</div><div class="line">				#&#123;id&#125;</div><div class="line">			&lt;/foreach&gt;</div><div class="line">		&lt;/if&gt;</div><div class="line">	&lt;/where&gt;</div><div class="line">&lt;/select&gt;</div></pre></td></tr></table></figure></p>
-<p>这段代码有点小复杂，只要是关于foreach标签里的，collection属性里取得是一个list，就是UserVO里的list，item是每次迭代得到的东西，open和close这个就是包裹整个的sql语句，不写在这里而直接强写在foreach标签的开头和末尾也行，只是这样更美观，显得更专业。<br>下面是测试带代码：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">@Test</div><div class="line">public <span class="keyword">void</span> testFindUsersByNameInIds()&#123;</div><div class="line">    SqlSession sqlSession = sqlSessionFactory.openSession();</div><div class="line">    UserMapper userMapper = sqlSession.getMapper(UserMapper.class);</div><div class="line">    UserVO userVO = <span class="keyword">new</span> UserVO();</div><div class="line">    User user = <span class="keyword">new</span> User();</div><div class="line">    user.setName(<span class="string">"大"</span>);</div><div class="line">    List&lt;Integer&gt; idList = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">    idList.add(<span class="number">1</span>);</div><div class="line">    idList.add(<span class="number">2</span>);</div><div class="line">    idList.add(<span class="number">3</span>);</div><div class="line">    userVO.setIdList(idList);</div><div class="line">    userVO.setUser(user);</div><div class="line">    List&lt;User&gt; users = userMapper.findUsersByNameInIDs(userVO);</div><div class="line">    <span class="keyword">for</span> (User singleUser : users) &#123;</div><div class="line">        System.out.println(singleUser.getId()+<span class="string">" "</span>+singleUser.getName()+<span class="string">" "</span>+singleUser.getAddress()+<span class="string">" "</span>+singleUser.getBirthday()+<span class="string">" "</span>+singleUser.getSex());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在id为1，2，3的用户里查找名字里包含大的用户。得到结果：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">DEBUG [main] - Created connection <span class="number">1004095028.</span></div><div class="line">DEBUG [main] - Setting autocommit to <span class="literal">false</span> on JDBC Connection [com.mysql.jdbc.JDBC4Connection@<span class="number">3</span>bd94634]</div><div class="line">DEBUG [main] - ==&gt;  Preparing: SELECT * FROM USER WHERE NAME LIKE <span class="string">'%大%'</span> AND id IN( ? , ? , ? ) </div><div class="line">DEBUG [main] - ==&gt; Parameters: <span class="number">1</span>(Integer), <span class="number">2</span>(Integer), <span class="number">3</span>(Integer)</div><div class="line">DEBUG [main] - &lt;==      Total: 1</div><div class="line">1 大虎娃子 漯河 Mon Mar 09 00:00:00 CST 1992 女</div><div class="line"></div><div class="line">Process finished with exit code 0</div></pre></td></tr></table></figure></p>
-<p>可以看到sql语句是：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SELECT * FROM USER WHERE NAME LIKE &apos;%大%&apos; AND id IN( ? , ? , ? )</div></pre></td></tr></table></figure></p>
-<p>正好就是想要的效果。关于sql片段暂时就先说这么多，感觉应该会是一个很实用的东西。今天就到这里。</p>
-<h2 id="代码：https-github-com-kentwood-myBatisLesson5"><a href="#代码：https-github-com-kentwood-myBatisLesson5" class="headerlink" title="代码：https://github.com/kentwood/myBatisLesson5"></a><a href="https://github.com/kentwood/myBatisLesson5" target="_blank" rel="external">代码：https://github.com/kentwood/myBatisLesson5</a></h2>]]></content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;动态SQL语句&quot;&gt;&lt;a href=&quot;#动态SQL语句&quot; class=&quot;headerlink&quot; title=&quot;动态SQL语句&quot;&gt;&lt;/a&gt;动态SQL语句&lt;/h2&gt;&lt;hr&gt;
-&lt;p&gt;今天是一个大日子，感觉一下子被激活了感觉。因为今天参加了一个会议，导师轻描淡写的说就把项目
-    
-    </summary>
-    
-      <category term="MyBatis" scheme="http://yoursite.com/categories/MyBatis/"/>
-    
-    
-      <category term="入门" scheme="http://yoursite.com/tags/%E5%85%A5%E9%97%A8/"/>
-    
-      <category term="myBatis" scheme="http://yoursite.com/tags/myBatis/"/>
-    
-      <category term="数据库" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
   </entry>
   
